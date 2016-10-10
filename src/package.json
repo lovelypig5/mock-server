@@ -1,0 +1,27 @@
+{
+  "name": "mock-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "AGPL-3.0",
+  "devDependencies": {},
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "async": "^1.5.2",
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
+    "cookie-session": "^1.2.0",
+    "express": "^4.13.3",
+    "express-history-api-fallback": "^2.0.0",
+    "http-proxy": "^1.15.1",
+    "lodash": "^4.16.4",
+    "log4js": "^0.6.33",
+    "mongoose": "^4.6.3"
+  },
+  "description": ""
+}
