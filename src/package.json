@@ -1,27 +1,38 @@
 {
-  "name": "mock-server",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "MIT",
-  "devDependencies": {},
-  "directories": {
-    "test": "test"
-  },
-  "dependencies": {
-    "body-parser": "^1.15.0",
-    "cookie-parser": "^1.4.1",
-    "cookie-session": "^1.2.0",
-    "express": "^4.13.3",
-    "express-history-api-fallback": "^2.0.0",
-    "http-proxy": "^1.15.1",
-    "lodash": "^4.16.4",
-    "log4js": "^0.6.33",
-    "mongoose": "^4.6.3",
-    "transformer-proxy": "^0.3.3"
-  },
-  "description": ""
+    "name": "mock-server",
+    "version": "1.0.0",
+    "description": "Mock Server is an api mock server for frontend developers or testors to work on real apis. It can override or intercept apis and return given data result.",
+    "keywords": "data mocker, frontend mock server, test",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "wei.ding",
+    "email": "lovelypig5@163.com",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/lovelypig5/mock-server.git"
+    },
+    "devDependencies": {},
+    "directories": {
+        "test": "test"
+    },
+    "dependencies": {
+        "body-parser": "^1.15.0",
+        "cookie-parser": "^1.4.1",
+        "cookie-session": "^1.2.0",
+        "express": "^4.13.3",
+        "express-history-api-fallback": "^2.0.0",
+        "http-proxy": "^1.15.1",
+        "lodash": "^4.16.4",
+        "log4js": "^0.6.33",
+        "mongoose": "^4.6.3",
+        "transformer-proxy": "^0.3.3"
+    },
+    "os": [
+        "darwin",
+        "linux",
+        "win32"
+    ]
 }
