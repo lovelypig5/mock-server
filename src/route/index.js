@@ -1,8 +1,11 @@
+'use strict';
+
 var express = require('express'),
     router = express.Router(),
     logger = require('../logger'),
     transformerProxy = require('transformer-proxy'),
-    mock = require('../proxy/mock');
+    mock = require('../service/mock'),
+    proxy = require('../proxy');
 
 router.use((req, res, next) => {
     logger.info('%s %s %s', req.method, req.url, req.path);
@@ -26,20 +29,18 @@ router.use((req, res, next) => {
         beginPath = author;
         delete req.headers.author;
     }
-    var project = projects[beginPath];
+
+    var project = mock.getProjects(beginPath);
+    console.log(project);
     if (project) {
-        var normalApis = apilist.normal[project._id];
-        var regApis = apilist.reg[project._id];
+        var normalApis = mock.getNormalApis(project._id);
+        var regApis = mock.getRegApis(project._id);
         var api = normalApis[path];
         if (api && api.type == req.method) { // match normal
-            let data = JSON.parse(api.result);
             if (api.dataHandler == "over") {
-                logger.info(api);
-                logger.info('normal api is enabled');
+                let data = JSON.parse(api.result);
                 return res.json(data);
             } else {
-                logger.info(api);
-                logger.info('normal api is closed, do proxy');
                 req.proxy = project.proxy;
             }
         } else if (regApis) { // match reg
@@ -59,30 +60,19 @@ router.use((req, res, next) => {
     next();
 });
 router.use(transformerProxy((data, req, res) => {
+    //TODO
     var ret = JSON.parse(data);
-    utils.extendDeep(ret, {
-        a: 0
-    });
+    // utils.extendDeep(ret, {
+    //     a: 0
+    // });
     return JSON.stringify(ret);
 }));
 router.use((req, res, next) => {
     if (req.proxy) {
-        var headers = {};
-        if ((req.method == "POST" || req.method == "PATCH") && req.body) {
-            var data = JSON.stringify(req.body);
-            req.body = data;
-            if (req.headers['content-length']) {
-                headers = {
-                    "Content-Type": 'application/json;charset=UTF-8',
-                    "Content-Length": data.length
-                }
-            }
-        }
         proxy.web(req, res, {
             target: req.proxy,
             toProxy: true,
-            changeOrigin: true,
-            headers: headers
+            changeOrigin: true
         });
     } else {
         next();
@@ -96,6 +86,6 @@ var ret = [{
 }];
 deps.forEach((dep) => {
     ret.push(require(dep));
-})
+});
 
 module.exports = ret;

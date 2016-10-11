@@ -12,6 +12,7 @@ class ProjectApi extends BaseApi {
         data.modifyTime = new Date();
 
         projectDao.createProject(data).then((model) => {
+            super.updateProject();
             return res.status(model.status).send(model.ret);
         }, (model) => {
             return res.status(model.status).send(model.ret);
@@ -35,6 +36,7 @@ class ProjectApi extends BaseApi {
             $set: _.pick(req.body, ['_id', 'name', 'desc', 'isPublic', 'beginPath', 'proxy'])
         };
         projectDao.modifyProject(req.params.id, update).then((model) => {
+            super.updateProject();
             return res.status(model.status).send(model.ret);
         }, (model) => {
             return res.status(model.status).send(model.ret);
@@ -47,6 +49,7 @@ class ProjectApi extends BaseApi {
         }
 
         projectDao.deleteProject(req.params.id).then((model) => {
+            super.updateProject();
             return res.status(model.status).send(model.ret);
         }, (model) => {
             return res.status(model.status).send(model.ret);

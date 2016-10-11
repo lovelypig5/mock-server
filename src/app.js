@@ -2,9 +2,11 @@ var express = require('express'),
     fallback = require('express-history-api-fallback'),
     filters = require('./filters'),
     routes = require('./route'),
-    apis = require('./api');
+    apis = require('./api'),
+    logger = require('./logger');
 
 var app = express();
+app.use(express.static('../assets/dist'));
 
 filters.forEach((filter) => {
     if (filter.route) {
@@ -21,9 +23,10 @@ routes.forEach((route) => {
     app.use(route.route, route.router);
 });
 
-app.use(express.static('../assets/dist'));
 app.use(fallback('index.html', {
     root: `../assets/dist`
 }));
 
-module.exports = app;
+app.listen(3002, function() {
+    logger.info(`Backend service listening on port 3002!`);
+});

@@ -3,4 +3,4 @@ module.exports = {
         MONGO: 'mongo',
         MYSQL: 'mysql'
     }
-}
+};

@@ -18,6 +18,7 @@ class MockApi extends BaseApi {
         data.modifyTime = new Date();
 
         mockDao.createMockApi(data).then((model) => {
+            super.updateMockApis();
             return res.status(model.status).send(model.ret);
         }, (model) => {
             return res.status(model.status).send(model.ret);
@@ -48,6 +49,7 @@ class MockApi extends BaseApi {
         mockDao.modifyMockApi(req.params.projectId, {
             $set: data
         }).then((model) => {
+            super.updateMockApis();
             return res.status(model.status).send(model.ret);
         }, (model) => {
             return res.status(model.status).send(model.ret);
@@ -72,6 +74,7 @@ class MockApi extends BaseApi {
         }
 
         mockDao.deleteMockApi(req.params.projectId).then((model) => {
+            super.updateMockApis();
             return res.status(model.status).send(model.ret);
         }, (model) => {
             return res.status(model.status).send(model.ret);

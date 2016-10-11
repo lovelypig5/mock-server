@@ -7,7 +7,8 @@ var config = require('../config/db'),
 class Mock {
 
     constructor() {
-        this.updateMockApis();
+        this.fetchProjects();
+        this.fetchMockApis();
         this.projects = {};
         this.apilist = {
             normal: {},
@@ -15,7 +16,25 @@ class Mock {
         };
     }
 
-    updateMockApis() {
+    fetchProjects() {
+        this.projects = {};
+        projectDao.listProject().then(({
+            status,
+            ret
+        }) => {
+            ret.forEach((item) => {
+                // use id and beginPath as the unique key
+                this.projects[item.beginPath] = item;
+                this.projects[item._id] = item;
+            });
+        });
+    }
+
+    fetchMockApis() {
+        this.apilist = {
+            normal: {},
+            reg: {}
+        };
         mockDao.getMockApis().then(({
             status,
             ret
@@ -37,29 +56,18 @@ class Mock {
                 }
             });
         });
-
-        projectDao.listProject().then(({
-            status,
-            ret
-        }) => {
-            ret.forEach((item) => {
-                // use id and beginPath as the unique key
-                this.projects[item.beginPath] = item;
-                this.projects[item._id] = item;
-            });
-        });
     }
 
-    getProjectList() {
-        return this.projects;
+    getProjects(prefix) {
+        return this.projects[prefix];
     }
 
-    getNormalApiList() {
-        return this.apilist.normal;
+    getNormalApis(prefix) {
+        return prefix ? this.apilist.normal[prefix] : this.apilist.normal;
     }
 
-    getRegApiList() {
-        return this.apilist.reg;
+    getRegApis(prefix) {
+        return prefix ? this.apilist.reg[prefix] : this.apilist.reg;
     }
 }
 
