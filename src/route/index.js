@@ -7,7 +7,8 @@ var express = require('express'),
     transformerProxy = require('transformer-proxy'),
     mock = require('../service/mock'),
     proxy = require('../proxy'),
-    utils = require('../utils');
+    utils = require('../utils'),
+    Mock = require('mockjs');
 
 router.use((req, res, next) => {
     logger.info('%s %s %s', req.method, req.url, req.path);
@@ -81,7 +82,7 @@ router.use(transformerProxy((data, req, res) => {
     if (req._extendData) {
         var ret = JSON.parse(data);
         var extend = JSON.parse(req._extendData);
-        ret = _.merge(ret, extend);
+        ret = _.merge(ret, Mock.mock(extend));
 
         console.log(ret);
 
