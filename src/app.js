@@ -23,9 +23,9 @@ routes.forEach((route) => {
     app.use(route.route, route.router);
 });
 
-app.use(fallback('index.html', {
-    root: `../assets/dist`
-}));
+// app.use(fallback('index.html', {
+//     root: `../assets/dist`
+// }));
 
 app.listen(3002, function() {
     logger.info(`Backend service listening on port 3002!`);

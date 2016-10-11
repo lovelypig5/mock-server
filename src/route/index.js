@@ -2,10 +2,12 @@
 
 var express = require('express'),
     router = express.Router(),
+    _ = require('lodash'),
     logger = require('../logger'),
     transformerProxy = require('transformer-proxy'),
     mock = require('../service/mock'),
-    proxy = require('../proxy');
+    proxy = require('../proxy'),
+    utils = require('../utils');
 
 router.use((req, res, next) => {
     logger.info('%s %s %s', req.method, req.url, req.path);
@@ -31,9 +33,8 @@ router.use((req, res, next) => {
     }
 
     var project = mock.getProjects(beginPath);
-    console.log(project);
     if (project) {
-        var normalApis = mock.getNormalApis(project._id);
+        var normalApis = mock.getNormalApis(project._id) || {};
         var regApis = mock.getRegApis(project._id);
         var api = normalApis[path];
         if (api && api.type == req.method) { // match normal
@@ -42,6 +43,8 @@ router.use((req, res, next) => {
                 return res.json(data);
             } else {
                 req.proxy = project.proxy;
+                req._extendData = api.result;
+                next();
             }
         } else if (regApis) { // match reg
             regApis.forEach((api) => {
@@ -51,22 +54,43 @@ router.use((req, res, next) => {
                         return res.json(data);
                     } else {
                         req.proxy = project.proxy;
+                        req._extendData = api.result;
+                        next();
                     }
                 }
             });
+
+            //TODO
+            if (url.indexOf(':') != -1) {
+                return res.status(200).json({
+                    result: "error happens! have you replace your parameter? "
+                });
+            }
+        } else {
+            //TODO
+            next();
         }
+    } else {
+        //TODO
+        next();
+    }
+});
+
+// override data
+router.use(transformerProxy((data, req, res) => {
+    if (req._extendData) {
+        var ret = JSON.parse(data);
+        var extend = JSON.parse(req._extendData);
+        ret = _.merge(ret, extend);
+
+        console.log(ret);
+
+        return JSON.stringify(ret);
     }
 
-    next();
-});
-router.use(transformerProxy((data, req, res) => {
-    //TODO
-    var ret = JSON.parse(data);
-    // utils.extendDeep(ret, {
-    //     a: 0
-    // });
-    return JSON.stringify(ret);
+    return data;
 }));
+
 router.use((req, res, next) => {
     if (req.proxy) {
         proxy.web(req, res, {

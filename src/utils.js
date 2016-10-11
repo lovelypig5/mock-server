@@ -1,6 +1,8 @@
+'use strict';
+
 var _ = require('lodash');
 
-module.exports = {
+class Utils {
     /**
      * deep extend obj
      * @method extendDeep
@@ -44,9 +46,12 @@ module.exports = {
         } else if (this.isNotAOF(toObject)) {
             toObject = fromObj;
         }
-    },
+    }
 
     isNotAOF(value) {
+        console.log(123);
         return !(_.isFunction(value) || _.isArray(value) || _.isObject(value));
     }
 }
+
+module.exports = new Utils();

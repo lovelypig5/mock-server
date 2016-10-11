@@ -47,9 +47,10 @@ class Mock {
                 this.apilist.normal[item.projectId] = this.apilist.normal[item.projectId] || {};
                 this.apilist.reg[item.projectId] = this.apilist.reg[item.projectId] || [];
                 if (item.isreg) {
-                    item.regexp = "^" + item.url.replace(/:\w+/g, "\\w+") + "$";
-                    item.fromUrl = item.url.match(/^(\/\w+)+/)[0];
-                    this.apilist.reg[item.projectId].push(item);
+                    let _item = Object.assign({}, item.toJSON());
+                    _item.regexp = "^" + item.url.replace(/:\w+/g, "\\w+") + "$";
+                    _item.fromUrl = item.url.match(/^(\/\w+)+/)[0];
+                    this.apilist.reg[item.projectId].push(_item);
                 } else {
                     this.apilist.normal[item.projectId][item._id] = item;
                     this.apilist.normal[item.projectId][item.url] = item;
