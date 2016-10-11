@@ -38,7 +38,7 @@ router.use((req, res, next) => {
         var normalApis = mock.getNormalApis(project._id) || {};
         var regApis = mock.getRegApis(project._id);
         var api = normalApis[path];
-        if (api && api.type == req.method) { // match normal
+        if (api && (api.type == req.method || "OPTIONS" == req.method)) { // match normal
             if (api.dataHandler == "over") {
                 let data = JSON.parse(api.result);
                 return res.json(data);
@@ -49,7 +49,7 @@ router.use((req, res, next) => {
             }
         } else if (regApis) { // match reg
             regApis.forEach((api) => {
-                if (new RegExp(api.regexp).test(url) && api.type == req.method) {
+                if (new RegExp(api.regexp).test(url) && (api.type == req.method || "OPTIONS" == req.method)) {
                     if (api.dataHandler == "over") {
                         let data = JSON.parse(api.result);
                         return res.json(data);
@@ -83,8 +83,6 @@ router.use(transformerProxy((data, req, res) => {
         var ret = JSON.parse(data);
         var extend = JSON.parse(req._extendData);
         ret = _.merge(ret, Mock.mock(extend));
-
-        console.log(ret);
 
         return JSON.stringify(ret);
     }
