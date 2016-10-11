@@ -41,7 +41,7 @@ router.use((req, res, next) => {
         if (api && api.type == req.method) { // match normal
             if (api.dataHandler == "over") {
                 let data = JSON.parse(api.result);
-                return res.json(data);
+                return res.json(Mock.mock(data));
             } else {
                 req.proxy = project.proxy;
                 req._extendData = api.result;
@@ -52,7 +52,7 @@ router.use((req, res, next) => {
                 if (new RegExp(api.regexp).test(url) && api.type == req.method) {
                     if (api.dataHandler == "over") {
                         let data = JSON.parse(api.result);
-                        return res.json(data);
+                        return res.json(Mock.mock(data));
                     } else {
                         req.proxy = project.proxy;
                         req._extendData = api.result;
