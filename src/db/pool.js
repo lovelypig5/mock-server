@@ -17,7 +17,7 @@ var {
 switch (dialect) {
     case DICT.DB.MONGO:
         var connectStr =
-            `mongodb://${user ? (user + ':' + password + '@') : ''}${host}${port ? (':' + port) : ''}${schema ? '/' + schema : ''}`;
+            `mongodb://${user ? (user + ':' + password + '@') : ''}${host}${port ? (':' + port) : ''}${schema ? '/' + schema : ''}?authSource=admin`;
         pool = mongoose.connect(connectStr, (err) => {
             if (err) {
                 logger.error(err);
