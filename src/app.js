@@ -1,11 +1,8 @@
 var express = require('express'),
     fallback = require('express-history-api-fallback'),
-    logger = require('./logger'),
     filters = require('./filters'),
     routes = require('./route'),
-    apis = require('./api'),
-    proxy = require('./proxy'),
-    mock = require('./mock');
+    apis = require('./api');
 
 var app = express();
 
@@ -16,20 +13,17 @@ filters.forEach((filter) => {
         app.use(filter.filter);
     }
 });
-routes.forEach((route) => {
-    app.use(route.route, route.router);
-});
 apis.forEach((api) => {
     var method = api.method || 'get';
     app[method](api.route, api.func);
 });
+routes.forEach((route) => {
+    app.use(route.route, route.router);
+});
 
 app.use(express.static('../assets/dist'));
-
-app.use('*', mock.handleApi);
-
-// app.use(fallback('index.html', {
-//     root: `../assets/dist`
-// }));
+app.use(fallback('index.html', {
+    root: `../assets/dist`
+}));
 
 module.exports = app;
