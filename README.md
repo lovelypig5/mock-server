@@ -18,6 +18,8 @@ Mock Server is an api mock server for frontend developers or testors to work on 
 
 # TODO
 * support mysql, mssql and more database.
+* Add login module and user management
+* change web pages for more friendly view
 
 # Thanks
 * [Alicia](https://github.com/vvpvvp)
