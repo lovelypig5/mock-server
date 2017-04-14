@@ -49,7 +49,6 @@ class Utils {
     }
 
     isNotAOF(value) {
-        console.log(123);
         return !(_.isFunction(value) || _.isArray(value) || _.isObject(value));
     }
 }
