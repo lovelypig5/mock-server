@@ -19,7 +19,7 @@ class MockApi extends BaseApi {
 
         mockDao.createMockApi(data).then((model) => {
             super.updateMockApis();
-            return res.status(model.status).send(model.ret);
+            return res.status(model.status).json(model.ret);
         }, (model) => {
             return res.status(model.status).send(model.ret);
         });
@@ -30,7 +30,7 @@ class MockApi extends BaseApi {
             return res.status(500).send("缺少参数");
         }
         mockDao.listMockApis(req.params.projectId).then((model) => {
-            return res.status(model.status).send(model.ret);
+            return res.status(model.status).json(model.ret);
         }, (model) => {
             return res.status(model.status).send(model.ret);
         });
@@ -50,7 +50,7 @@ class MockApi extends BaseApi {
             $set: data
         }).then((model) => {
             super.updateMockApis();
-            return res.status(model.status).send(model.ret);
+            return res.status(model.status).json(model.ret);
         }, (model) => {
             return res.status(model.status).send(model.ret);
         });
@@ -62,7 +62,7 @@ class MockApi extends BaseApi {
         }
 
         mockDao.getProject(req.params.projectId).then((model) => {
-            return res.status(model.status).send(model.ret);
+            return res.status(model.status).json(model.ret);
         }, (model) => {
             return res.status(model.status).send(model.ret);
         });
@@ -75,7 +75,7 @@ class MockApi extends BaseApi {
 
         mockDao.deleteMockApi(req.params.projectId).then((model) => {
             super.updateMockApis();
-            return res.status(model.status).send(model.ret);
+            return res.status(model.status).json(model.ret);
         }, (model) => {
             return res.status(model.status).send(model.ret);
         });

@@ -1,6 +1,6 @@
 'use strict';
 
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 var Project = new mongoose.Schema({
     name: String,
@@ -55,7 +55,17 @@ var MockSet = new mongoose.Schema({
     }
 });
 
+var User = new mongoose.Schema({
+    name: String,
+    password: String,
+    locked: {
+        type: Boolean,
+        default: false
+    }
+});
+
 module.exports = {
     project: Project,
-    mockset: MockSet
+    mockset: MockSet,
+    user: User
 };

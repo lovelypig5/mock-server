@@ -9,4 +9,4 @@ module.exports = {
         password: '',
         schema: 'test'
     }
-}
+};

@@ -13,7 +13,7 @@ class ProjectApi extends BaseApi {
 
         projectDao.createProject(data).then((model) => {
             super.updateProject();
-            return res.status(model.status).send(model.ret);
+            return res.status(model.status).json(model.ret);
         }, (model) => {
             return res.status(model.status).send(model.ret);
         });
@@ -22,7 +22,7 @@ class ProjectApi extends BaseApi {
     listProject(req, res) {
         var id = req.params.id || null;
         projectDao.listProject(id).then((model) => {
-            return res.status(model.status).send(model.ret);
+            return res.status(model.status).json(model.ret);
         }, (model) => {
             return res.status(model.status).send(model.ret);
         });
@@ -37,7 +37,7 @@ class ProjectApi extends BaseApi {
         };
         projectDao.modifyProject(req.params.id, update).then((model) => {
             super.updateProject();
-            return res.status(model.status).send(model.ret);
+            return res.status(model.status).json(model.ret);
         }, (model) => {
             return res.status(model.status).send(model.ret);
         });
@@ -50,7 +50,7 @@ class ProjectApi extends BaseApi {
 
         projectDao.deleteProject(req.params.id).then((model) => {
             super.updateProject();
-            return res.status(model.status).send(model.ret);
+            return res.status(model.status).json(model.ret);
         }, (model) => {
             return res.status(model.status).send(model.ret);
         });
