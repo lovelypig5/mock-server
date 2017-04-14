@@ -1,52 +1,35 @@
 {
-    "name": "umockserver",
-    "version": "1.2.0",
-    "main": "index.js",
-    "scripts": {
-        "test": ""
-    },
-    "author": "",
-    "license": "The MIT License",
-    "description": "",
-    "kil": {
-        "port": 9008,
-        "copy": [
-            "lib/*",
-            "images/*"
-        ],
-        "webpack": {
-            "publicPath": "/",
-            "output": {
-                "*.html": {}
-            },
-            "commonTrunk": {
-                "common": [
-                    "jquery",
-                    "vue",
-                    "vue-router-tiny"
-                ]
-            },
-            "global": {
-                "Vue": "vue",
-                "$": "jquery",
-                "jQuery": "jquery"
-            },
-            "alias": {
-                "Router": "vue-router-tiny"
-            },
-            "devServer": {
-                "proxy": {
-                    "/umock/*": "http://localhost:3002"
-                }
-            }
-        }
-    },
-    "dependencies": {
-        "bootstrap": "^3.3.6",
-        "jquery": "^2.2.0",
-        "js-beautify": "^1.6.2",
-        "jsoneditor": "5.1.3",
-        "vue": "^1.0.16",
-        "vue-router-tiny": "^1.1.0"
-    }
+  "name": "umockserver",
+  "version": "1.2.0",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "kil": {
+    "port": 9000,
+    "vue": true,
+    "react": false,
+    "html5Mode": true,
+    "es7": false,
+    "copy": [
+      "lib/*",
+      "images/*"
+    ]
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "jquery": "^2.2.0",
+    "js-beautify": "^1.6.12",
+    "jsoneditor": "5.1.3",
+    "vue": "^2.2.6",
+    "vue-hot-reload-api": "^1.3.3",
+    "vue-html-loader": "^1.2.3",
+    "vue-router": "^2.4.0",
+    "vue-style-loader": "^1.0.0",
+    "vuex": "^2.2.1",
+    "vue-loader": "^8.5.3"
+  }
 }

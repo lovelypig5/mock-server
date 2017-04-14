@@ -1,0 +1,77 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="exampleModalLabel">信息</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">URL:</label>
+                    <input type="text" class="form-control" v-model="mockapi.url">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">描述:</label>
+                    <input type="text" class="form-control" v-model="mockapi.desc">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">目录:</label>
+                    <input type="text" class="form-control" list="menu_list" v-model="mockapi.menuId">
+                    <datalist id="menu_list">
+                        <option v-for="menu in menus" :value="menu"></option>
+                    </datalist>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">Type:</label>
+                </div>
+                <div class="form-group">
+                    <label class="radio-inline">
+                        <input type="radio" name="type" v-model="mockapi.type" value="GET">
+                        GET
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="type" v-model="mockapi.type" value="POST">
+                        POST
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="type" v-model="mockapi.type" value="PATCH">
+                        PATCH
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="type" v-model="mockapi.type" value="DELETE">
+                        DELETE
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">数据处理:</label>
+                </div>
+                <div class="form-group">
+                    <label class="radio-inline">
+                        <input type="radio" name="dataHandler" v-model="mockapi.dataHandler" value="over">
+                        完全覆盖
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="dataHandler" v-model="mockapi.dataHandler" value="overlying">
+                        数据叠加
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">参数:</label>
+                    <div id="param-jsoneditor"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="message-text" class="control-label">Result:</label>
+                    <div id="jsoneditor"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="editButton" @click="save">保存</button>
+        <button type="button" class="btn btn-default _close" data-dismiss="modal">关闭</button>
+    </div>
+</div>

@@ -1,12 +1,7 @@
 /* Sticky footer styles
 -------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
-}
 body {/* Margin bottom by footer height */
   margin-bottom: 60px;
-  overflow-y: scroll;
 }
 .footer {
   position: absolute;
@@ -48,8 +43,6 @@ code {
 #param-jsoneditor {
   height: 191px;
 }
-
-div#editModal .modal-dialog {width: 900px;}
 
 .operator {
     float: right;
@@ -112,24 +105,6 @@ span.mockType {
     background-color: #F2FAF3;
 }
 
-.newProject {
-    font-size: 120%;
-    float: right;
-    color: #5996CA;
-    cursor: pointer;
-    /* background: #EEE; */
-    display: inline-block;
-    padding: 0 20px;
-    line-height: 40px;
-}
-
-.newProject:hover {
-    color: #337AB7;
-}
-
-.newProject .glyphicon-plus:before {
-    vertical-align: middle;
-}
 
 .mockDiv.active .mocksetHeader {
     border: 1px solid #F4ADAD;

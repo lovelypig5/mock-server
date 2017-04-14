@@ -1,0 +1,14 @@
+<div :class="['alert-gray','alert-success'][project.isPublic]" role="alert" class="project alert">
+    <h4>
+        <span class="label" :class="['label-primary','label-success'][project.isPublic]">
+            {{project.beginPath}}
+        </span>
+        <router-link :to="{name:'mockSet' ,params:{id:project._id}}" class="alert-link">
+            {{project.name}}
+            -
+            {{["HEAD参数","URL前缀"][project.isPublic]}}
+        </router-link>
+        <span class="pointer glyphicon glyphicon-edit" @click="edit(project)"></span>
+    </h4>
+    <p>{{project.desc}}</p>
+</div>

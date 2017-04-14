@@ -1,0 +1,13 @@
+<div>
+    <project-header></project-header>
+    <div class="container wrapper">
+        <div class="page-header">
+            <h3>项目</h3>
+        </div>
+        <div class="projectlist">
+            <div v-for="(project, index) in projects">
+                <project :project="project"></project>
+            </div>
+        </div>
+    </div>
+</div>
