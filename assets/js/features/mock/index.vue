@@ -4,9 +4,6 @@ import API from 'config/api';
 import Header from './header.vue';
 import Menu from './menu.vue';
 import List from './list.vue';
-import {
-    mapState
-} from 'vuex';
 
 const Mock = Vue.extend({
     name: 'mock-view',
@@ -31,9 +28,9 @@ const Mock = Vue.extend({
                 return item.menuId;
             }))]
         },
-        mockset: mapState({
-            mockset: state => state.control.mockset
-        }).mockset
+        mockset() {
+            return this.$store.state.control.mockset;
+        }
     },
     methods: {
         fetch() {

@@ -1,0 +1,28 @@
+<div>
+    <div id="mockTest">
+        <div id="testTopButton">
+            <button type="button" class="btn btn-default btn-xs expand" @click="expand"></button>
+        </div>
+
+        <div class="form">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">URL:</label>
+                    <input type="text" class="form-control" v-model="mockapi.url">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">参数:</label>
+                    <div id="paramJson"></div>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">Header:</label>
+                    <div id="headersJson"></div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="editButton" @click="request">{{mockapi.type}}</button>
+            </div>
+        </div>
+        <div id="testResult"></div>
+    </div>
+</div>

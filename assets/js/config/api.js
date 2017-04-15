@@ -1,4 +1,4 @@
-var base = '/umock';
+var base = '/_system';
 var api = {
     projectlist: base + '/project/list',
     project: base + '/project',

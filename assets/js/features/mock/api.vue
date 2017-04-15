@@ -2,11 +2,12 @@
 import template from 'templates/features/mock/api.html';
 import API from 'config/api';
 import Edit from './edit.vue';
+import events from '../../events';
 
 var MockApi = Vue.extend({
     name: 'mock-api',
     template: template,
-    props: ['mockapi', 'menus', 'project'],
+    props: ['data'],
     data() {
         return {
             loading: {
@@ -14,7 +15,24 @@ var MockApi = Vue.extend({
             }
         }
     },
+    computed: {
+        project() {
+            return this.data.project;
+        },
+        mockapi() {
+            return this.data.mockapi;
+        },
+        menus() {
+            return this.data.menus;
+        },
+        index() {
+            return this.data.index;
+        }
+    },
     methods: {
+        test() {
+            events.$emit('testApi', this.mockapi);
+        },
         modal(obj) {
             this.$store.dispatch('modal', obj);
         },
@@ -39,13 +57,14 @@ var MockApi = Vue.extend({
         },
         remove() {
             var self = this;
-            if (!confirm("确定删除")) return;
+            if (!confirm("确定删除")) {
+                return;
+            }
             $.ajax({
                 url: API.mockset + '/' + this.mockapi._id,
                 type: "delete"
             }).done((result) => {
-                // self.deleteById(mockset._id);
-                // initMenu(self);
+                events.$emit('removeApi', self.index);
             });
         },
         edit() {
@@ -58,10 +77,14 @@ var MockApi = Vue.extend({
                 data: {
                     mockapi: this.mockapi,
                     menus: this.menus,
-                    project: this.project
+                    project: this.project,
+                    index: this.index
                 },
                 component: Edit
             })
+        },
+        togglePane() {
+            $(this.$el).find('.mocksetContent').slideToggle();
         }
     }
 })

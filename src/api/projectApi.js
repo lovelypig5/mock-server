@@ -61,22 +61,22 @@ class ProjectApi extends BaseApi {
 var projectApi = new ProjectApi();
 module.exports = [{
     method: 'post',
-    route: '/umock/project',
+    route: '/_system/project',
     func: projectApi.createProject
 }, {
     method: 'get',
-    route: '/umock/project/list',
+    route: '/_system/project/list',
     func: projectApi.listProject
 }, {
     method: 'get',
-    route: '/umock/project/:id',
+    route: '/_system/project/:id',
     func: projectApi.listProject
 }, {
     method: 'post',
-    route: '/umock/project/:id',
+    route: '/_system/project/:id',
     func: projectApi.modifyProject
 }, {
     method: 'delete',
-    route: '/umock/project/:id',
+    route: '/_system/project/:id',
     func: projectApi.deleteProject
 }];

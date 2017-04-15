@@ -1,21 +1,21 @@
 <div :class="{'active':mockapi.active,'opened':mockapi.opened,'mockDiv':true,'POST':mockapi.type=='POST','GET':mockapi.type=='GET'}">
     <div class="mocksetHeader" @click="togglePane">
         <span class="mockType">{{mockapi.type}}</span>
-        <a href="javascript:;" @click.stop="testMock(mockset)">
+        <a href="javascript:void(0);" @click.stop="test">
             <code>{{mockapi.url}}</code>
         </a>
         <span class="text-info">{{mockapi.desc}}</span>
         <div class="operator">
-            <button type="button" class="btn btn-default btn-xs" aria-label="Left Align" @click="edit">
+            <button type="button" class="btn btn-default btn-xs" aria-label="Left Align" @click.stop="edit">
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>编辑
             </button>
-            <button type="button" class="btn btn-default btn-xs" aria-label="Left Align" @click="remove">
+            <button type="button" class="btn btn-default btn-xs" aria-label="Left Align" @click.stop="remove">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
             </button>
-            <button type="button" class="btn btn-primary btn-xs" v-if="mockapi.active" aria-label="Left Align" @click="changeStatus">
+            <button type="button" class="btn btn-primary btn-xs" v-if="mockapi.active" aria-label="Left Align" @click.stop="changeStatus">
                 <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>{{mockapi.dataHandler=="over"?"覆盖":"拦截"}}中
             </button>
-            <button type="button" class="btn btn-link btn-xs" v-else aria-label="Left Align" @click="changeStatus">
+            <button type="button" class="btn btn-link btn-xs" v-else aria-label="Left Align" @click.stop="changeStatus">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>已关闭
             </button>
         </div>

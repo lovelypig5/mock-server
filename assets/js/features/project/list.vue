@@ -3,9 +3,6 @@ import template from 'templates/features/project/list.html';
 import ProjectHeader from './header.vue';
 import Project from './project.vue';
 import API from 'config/api';
-import {
-    mapState
-} from 'vuex';
 
 const ProjectList = Vue.extend({
     name: 'project-list',
@@ -23,9 +20,11 @@ const ProjectList = Vue.extend({
             }
         };
     },
-    computed: mapState({
-        projectlist: state => state.control.projectlist
-    }),
+    computed: {
+        projectlist() {
+            return this.$store.state.control.projectlist;
+        }
+    },
     methods: {
         alert(obj) {
             this.$store.dispatch('alert', obj);

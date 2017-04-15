@@ -1,12 +1,13 @@
-<div id="mockList">
-    <div class="panel panel-default">
-        <div class="panel-heading">配置
-            <button type="button" class="btn btn-default btn-sm" aria-label="Left Align" @click="add">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
-            </button>
-        </div>
-        <div v-for="mockapi in mockapis" track-by="_id">
-            <mock-api :mockapi="mockapi" :menus="menus" :project="project"></mock-api>
+<div>
+    <div id="mockList">
+        <div class="panel panel-default">
+            <div class="panel-heading">配置
+                <button type="button" class="btn btn-default btn-sm" aria-label="Left Align" @click="add">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+                </button>
+            </div>
+            <mock-api v-for="(mockapi,index) in mockapis" :key="mockapi._id" :data="{mockapi: mockapi,project:project, menus:menus, index:index}"></mock-api>
         </div>
     </div>
+    <mock-test :mockapi="currentApi" :project="project"></mock-test>
 </div>
