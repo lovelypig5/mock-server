@@ -11,7 +11,7 @@ module.exports = [{
         maxAge: 28800000
     })
 }, {
-    route: '/_system__/*',
+    route: '/_system/*',
     filter(req, res, next) {
         if (!req.session.user) {
             res.status(401).send('请先登录!');
