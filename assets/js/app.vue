@@ -3,13 +3,14 @@ import template from 'templates/app.html';
 import store from './vuex/store';
 import Common from './common/index.vue';
 import router from './router';
+import filters from './filters';
 
 $.ajaxSetup({
     dataType: 'json',
     contentType: 'application/json; charset=utf-8',
     statusCode: {
         401: () => {
-            router.go({
+            router.push({
                 path: '/login'
             })
         }
@@ -20,6 +21,7 @@ const App = new Vue({
     template: template,
     store,
     router,
+    filters,
     components: {
         common: Common
     }

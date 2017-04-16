@@ -1,21 +1,28 @@
 <script>
 import template from 'templates/features/project/header.html';
-import Edit from './edit.vue';
 
 const ProjectHeader = Vue.extend({
     template: template,
     name: 'project-header',
+    computed: {
+        user() {
+            return this.$store.state.user;
+        }
+    },
+    mounted() {
+        this.getUser();
+    },
     methods: {
-        modal(obj) {
-            this.$store.dispatch('modal', obj);
-        },
-        createProject() {
-            this.modal({
-                show: true,
-                type: 'default',
-                options: {},
-                component: Edit
+        login(store) {
+            this.$router.push({
+                path: '/login'
             })
+        },
+        logout() {
+            this.$store.dispatch('logout');
+        },
+        getUser() {
+            this.$store.dispatch('user');
         }
     }
 })

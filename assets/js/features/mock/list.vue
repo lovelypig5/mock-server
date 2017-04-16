@@ -12,7 +12,7 @@ const MockList = Vue.extend({
         mockApi: MockApi,
         mockTest: Test
     },
-    props: ['data'],
+    props: ['project', 'mockapis', 'menus'],
     data() {
         return {
             currentApi: {
@@ -31,34 +31,17 @@ const MockList = Vue.extend({
             }
         };
     },
-    computed: {
-        project() {
-            return this.data.project;
-        },
-        mockapis() {
-            return this.data.mockapis;
-        },
-        menus() {
-            return this.data.menus;
-        }
-    },
     created() {
-        events.$on('testApi', this.testApi);
-        events.$on('removeApi', this.modify);
-        events.$on('modifyApi', this.modify);
-        events.$on('addApi', this.addApi);
+        events.$on('testApi', this.test);
     },
     beforeDestroy: function() {
-        events.$off('testApi', this.testApi);
-        events.$off('removeApi', this.modify);
-        events.$off('modifyApi', this.modify);
-        events.$off('addApi', this.addApi);
+        events.$off('testApi', this.test);
     },
     methods: {
         modal(obj) {
             this.$store.dispatch('modal', obj);
         },
-        add() {
+        addApi() {
             this.modal({
                 show: true,
                 type: 'default',
@@ -66,23 +49,14 @@ const MockList = Vue.extend({
                     class: 'edit-modal'
                 },
                 data: {
-                    project: this.project
+                    project: this.project,
+                    menus: this.menus
                 },
                 component: Edit
             });
         },
-        testApi(mockapi) {
+        test(mockapi) {
             this.currentApi = mockapi;
-        },
-        modify(index, mockapi) {
-            if (mockapi) {
-                this.mockapis.splice(index, 1, mockapi);
-            } else {
-                this.mockapis.splice(index, 1);
-            }
-        },
-        addApi(mockapi) {
-            this.mockapis.push(mockapi);
         }
     }
 })

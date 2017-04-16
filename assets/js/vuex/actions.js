@@ -16,9 +16,6 @@ const actions = {
     },
     isLogin(context) {
         context.commit('ISLOGIN');
-    },
-    control(context, key) {
-        context.commit('CONTROL', key);
     }
 };
 export default actions;

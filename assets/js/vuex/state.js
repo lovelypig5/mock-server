@@ -12,10 +12,6 @@ const state = {
         options: {},
         component: ''
     },
-    control: {
-        projectlist: false,
-        mockset: false
-    },
     user: {},
     lang: Vue.config.lang
 };

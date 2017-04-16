@@ -2,11 +2,12 @@
     <project-header></project-header>
     <div class="container wrapper">
         <div class="page-header">
-            <h3>项目</h3>
+            <h3>项目<span class="glyphicon glyphicon-plus newProject" @click="addProject">创建项目</span>
+            </h3>
         </div>
         <div class="projectlist">
             <div v-for="(project, index) in projects">
-                <project :project="project"></project>
+                <project :project="project" :index="index"></project>
             </div>
         </div>
     </div>

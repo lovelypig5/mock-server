@@ -4,8 +4,9 @@ import API from 'config/api';
 import Header from './header.vue';
 import Menu from './menu.vue';
 import List from './list.vue';
+import events from '../../events';
 
-const Mock = Vue.extend({
+const MockView = Vue.extend({
     name: 'mock-view',
     template: template,
     components: {
@@ -16,11 +17,29 @@ const Mock = Vue.extend({
     data() {
         return {
             project: {},
-            mockapis: []
+            mockapis: [],
+            loading: {
+                project: false,
+                mockapis: false
+            },
+            filterMenu: ''
         }
+    },
+    created() {
+        events.$on('removeApi', this.modify);
+        events.$on('modifyApi', this.modify);
+        events.$on('addApi', this.add);
+        events.$on('changeMenu', this.changeMenu);
+    },
+    beforeDestroy() {
+        events.$off('removeApi', this.modify);
+        events.$off('modifyApi', this.modify);
+        events.$off('addApi', this.add);
+        events.$off('changeMenu', this.changeMenu);
     },
     mounted() {
         this.fetch();
+        this.fetchMockApis();
     },
     computed: {
         menus() {
@@ -28,79 +47,61 @@ const Mock = Vue.extend({
                 return item.menuId;
             }))]
         },
-        mockset() {
-            return this.$store.state.control.mockset;
+        filterdApis() {
+            if (this.filterMenu === '') {
+                return this.mockapis;
+            } else {
+                return this.mockapis.filter((api) => {
+                    return api.menuId === this.filterMenu;
+                });
+            }
         }
     },
     methods: {
         fetch() {
             var self = this;
+            if (self.loading.project) {
+                return;
+            }
+            self.loading.project = !self.loading.project;
             $.ajax({
-                url: API.project + '/' + this.$route.params.id
+                url: API.project + '/' + self.$route.params.id
             }).done((result) => {
                 self.project = result[0];
-                window.document.title = self.project.name;
-                self.fetchMockApis();
+            }).always(() => {
+                self.loading.project = !self.loading.project;
             })
         },
         fetchMockApis() {
             var self = this;
+            if (self.loading.mockapis) {
+                return;
+            }
+            self.loading.mockapis = !self.loading.mockapis;
             $.ajax({
-                url: API.mocklist + '/' + this.project._id
+                url: API.mocklist + '/' + self.$route.params.id
             }).done(function(result) {
                 self.mockapis = result;
-            });
+            }).always(() => {
+                self.loading.mockapis = !self.loading.mockapis;
+            })
         },
-        togglePane(event) {
-            var bar = $(event.target);
-            if (bar.hasClass("mocksetHeader"))
-                bar.next().slideToggle();
-            else if (bar.parent().hasClass("mocksetHeader"))
-                bar.parent().next().slideToggle();
-        },
-        deleteMockset(mockset) {
-            var vm = this;
-            if (!confirm("确定删除")) return;
-            $.ajax({
-                    url: "/umock/mockset/" + mockset._id,
-                    type: "delete"
-                })
-                .done((result) => {
-                    vm.deleteById(mockset._id);
-                    initMenu(vm);
-                });
-        },
-        testMock(mockset) {
-            this.$broadcast('testMock', mockset);
-        },
-        deleteById(_id) {
-            let vm = this;
-            vm.mocksets.forEach((n, i) => {
-                if (n._id == _id) {
-                    vm.mocksets.splice(i, 1);
-                    return false;
-                }
-            });
-        }
-    },
-    watch: {
-        mockset() {
-            this.fetchMockApis();
-        }
-    },
-    events: {
         changeMenu(menu) {
             this.filterMenu = menu;
         },
-        reInitMenu() {
-            initMenu(this);
+        modify(index, mockapi) {
+            if (mockapi) {
+                this.mockapis.splice(index, 1, mockapi);
+            } else {
+                this.mockapis.splice(index, 1);
+            }
         },
-        testMock: function(mockset) {
-            this.$refs.test.$emit("testMock", mockset);
+        add(mockapi) {
+            console.log(123);
+            this.mockapis.push(mockapi);
         }
     }
-
 })
 
-export default Mock;
+export default MockView;
 </script>

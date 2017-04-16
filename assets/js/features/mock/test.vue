@@ -39,10 +39,10 @@ const MockTest = Vue.extend({
             if (!this.mockapi.url) {
                 return;
             }
+
             let ajaxParam = {
                 url: this.mockapi.url,
-                type: this.mockapi.type,
-                processData: false
+                type: this.mockapi.type
             };
 
             let headers = {};
@@ -59,7 +59,9 @@ const MockTest = Vue.extend({
             if (this.paramEditor.getText() != '') {
                 var param = this.paramEditor.get();
                 ajaxParam.data = param;
-                ajaxParam.processData = true;
+                if (this.isPost) {
+                    ajaxParam.data = JSON.stringify(param);
+                }
             }
 
             $.ajax(ajaxParam).done((result) => {

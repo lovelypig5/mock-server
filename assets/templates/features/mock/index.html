@@ -1,7 +1,7 @@
 <div>
     <mock-header :project="project"></mock-header>
     <div id="container">
-        <mock-menu :project="project" :menus="menus"></mock-menu>
-        <mock-list :data="{project:project, mockapis:mockapis, menus:menus}"></mock-list>
+        <mock-menu :menus="menus"></mock-menu>
+        <mock-list :project="project" :mockapis="filterdApis" :menus="menus"></mock-list>
     </div>
 </div>

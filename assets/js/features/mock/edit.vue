@@ -23,27 +23,29 @@ const MockEdit = Vue.extend({
                 type: "",
                 active: true
             },
-            menus: [],
-            project: {},
             editing: false,
             loading: {
                 post: false
             }
         }
     },
+    computed: {
+        menus() {
+            return Object.assign([], this.data.menus);
+        },
+        project() {
+            return Object.assign({}, this.data.project);
+        }
+    },
     mounted() {
-        if (this.data) {
+        if (this.data.mockapi) {
             Object.assign(this.mockapi, this.data.mockapi);
-            Object.assign(this.menus, this.data.menus);
-            Object.assign(this.project, this.data.project);
             this.index = this.data.index;
-
             this.editing = true;
         }
 
         var container = $(this.$el).find('#jsoneditor')[0];
         var paramContainer = $(this.$el).find('#param-jsoneditor')[0];
-
         var options = {
             mode: 'code',
             modes: ['code', 'form', 'text', 'tree', 'view'], // allowed modes
@@ -54,7 +56,6 @@ const MockEdit = Vue.extend({
                 console.log('Mode switched from', oldMode, 'to', newMode);
             }
         };
-
         this.editor = new JSONEditor(container, options, {});
         this.paramEditor = new JSONEditor(paramContainer, options, {});
         this.editor.set(JSON.parse(this.mockapi.result));
@@ -84,11 +85,12 @@ const MockEdit = Vue.extend({
             }
 
             var url = API.mockset;
+            var data = Object.assign({}, self.mockapi);
             if (self.editing) {
                 url = url + '/' + self.mockapi._id;
+            } else {
+                data.projectId = self.project._id;
             }
-            var data = Object.assign({}, self.mockapi);
-            data.projectId = self.project._id;
 
             $.ajax({
                 url: url,

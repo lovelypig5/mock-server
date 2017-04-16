@@ -10,9 +10,6 @@ const theme = {
 };
 
 const mutations = {
-    CONTROL(state, key) {
-        state.control[key] = !state.control[key];
-    },
     ISLOGIN(state, obj) {
         $.ajax({
             url: API.isLogin

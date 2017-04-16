@@ -1,11 +1,11 @@
 <div id="mockMenu">
     <h4>目录</h4>
     <ul class="nav nav-stacked">
-        <li :class='[current=="all"?"open":""]'>
-            <a href="">全部</a>
+        <li :class='[current == "all" ? "open": ""]'>
+            <a href="javascript:void(0)" @click="changeMenu('')">全部</a>
         </li>
-        <li v-for="menu in menus" :class='[menu==current? "open": ""]'>
-            <a href="">{{menu}}</a>
+        <li v-for="menu in menus" :class='[menu == current ? "open": ""]' v-if="menu">
+            <a href="javascript:void(0)" @click="changeMenu(menu)">{{menu}}</a>
         </li>
     </ul>
 </div>

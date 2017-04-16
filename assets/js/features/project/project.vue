@@ -1,14 +1,11 @@
 <script>
-import template from 'templates/features/project/index.html';
+import template from 'templates/features/project/project.html';
 import Edit from './edit.vue';
 
 const Project = Vue.extend({
     name: 'project',
     template: template,
-    props: ['project'],
-    data() {
-        return {};
-    },
+    props: ['project', 'index'],
     methods: {
         modal(obj) {
             this.$store.dispatch('modal', obj);
@@ -18,7 +15,10 @@ const Project = Vue.extend({
                 show: true,
                 type: 'default',
                 options: {},
-                data: this.project,
+                data: {
+                    project: this.project,
+                    index: this.index
+                },
                 component: Edit
             })
         }

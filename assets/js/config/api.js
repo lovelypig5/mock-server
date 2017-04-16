@@ -1,9 +1,9 @@
 var base = '/_system';
 var api = {
-    user: '/user',
-    isLogin: '/isLogin',
-    login: '/login',
-    logout: '/logout',
+    user: '/_user',
+    isLogin: '/_isLogin',
+    login: '/_login',
+    logout: '/_logout',
 
     projectlist: base + '/project/list',
     project: base + '/project',
