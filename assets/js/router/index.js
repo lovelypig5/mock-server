@@ -1,10 +1,14 @@
 import Router from 'vue-router';
+import Login from '../features/login.vue';
 import ProjectList from '../features/project/list.vue';
 import MockSet from '../features/mock/index.vue';
 
 Vue.use(Router);
 
 var routes = [{
+    path: '/login',
+    component: Login
+}, {
     path: '/',
     component: ProjectList
 }, {

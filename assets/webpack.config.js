@@ -17,7 +17,8 @@ module.exports = (modulePath) => {
                 'jquery',
                 'vue',
                 'vuex',
-                'vue-router'
+                'vue-router',
+                'js-cookie'
             ]
         },
         output: {
