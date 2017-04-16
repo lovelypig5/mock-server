@@ -1,6 +1,6 @@
 {
     "name": "mock-server",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "Mock Server is an api mock server for frontend developers or testers to work on real apis. It can override or intercept apis and return given data result.",
     "keywords": "data mocker, frontend mock server, test",
     "main": "index.js",

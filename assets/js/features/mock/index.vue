@@ -97,7 +97,6 @@ const MockView = Vue.extend({
             }
         },
         add(mockapi) {
-            console.log(123);
             this.mockapis.push(mockapi);
         }
     }

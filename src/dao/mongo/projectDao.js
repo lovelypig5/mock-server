@@ -13,7 +13,7 @@ class ProjectDao extends BaseDao {
         var entity = new this.Entity(project);
         try {
             await entity.save();
-            return this.model(200, "保存成功");
+            return this.model(200, entity);
         } catch (err) {
             this.logger.error(err);
             return this.model(500, "保存失败");

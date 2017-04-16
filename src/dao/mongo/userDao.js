@@ -1,36 +1,32 @@
-var BaseDao = require('./baseDao');
+var _ = require('lodash'),
+    BaseDao = require('./baseDao');
 
 class UserDao extends BaseDao {
 
-    checkUser() {
-        return this.query({
-            sql: 'select * from user where id = ?',
-            parse(rows) {
-                if (rows && rows.length > 0) {
-                    return rows[0].id;
-                }
+    constructor() {
+        super();
 
-                return {
-                    error: '该用户不存在！'
-                }
-            }
-        });
+        this.Entity = this.db.model('user', this.schema.user);
     }
 
-    login(userName, password) {
-        return this.query({
-            sql: 'select id, name from user where name = ? and password = ?',
-            params: [userName, password],
-            parse(rows) {
-                if (rows && rows.length > 0) {
-                    return rows[0];
-                }
-
-                return {
-                    error: '用户名或者密码错误！'
-                }
+    async login(userName, password) {
+        var conditions = {
+            name: userName,
+            password: password
+        };
+        try {
+            var docs = await this.Entity.find(conditions).exec();
+            if (docs.length == 0) {
+                return this.model(500, '用户名或者密码错误');
+            } else if (docs.length == 1) {
+                return this.model(200, _.pick(docs[0], ['id', 'name']));
+            } else {
+                return this.model(500, '未知错误');
             }
-        });
+        } catch (err) {
+            this.logger.error(err);
+            return this.model(500, err);
+        }
     }
 }
 

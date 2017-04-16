@@ -18,7 +18,8 @@ var Project = new mongoose.Schema({
     modifyTime: {
         type: Date,
         default: Date.now
-    }
+    },
+    userId: String
 });
 
 var MockSet = new mongoose.Schema({
@@ -41,6 +42,7 @@ var MockSet = new mongoose.Schema({
     respParam: String,
     menuId: String,
     projectId: String,
+    userId: String,
     active: {
         type: Boolean,
         default: true

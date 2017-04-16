@@ -13,18 +13,13 @@ class UserApi extends BaseApi {
             return res.status(400).send('缺少参数');
         }
 
-        req.session.user = {
-            id: 1,
-            name: 'Test'
-        };
-        res.status(200).json(req.session.user);
-        // userDao.login(userName, password).then((user) => {
-        //     req.session.user = user.ret;
-        //     res.status(user.status).json(user.ret);
-        // }, (err) => {
-        //     var model = super.handleErr(err);
-        //     res.status(model.status).send(model.ret);
-        // });
+        userDao.login(userName, password).then((user) => {
+            req.session.user = user.ret;
+            res.status(user.status).json(user.ret);
+        }, (err) => {
+            var model = super.handleErr(err);
+            res.status(model.status).send(model.ret);
+        });
     }
 
     logout(req, res) {

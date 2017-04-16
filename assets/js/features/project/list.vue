@@ -52,7 +52,7 @@ const ProjectList = Vue.extend({
             }).fail((resp) => {
                 self.alert({
                     show: true,
-                    msg: '拉取商品列表失败',
+                    msg: '获取mockapi列表失败',
                     type: 'error'
                 })
             }).always(() => {

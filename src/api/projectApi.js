@@ -10,6 +10,7 @@ class ProjectApi extends BaseApi {
     createProject(req, res) {
         var data = _.pick(req.body, ['name', 'desc', 'isPublic', 'beginPath', 'proxy']);
         data.modifyTime = new Date();
+        data.userId = req.session.user.id;
 
         projectDao.createProject(data).then((model) => {
             super.updateProject();
@@ -35,6 +36,8 @@ class ProjectApi extends BaseApi {
         var update = {
             $set: _.pick(req.body, ['_id', 'name', 'desc', 'isPublic', 'beginPath', 'proxy'])
         };
+        update.userId = req.session.user.id;
+
         projectDao.modifyProject(req.params.id, update).then((model) => {
             super.updateProject();
             return res.status(model.status).json(model.ret);
