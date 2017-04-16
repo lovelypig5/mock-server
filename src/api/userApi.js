@@ -49,18 +49,18 @@ var userApi = new UserApi();
 
 module.exports = [{
     method: 'post',
-    route: '/login',
+    route: '/_login',
     func: userApi.login
 }, {
     method: 'post',
-    route: '/logout',
+    route: '/_logout',
     func: userApi.logout
 }, {
     method: 'get',
-    route: '/user',
+    route: '/_user',
     func: userApi.user
 }, {
     method: 'get',
-    route: '/isLogin',
+    route: '/_isLogin',
     func: userApi.isLogin
 }]
