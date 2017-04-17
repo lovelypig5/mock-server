@@ -11,7 +11,8 @@ var MockApi = Vue.extend({
     data() {
         return {
             loading: {
-                active: false
+                active: false,
+                delete: false
             }
         }
     },
@@ -30,6 +31,9 @@ var MockApi = Vue.extend({
         }
     },
     methods: {
+        alert(obj) {
+            this.$store.dispatch('alert', obj);
+        },
         test() {
             events.$emit('testApi', this.mockapi);
         },
@@ -37,34 +41,53 @@ var MockApi = Vue.extend({
             this.$store.dispatch('modal', obj);
         },
         changeStatus() {
-            if (this.loading.active) {
+            var self = this;
+            if (self.loading.active) {
                 return;
             }
-            var self = this;
-            this.loading.active = !this.loading.active;
+            self.loading.active = !self.loading.active;
             $.ajax({
-                url: API.mockset + '/' + this.mockapi._id,
+                url: API.mockset + '/' + self.mockapi._id,
                 type: 'post',
                 data: JSON.stringify({
-                    _id: this.mockapi._id,
-                    active: !this.mockapi.active
+                    _id: self.mockapi._id,
+                    active: !self.mockapi.active
                 })
             }).done(() => {
                 self.mockapi.active = !self.mockapi.active;
+            }).fail((resp) => {
+                self.alert({
+                    show: true,
+                    msg: resp.responseText || '修改接口状态失败',
+                    type: 'error'
+                })
             }).always(() => {
                 self.loading.active = !self.loading.active;
             })
         },
         remove() {
             var self = this;
+            if (self.loading.delete) {
+                return;
+            }
+            self.loading.delete = !self.loading.delete;
+
             if (!confirm("确定删除")) {
                 return;
             }
             $.ajax({
-                url: API.mockset + '/' + this.mockapi._id,
+                url: API.mockset + '/' + self.mockapi._id,
                 type: "delete"
             }).done((result) => {
                 events.$emit('removeApi', self.index);
+            }).fail((resp) => {
+                self.alert({
+                    show: true,
+                    msg: resp.responseText || '删除接口失败',
+                    type: 'error'
+                })
+            }).always(() => {
+                self.loading.delete = !self.loading.delete;
             });
         },
         edit() {

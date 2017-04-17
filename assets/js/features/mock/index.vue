@@ -58,6 +58,9 @@ const MockView = Vue.extend({
         }
     },
     methods: {
+        alert(obj) {
+            this.$store.dispatch('alert', obj);
+        },
         fetch() {
             var self = this;
             if (self.loading.project) {
@@ -68,6 +71,12 @@ const MockView = Vue.extend({
                 url: API.project + '/' + self.$route.params.id
             }).done((result) => {
                 self.project = result[0];
+            }).fail((resp) => {
+                self.alert({
+                    show: true,
+                    msg: resp.responseText || '获取项目列表失败',
+                    type: 'error'
+                })
             }).always(() => {
                 self.loading.project = !self.loading.project;
             })
@@ -82,6 +91,12 @@ const MockView = Vue.extend({
                 url: API.mocklist + '/' + self.$route.params.id
             }).done(function(result) {
                 self.mockapis = result;
+            }).fail((resp) => {
+                self.alert({
+                    show: true,
+                    msg: resp.responseText || '获取接口列表失败',
+                    type: 'error'
+                })
             }).always(() => {
                 self.loading.mockapis = !self.loading.mockapis;
             })

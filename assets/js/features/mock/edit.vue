@@ -62,6 +62,9 @@ const MockEdit = Vue.extend({
         this.paramEditor.set(JSON.parse(this.mockapi.param));
     },
     methods: {
+        alert(obj) {
+            this.$store.dispatch('alert', obj);
+        },
         save() {
             var self = this;
             if (self.loading.post) {
@@ -71,16 +74,32 @@ const MockEdit = Vue.extend({
             self.mockapi.param = JSON.stringify(self.paramEditor.get(), null, 2)
 
             if (self.mockapi.url === "" || self.mockapi.result === "" || self.mockapi.type === "") {
-                alert("参数不全");
+                self.alert({
+                    show: true,
+                    msg: '参数不全',
+                    type: 'error'
+                })
                 return false;
             } else if (self.mockapi.url.indexOf("\/") !== 0) {
-                alert("url必须以/开头");
+                self.alert({
+                    show: true,
+                    msg: 'url前缀必须以/开头',
+                    type: 'error'
+                })
                 return false;
-            } else if (self.mockapi.url.indexOf("/umock") != -1) {
-                alert("url不能以/umock开头，与现在的url冲突");
+            } else if (self.mockapi.url.indexOf("/_system") != -1) {
+                self.alert({
+                    show: true,
+                    msg: 'url前缀不能以/_system开头，与系统接口冲突，同时下划线命名不规范',
+                    type: 'error'
+                })
                 return false;
             } else if (self.project.isPublic == "1" && self.mockapi.url.indexOf(self.project.beginPath) != 0) {
-                alert("url必须以" + self.project.beginPath + "为开头！");
+                self.alert({
+                    show: true,
+                    msg: "url必须以" + self.project.beginPath + "为开头！",
+                    type: 'error'
+                })
                 return false;
             }
 
@@ -97,6 +116,12 @@ const MockEdit = Vue.extend({
                 url: url,
                 type: 'post',
                 data: JSON.stringify(data)
+            }).fail((resp) => {
+                self.alert({
+                    show: true,
+                    msg: resp.responseText || '修改接口失败',
+                    type: 'error'
+                })
             }).done((result) => {
                 if (self.editing) {
                     events.$emit('modifyApi', self.index, self.mockapi);

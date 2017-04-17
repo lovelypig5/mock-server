@@ -19,7 +19,8 @@ const ProjectEdit = Vue.extend({
             },
             editing: false,
             loading: {
-                post: false
+                post: false,
+                delete: false
             }
         }
     },
@@ -32,15 +33,30 @@ const ProjectEdit = Vue.extend({
         }
     },
     methods: {
+        alert(obj) {
+            this.$store.dispatch('alert', obj);
+        },
         save() {
             if (this.project.name === "" || this.project.beginPath === "" || this.project.proxy === "") {
-                alert("参数不全");
+                self.alert({
+                    show: true,
+                    msg: '参数不全',
+                    type: 'error'
+                })
                 return false;
             } else if (this.project.beginPath.isPublic == 1 && this.project.beginPath.indexOf("\/") !== 0) {
-                alert("url必须以/开头");
+                self.alert({
+                    show: true,
+                    msg: 'url前缀必须以/开头',
+                    type: 'error'
+                })
                 return false;
-            } else if (this.project.beginPath.indexOf("/umock") != -1) {
-                alert("url不能以/umock开头，与现在的url冲突");
+            } else if (this.project.beginPath.indexOf("/_system") != -1) {
+                self.alert({
+                    show: true,
+                    msg: 'url前缀不能以/_system开头，与系统接口冲突，同时下划线命名不规范',
+                    type: 'error'
+                })
                 return false;
             }
 
@@ -66,21 +82,39 @@ const ProjectEdit = Vue.extend({
                 }
 
                 $(self.$el).find('._close').click();
+            }).fail((resp) => {
+                self.alert({
+                    show: true,
+                    msg: resp.responseText || '修改项目失败',
+                    type: 'error'
+                })
             }).always(() => {
                 self.loading.post = !self.loading.post;
             })
         },
         remove() {
             var self = this;
+            if (self.loading.delete) {
+                return;
+            }
+            self.loading.delete = !self.loading.delete;
             if (!confirm("确定删除")) {
                 return;
             }
             $.ajax({
                 url: API.project + "/" + this.project._id,
                 type: "DELETE"
+            }).fail((resp) => {
+                self.alert({
+                    show: true,
+                    msg: resp.responseText || '删除项目失败',
+                    type: 'error'
+                })
             }).done((result) => {
                 events.$emit('removeProject', self.index);
                 $(self.$el).find('._close').click();
+            }).always(() => {
+                self.loading.delete = !self.loading.delete;
             })
         }
     }
