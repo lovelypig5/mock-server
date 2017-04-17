@@ -1,62 +1,103 @@
 'use strict';
 
-var _ = require('lodash'),
-    config = require('../config/db'),
+var config = require('../config/db'),
     projectDao = require(`../dao/${config.db.dialect}/projectDao`),
     BaseApi = require('./baseApi');
 
 class ProjectApi extends BaseApi {
 
-    createProject(req, res) {
-        var data = _.pick(req.body, ['name', 'desc', 'isPublic', 'beginPath', 'proxy']);
-        data.modifyTime = new Date();
-        data.userId = req.session.user.id;
+    async createProject(req, res) {
+        var {
+            name,
+            desc,
+            isPublic = 1,
+            beginPath,
+            proxy
+        } = req.body;
 
-        projectDao.createProject(data).then((model) => {
+        if (!name || !beginPath || !proxy) {
+            return res.status(500).send('缺少参数');
+        }
+
+        var data = {
+            name,
+            desc,
+            isPublic,
+            beginPath,
+            proxy,
+            modifyTime: new Date(),
+            userId: req.session.user.id
+        }
+
+        var result = await projectDao.createProject(data);
+        if (result.status == 200) {
             super.updateProject();
-            return res.status(model.status).json(model.ret);
-        }, (model) => {
-            return res.status(model.status).send(model.ret);
-        });
+            return res.status(result.status).json(result.ret);
+        } else {
+            return res.status(result.status).send(result.ret);
+        }
     }
 
-    listProject(req, res) {
+    async listProject(req, res) {
         var id = req.params.id || null;
-        projectDao.listProject(id).then((model) => {
-            return res.status(model.status).json(model.ret);
-        }, (model) => {
-            return res.status(model.status).send(model.ret);
-        });
+        var result = await projectDao.listProject(id, req.session.user.id);
+        if (result.status == 200) {
+            return res.status(result.status).json(result.ret);
+        } else {
+            res.status(result.status).send(result.ret);
+        }
     }
 
-    modifyProject(req, res) {
+    async modifyProject(req, res) {
         if (!req.params.id) {
             return res.status(500).send("缺少参数");
         }
+
+        var {
+            _id,
+            name,
+            desc,
+            isPublic = 1,
+            beginPath,
+            proxy
+        } = req.body;
+
+        if (!_id || !name || !beginPath || !proxy) {
+            return res.status(500).send('缺少参数');
+        }
+
         var update = {
-            $set: _.pick(req.body, ['_id', 'name', 'desc', 'isPublic', 'beginPath', 'proxy'])
+            $set: {
+                _id,
+                name,
+                desc,
+                isPublic,
+                beginPath,
+                proxy
+            }
         };
-        update.userId = req.session.user.id;
 
-        projectDao.modifyProject(req.params.id, update).then((model) => {
+        var result = await projectDao.modifyProject(req.params.id, req.session.user.id, update);
+        if (result.status == 200) {
             super.updateProject();
-            return res.status(model.status).json(model.ret);
-        }, (model) => {
-            return res.status(model.status).send(model.ret);
-        });
+            return res.status(result.status).json(result.ret);
+        } else {
+            return res.status(result.status).send(result.ret);
+        }
     }
 
-    deleteProject(req, res) {
+    async deleteProject(req, res) {
         if (!req.params.id) {
             return res.status(500).send("缺少参数");
         }
 
-        projectDao.deleteProject(req.params.id).then((model) => {
+        var result = await projectDao.deleteProject(req.params.id, req.session.user.id);
+        if (result.status == 200) {
             super.updateProject();
-            return res.status(model.status).json(model.ret);
-        }, (model) => {
-            return res.status(model.status).send(model.ret);
-        });
+            return res.status(result.status).json(result.ret);
+        } else {
+            return res.status(result.status).send(result.ret);
+        }
     }
 
 }

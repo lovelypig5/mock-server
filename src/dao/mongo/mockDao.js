@@ -21,10 +21,11 @@ class MockDao extends BaseDao {
         }
     }
 
-    async listMockApis(projectId) {
+    async listMockApis(projectId, userId) {
         try {
             var docs = await this.Entity.find({
-                "projectId": projectId
+                "projectId": projectId,
+                "userId": userId
             }).exec();
             return this.model(200, docs);
         } catch (err) {
@@ -33,24 +34,29 @@ class MockDao extends BaseDao {
         }
     }
 
-    async modifyMockApi(id, update) {
+    async modifyMockApi(id, userId, update) {
         try {
             var docs = await this.Entity.update({
-                _id: id
+                _id: id,
+                userId: userId
             }, update);
-            return this.model(200, docs);
+            if (docs.n == 1) {
+                return this.model(200, '修改接口成功');
+            } else {
+                return this.model(500, '修改接口失败');
+            }
         } catch (err) {
             this.logger.error(err);
             return this.model(500, "修改接口失败");
         }
     }
 
-    async getMockApis(id) {
-        var conditions = null;
+    async getMockApis(id, userId) {
+        var conditions = {
+            userId: userId
+        };
         if (id) {
-            conditions = {
-                "_id": id
-            }
+            conditions._id = id;
         }
 
         try {
@@ -62,12 +68,17 @@ class MockDao extends BaseDao {
         }
     }
 
-    async deleteMockApi(id) {
+    async deleteMockApi(id, userId) {
         try {
             var docs = await this.Entity.remove({
-                _id: id
+                _id: id,
+                userId: userId
             });
-            return this.model(200, docs);
+            if (docs.result.n == 1) {
+                return this.model(200, "删除接口成功");
+            } else {
+                return this.model(500, "删除接口失败");
+            }
         } catch (err) {
             this.logger.error(err);
             return this.model(500, "删除接口失败");

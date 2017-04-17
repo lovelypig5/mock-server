@@ -5,7 +5,7 @@ var _ = require('lodash'),
 
 class UserApi extends BaseApi {
 
-    login(req, res) {
+    async login(req, res) {
         var body = req.body;
         var userName = body.userName;
         var password = body.password;
@@ -13,13 +13,13 @@ class UserApi extends BaseApi {
             return res.status(400).send('缺少参数');
         }
 
-        userDao.login(userName, password).then((user) => {
-            req.session.user = user.ret;
-            res.status(user.status).json(user.ret);
-        }, (err) => {
-            var model = super.handleErr(err);
-            res.status(model.status).send(model.ret);
-        });
+        var result = await userDao.login(userName, password);
+        if (result.status == 200) {
+            req.session.user = result.ret;
+            res.status(result.status).json(result.ret);
+        } else {
+            res.status(result.status).send(result.ret);
+        }
     }
 
     logout(req, res) {

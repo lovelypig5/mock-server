@@ -17,7 +17,7 @@ class UserDao extends BaseDao {
         try {
             var docs = await this.Entity.find(conditions).exec();
             if (docs.length == 0) {
-                return this.model(500, '用户名或者密码错误');
+                return this.model(401, '用户名或者密码错误');
             } else if (docs.length == 1) {
                 return this.model(200, _.pick(docs[0], ['id', 'name']));
             } else {

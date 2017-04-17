@@ -20,12 +20,12 @@ class ProjectDao extends BaseDao {
         }
     }
 
-    async listProject(id) {
-        var conditions = null;
+    async listProject(id, userId) {
+        var conditions = {
+            userId: userId
+        };
         if (id) {
-            conditions = {
-                _id: id
-            }
+            conditions._id = id;
         }
         try {
             var docs = await this.Entity.find(conditions).exec();
@@ -36,24 +36,34 @@ class ProjectDao extends BaseDao {
         }
     }
 
-    async modifyProject(id, update) {
+    async modifyProject(id, userId, update) {
         try {
             var docs = await this.Entity.update({
-                _id: id
+                _id: id,
+                userId: userId
             }, update);
-            return this.model(200, docs);
+            if (docs.n == 1) {
+                return this.model(200, '修改项目详情成功');
+            } else {
+                return this.model(500, '修改项目详情失败');
+            }
         } catch (err) {
             this.logger.error(err);
             return this.model(500, "修改项目详情失败");
         }
     }
 
-    async deleteProject(id) {
+    async deleteProject(id, userId) {
         try {
             var docs = await this.Entity.remove({
-                _id: id
+                _id: id,
+                userId: userId
             });
-            return this.model(200, docs);
+            if (docs.result.n == 1) {
+                return this.model(200, "删除项目成功");
+            } else {
+                return this.model(500, "删除项目失败");
+            }
         } catch (err) {
             this.logger.error(err);
             return this.model(500, "删除项目失败");
