@@ -62,7 +62,7 @@ const ProjectEdit = Vue.extend({
                 if (self.editing) {
                     events.$emit('modifyProject', self.index, self.project);
                 } else {
-                    events.$emit('addProject', self.project);
+                    events.$emit('addProject', result);
                 }
 
                 $(self.$el).find('._close').click();

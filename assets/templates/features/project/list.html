@@ -6,7 +6,7 @@
             </h3>
         </div>
         <div class="projectlist">
-            <div v-for="(project, index) in projects">
+            <div v-for="(project, index) in projects" :key="project._id">
                 <project :project="project" :index="index"></project>
             </div>
         </div>

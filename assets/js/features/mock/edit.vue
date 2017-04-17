@@ -67,9 +67,9 @@ const MockEdit = Vue.extend({
             if (self.loading.post) {
                 return
             }
-            self.loading.post = !self.loading.post;
             self.mockapi.result = JSON.stringify(self.editor.get(), null, 2);
             self.mockapi.param = JSON.stringify(self.paramEditor.get(), null, 2)
+
             if (self.mockapi.url === "" || self.mockapi.result === "" || self.mockapi.type === "") {
                 alert("参数不全");
                 return false;
@@ -84,6 +84,7 @@ const MockEdit = Vue.extend({
                 return false;
             }
 
+            self.loading.post = !self.loading.post;
             var url = API.mockset;
             var data = Object.assign({}, self.mockapi);
             if (self.editing) {
