@@ -1,8 +1,9 @@
 'use strict';
 
-var config = require('../config/db'),
-    projectDao = require(`../dao/${config.db.dialect}/projectDao`),
-    BaseApi = require('./baseApi');
+var config = require('../config'),
+    projectDao = require(`../dao/${config.DB.dialect}/projectDao`),
+    BaseApi = require('./baseApi'),
+    utils = require('../utils');
 
 class ProjectApi extends BaseApi {
 
@@ -17,6 +18,9 @@ class ProjectApi extends BaseApi {
 
         if (!name || !beginPath || !proxy) {
             return res.status(500).send('缺少参数');
+        }
+        if (!utils.isUrl(proxy)) {
+            return res.status(500).send('反向代理地址有误');
         }
 
         var data = {
@@ -61,9 +65,11 @@ class ProjectApi extends BaseApi {
             beginPath,
             proxy
         } = req.body;
-
         if (!_id || !name || !beginPath || !proxy) {
             return res.status(500).send('缺少参数');
+        }
+        if (!utils.isUrl(proxy)) {
+            return res.status(500).send('反向代理地址有误');
         }
 
         var update = {
@@ -105,22 +111,22 @@ class ProjectApi extends BaseApi {
 var projectApi = new ProjectApi();
 module.exports = [{
     method: 'post',
-    route: '/_system/project',
+    route: `/${config.APIPATH}/project`,
     func: projectApi.createProject
 }, {
     method: 'get',
-    route: '/_system/project/list',
+    route: `/${config.APIPATH}/project/list`,
     func: projectApi.listProject
 }, {
     method: 'get',
-    route: '/_system/project/:id',
+    route: `/${config.APIPATH}/project/:id`,
     func: projectApi.listProject
 }, {
     method: 'post',
-    route: '/_system/project/:id',
+    route: `/${config.APIPATH}/project/:id`,
     func: projectApi.modifyProject
 }, {
     method: 'delete',
-    route: '/_system/project/:id',
+    route: `/${config.APIPATH}/project/:id`,
     func: projectApi.deleteProject
 }];

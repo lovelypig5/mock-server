@@ -1,6 +1,6 @@
 var _ = require('lodash'),
-    config = require('../config/db'),
-    userDao = require(`../dao/${config.db.dialect}/userDao`),
+    config = require('../config'),
+    userDao = require(`../dao/${config.DB.dialect}/userDao`),
     BaseApi = require('./baseApi');
 
 class UserApi extends BaseApi {

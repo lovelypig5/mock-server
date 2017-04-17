@@ -28,7 +28,9 @@ class ProjectDao extends BaseDao {
             conditions._id = id;
         }
         try {
-            var docs = await this.Entity.find(conditions).exec();
+            var docs = await this.Entity.find(conditions, {
+                userId: false
+            }).exec();
             return this.model(200, docs);
         } catch (err) {
             this.logger.error(err);

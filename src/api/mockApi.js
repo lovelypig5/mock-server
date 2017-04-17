@@ -1,8 +1,8 @@
 'use strict';
 
 var _ = require('lodash'),
-    config = require('../config/db'),
-    mockDao = require(`../dao/${config.db.dialect}/mockDao`),
+    config = require('../config'),
+    mockDao = require(`../dao/${config.DB.dialect}/mockDao`),
     BaseApi = require('./baseApi');
 
 class MockApi extends BaseApi {
@@ -139,18 +139,18 @@ class MockApi extends BaseApi {
 var mockApi = new MockApi();
 module.exports = [{
     method: 'post',
-    route: '/_system/mockset',
+    route: `${config.APIPATH}/mockset`,
     func: mockApi.createMockApi
 }, {
     method: 'get',
-    route: '/_system/list/:projectId',
+    route: `${config.APIPATH}/list/:projectId`,
     func: mockApi.listMockApis
 }, {
     method: 'post',
-    route: '/_system/mockset/:projectId',
+    route: `${config.APIPATH}/mockset/:projectId`,
     func: mockApi.modifyMockApi
 }, {
     method: 'delete',
-    route: '/_system/mockset/:projectId',
+    route: `${config.APIPATH}/mockset/:projectId`,
     func: mockApi.deleteMockApi
 }];

@@ -1,8 +1,8 @@
 'use strict';
 
-var config = require('../config/db'),
-    mockDao = require(`../dao/${config.db.dialect}/mockDao`),
-    projectDao = require(`../dao/${config.db.dialect}/projectDao`);
+var config = require('../config'),
+    mockDao = require(`../dao/${config.DB.dialect}/mockDao`),
+    projectDao = require(`../dao/${config.DB.dialect}/projectDao`);
 
 class Mock {
 
