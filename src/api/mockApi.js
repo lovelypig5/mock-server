@@ -139,18 +139,18 @@ class MockApi extends BaseApi {
 var mockApi = new MockApi();
 module.exports = [{
     method: 'post',
-    route: `${config.APIPATH}/mockset`,
+    route: `/${config.APIPATH}/mockset`,
     func: mockApi.createMockApi
 }, {
     method: 'get',
-    route: `${config.APIPATH}/list/:projectId`,
+    route: `/${config.APIPATH}/list/:projectId`,
     func: mockApi.listMockApis
 }, {
     method: 'post',
-    route: `${config.APIPATH}/mockset/:projectId`,
+    route: `/${config.APIPATH}/mockset/:projectId`,
     func: mockApi.modifyMockApi
 }, {
     method: 'delete',
-    route: `${config.APIPATH}/mockset/:projectId`,
+    route: `/${config.APIPATH}/mockset/:projectId`,
     func: mockApi.deleteMockApi
 }];

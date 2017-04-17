@@ -23,6 +23,6 @@ routes.forEach((route) => {
     app.use(route.route, route.router);
 });
 
-app.listen(3002, function () {
-    logger.info(`Backend service listening on port 3002!`);
+app.listen(3003, function () {
+    logger.info(`Backend service listening on port 3003!`);
 });
