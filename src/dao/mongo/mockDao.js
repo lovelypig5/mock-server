@@ -24,8 +24,11 @@ class MockDao extends BaseDao {
     async listMockApis(projectId, userId) {
         try {
             var docs = await this.Entity.find({
-                "projectId": projectId,
-                "userId": userId
+                projectId: projectId,
+                userId: userId,
+            }, {
+                userId: false,
+                result: false
             }).exec();
             return this.model(200, docs);
         } catch (err) {

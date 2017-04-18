@@ -13,16 +13,22 @@ class MockApi extends BaseApi {
             desc,
             active = true,
             type = 'GET',
-            param,
-            respParam,
+            param = '{}',
             dataHandler = 'over',
             menuId = "",
             projectId,
             url
         } = req.body;
 
-        if (!result || !param || !respParam || !projectId || !url) {
+        if (!result || !projectId || !url) {
             return res.status(500).send("缺少参数");
+        }
+        if (url.indexOf("\/") !== 0) {
+            return res.status(500).send("url前缀必须以/开头");
+        }
+        if (url.indexOf("/_system") != -1) {
+            return res.status(500).send("url前缀不能以/_system开头，与系统接口冲突，同时下划线命名不规范");
+
         }
 
         var data = {
@@ -31,7 +37,6 @@ class MockApi extends BaseApi {
             active,
             type,
             param,
-            respParam,
             dataHandler,
             menuId,
             projectId,
@@ -43,7 +48,7 @@ class MockApi extends BaseApi {
 
         var result = await mockDao.createMockApi(data);
         if (result.status == 200) {
-            super.updateMockApis();
+            super.updateMockApis(req.session.user.id);
             return res.status(result.status).json(result.ret);
         } else {
             return res.status(result.status).send(result.ret);
@@ -67,27 +72,31 @@ class MockApi extends BaseApi {
         var {
             result,
             desc,
-            active = true,
-            type = 'GET',
+            active,
+            type,
             param,
-            respParam,
-            dataHandler = 'over',
-            menuId = "",
+            dataHandler,
+            menuId,
             projectId,
             url
         } = req.body;
 
-        if (!result || !param || !respParam || !projectId || !url) {
+        if (!projectId || !url) {
             return res.status(500).send("缺少参数");
+        }
+        if (url.indexOf("\/") !== 0) {
+            return res.status(500).send("url前缀必须以/开头");
+        }
+        if (url.indexOf("/_system") != -1) {
+            return res.status(500).send("url前缀不能以/_system开头，与系统接口冲突，同时下划线命名不规范");
+
         }
 
         var data = {
-            result,
             desc,
             active,
             type,
             param,
-            respParam,
             dataHandler,
             menuId,
             projectId,
@@ -97,11 +106,15 @@ class MockApi extends BaseApi {
             userId: req.session.user.id
         }
 
-        var result = await mockDao.modifyMockApi(req.params.projectId, req.session.user.id, {
+        if (result) {
+            data.result = result;
+        }
+
+        var result = await mockDao.modifyMockApi(req.params.apiId, req.session.user.id, {
             $set: data
         });
         if (result.status == 200) {
-            super.updateMockApis();
+            super.updateMockApis(req.session.user.id);
             return res.status(result.status).json(result.ret);
         } else {
             return res.status(result.status).send(result.ret);
@@ -109,11 +122,7 @@ class MockApi extends BaseApi {
     }
 
     async getMockApi(req, res) {
-        if (!req.params.projectId) {
-            return res.status(500).send("缺少参数");
-        }
-
-        var result = await mockDao.getMockApis(req.params.projectId, req.session.user.id);
+        var result = await mockDao.getMockApis(req.params.apiId, req.session.user.id);
         if (result.status == 200) {
             return res.status(result.status).json(result.ret);
         } else {
@@ -122,13 +131,9 @@ class MockApi extends BaseApi {
     }
 
     async deleteMockApi(req, res) {
-        if (!req.params.projectId) {
-            return res.status(500).send("缺少参数");
-        }
-
-        var result = await mockDao.deleteMockApi(req.params.projectId, req.session.user.id);
+        var result = await mockDao.deleteMockApi(req.params.apiId, req.session.user.id);
         if (result.status == 200) {
-            super.updateMockApis();
+            super.updateMockApis(req.session.user.id);
             return res.status(result.status).json(result.ret);
         } else {
             return res.status(result.status).send(result.ret);
@@ -139,18 +144,22 @@ class MockApi extends BaseApi {
 var mockApi = new MockApi();
 module.exports = [{
     method: 'post',
-    route: `/${config.APIPATH}/mockset`,
+    route: `/${config.APIPATH}/mockapi`,
     func: mockApi.createMockApi
 }, {
     method: 'get',
     route: `/${config.APIPATH}/list/:projectId`,
     func: mockApi.listMockApis
 }, {
+    method: 'get',
+    route: `/${config.APIPATH}/mockapi/:apiId`,
+    func: mockApi.getMockApi
+}, {
     method: 'post',
-    route: `/${config.APIPATH}/mockset/:projectId`,
+    route: `/${config.APIPATH}/mockapi/:apiId`,
     func: mockApi.modifyMockApi
 }, {
     method: 'delete',
-    route: `/${config.APIPATH}/mockset/:projectId`,
+    route: `/${config.APIPATH}/mockapi/:apiId`,
     func: mockApi.deleteMockApi
 }];

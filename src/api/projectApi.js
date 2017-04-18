@@ -19,6 +19,12 @@ class ProjectApi extends BaseApi {
         if (!name || !beginPath || !proxy) {
             return res.status(500).send('缺少参数');
         }
+        if (isPublic == 1 && beginPath.indexOf("\/") !== 0) {
+            return res.status(500).send('url前缀必须以/开头');
+        }
+        if (beginPath.indexOf("/_system") != -1) {
+            return res.status(500).send('url前缀不能以/_system开头，与系统接口冲突，同时下划线命名不规范');
+        }
         if (!utils.isUrl(proxy)) {
             return res.status(500).send('反向代理地址有误');
         }
@@ -67,6 +73,12 @@ class ProjectApi extends BaseApi {
         } = req.body;
         if (!_id || !name || !beginPath || !proxy) {
             return res.status(500).send('缺少参数');
+        }
+        if (isPublic == 1 && beginPath.indexOf("\/") !== 0) {
+            return res.status(500).send('url前缀必须以/开头');
+        }
+        if (beginPath.indexOf("/_system") != -1) {
+            return res.status(500).send('url前缀不能以/_system开头，与系统接口冲突，同时下划线命名不规范');
         }
         if (!utils.isUrl(proxy)) {
             return res.status(500).send('反向代理地址有误');

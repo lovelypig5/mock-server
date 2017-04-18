@@ -23,20 +23,24 @@ router.use((req, res, next) => {
  * @param  {Function} next [description]
  * @return {[type]}        [description]
  */
-router.use((req, res, next) => {
+router.use(async(req, res, next) => {
+    let userId = req.session.user.id;
+    if (!userId) {
+        next();
+    }
+
     let url = decodeURI(req.url);
     let path = decodeURI(req.path);
     let beginPath = (url.match(/\/\w+/) || [""])[0];
-    var author = req.headers.author;
+    let author = req.headers.author;
     if (author) {
         beginPath = author;
         delete req.headers.author;
     }
-
-    var project = mock.getProjects(beginPath);
+    var project = await mock.getProjects(beginPath, userId);
     if (project) {
-        var normalApis = mock.getNormalApis(project._id) || {};
-        var regApis = mock.getRegApis(project._id);
+        var normalApis = await mock.getNormalApis(project._id, userId) || {};
+        var regApis = await mock.getRegApis(project._id, userId);
         var api = normalApis[path];
         if (api && api.type == req.method) { // match normal
             if (api.dataHandler == "over") {
@@ -60,21 +64,18 @@ router.use((req, res, next) => {
                     }
                 }
             });
-
-            //TODO
             if (url.indexOf(':') != -1) {
                 return res.status(200).json({
                     result: "error happens! have you replace your parameter? "
                 });
             }
+            next();
         } else {
-            //TODO
             next();
         }
-    } else {
-        //TODO
-        next();
     }
+
+    next();
 });
 
 // override data
@@ -83,8 +84,6 @@ router.use(transformerProxy((data, req, res) => {
         var ret = JSON.parse(data);
         var extend = JSON.parse(req._extendData);
         ret = _.merge(ret, Mock.mock(extend));
-
-        console.log(ret);
 
         return JSON.stringify(ret);
     }

@@ -7,68 +7,83 @@ var config = require('../config'),
 class Mock {
 
     constructor() {
-        this.fetchProjects();
-        this.fetchMockApis();
         this.projects = {};
-        this.apilist = {
-            normal: {},
-            reg: {}
-        };
+        this.apilist = {};
     }
 
-    fetchProjects() {
-        this.projects = {};
-        projectDao.listProject().then(({
-            status,
-            ret
-        }) => {
+    async fetchProjects(userId, force) {
+        if (!this.projects[userId] || force) {
+            this.projects[userId] = {};
+            var {
+                status,
+                ret
+            } = await projectDao.listProject(null, userId);
+
             ret.forEach((item) => {
                 // use id and beginPath as the unique key
-                this.projects[item.beginPath] = item;
-                this.projects[item._id] = item;
+                this.projects[userId][item.beginPath] = item;
+                this.projects[userId][item._id] = item;
             });
-        });
+        }
+
+        return this.projects[userId];
     }
 
-    fetchMockApis() {
-        this.apilist = {
-            normal: {},
-            reg: {}
-        };
-        mockDao.getMockApis().then(({
-            status,
-            ret
-        }) => {
+    async fetchMockApis(userId, force) {
+        if (!this.apilist[userId] || force) {
+            this.apilist[userId] = {
+                normal: {},
+                reg: {}
+            };
+
+            var {
+                status,
+                ret
+            } = await mockDao.getMockApis(null, userId);
             ret.forEach((item) => {
                 if (!item.active) {
                     return;
                 }
                 // use id and url as the unique key
-                this.apilist.normal[item.projectId] = this.apilist.normal[item.projectId] || {};
-                this.apilist.reg[item.projectId] = this.apilist.reg[item.projectId] || [];
+                this.apilist[userId].normal[item.projectId] = this.apilist[userId].normal[item.projectId] || {};
+                this.apilist[userId].reg[item.projectId] = this.apilist[userId].reg[item.projectId] || [];
                 if (item.isreg) {
                     let _item = Object.assign({}, item.toJSON());
                     _item.regexp = "^" + item.url.replace(/:\w+/g, "\\w+") + "$";
                     _item.fromUrl = item.url.match(/^(\/\w+)+/)[0];
-                    this.apilist.reg[item.projectId].push(_item);
+                    this.apilist[userId].reg[item.projectId].push(_item);
                 } else {
-                    this.apilist.normal[item.projectId][item._id] = item;
-                    this.apilist.normal[item.projectId][item.url] = item;
+                    this.apilist[userId].normal[item.projectId][item._id] = item;
+                    this.apilist[userId].normal[item.projectId][item.url] = item;
                 }
             });
-        });
+        }
+        return this.apilist[userId];
     }
 
-    getProjects(prefix) {
-        return this.projects[prefix];
+    async getProjects(prefix, userId) {
+        var project = this.projects[userId];
+        if (!project) {
+            project = await this.fetchProjects(userId);
+        }
+
+        return project[prefix];
     }
 
-    getNormalApis(prefix) {
-        return prefix ? this.apilist.normal[prefix] : this.apilist.normal;
+    async getNormalApis(prefix, userId) {
+        if (!this.apilist[userId]) {
+            await this.fetchMockApis(userId);
+        }
+
+        return prefix ? this.apilist[userId].normal[prefix] : this.apilist[userId].normal;
     }
 
-    getRegApis(prefix) {
-        return prefix ? this.apilist.reg[prefix] : this.apilist.reg;
+    async getRegApis(prefix, userId) {
+        if (!this.apilist[userId]) {
+            await this.fetchMockApis(userId);
+        }
+
+        return prefix ? this.apilist[userId].reg[prefix] : this.apilist[userId].reg;
     }
 }
 

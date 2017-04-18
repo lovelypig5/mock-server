@@ -4,12 +4,12 @@ var mock = require('../service/mock');
 
 class BaseApi {
 
-    updateProject() {
-        mock.fetchProjects();
+    updateProject(userId) {
+        mock.fetchProjects(userId, true);
     }
 
-    updateMockApis() {
-        mock.fetchMockApis();
+    updateMockApis(userId) {
+        mock.fetchMockApis(userId, true);
     }
 
 }
