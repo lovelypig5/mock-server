@@ -12,7 +12,8 @@ var MockApi = Vue.extend({
         return {
             loading: {
                 active: false,
-                delete: false
+                delete: false,
+                api: false
             }
         }
     },
@@ -47,12 +48,11 @@ var MockApi = Vue.extend({
             }
             self.loading.active = !self.loading.active;
             $.ajax({
-                url: API.mockset + '/' + self.mockapi._id,
+                url: API.mockapi + '/' + self.mockapi._id,
                 type: 'post',
-                data: JSON.stringify({
-                    _id: self.mockapi._id,
+                data: JSON.stringify(Object.assign({}, self.mockapi, {
                     active: !self.mockapi.active
-                })
+                }))
             }).done(() => {
                 self.mockapi.active = !self.mockapi.active;
             }).fail((resp) => {
@@ -76,7 +76,7 @@ var MockApi = Vue.extend({
                 return;
             }
             $.ajax({
-                url: API.mockset + '/' + self.mockapi._id,
+                url: API.mockapi + '/' + self.mockapi._id,
                 type: "delete"
             }).done((result) => {
                 events.$emit('removeApi', self.index);
@@ -108,6 +108,29 @@ var MockApi = Vue.extend({
         },
         togglePane() {
             $(this.$el).find('.mocksetContent').slideToggle();
+            if (!this.mockapi.result) {
+                this.fetch();
+            }
+        },
+        fetch() {
+            var self = this;
+            if (self.loading.api) {
+                return;
+            }
+            self.loading.api = !self.loading.api;
+            $.ajax({
+                url: API.mockapi + '/' + this.mockapi._id
+            }).done(function(result) {
+                events.$emit('modifyApi', self.index, result[0]);
+            }).fail((resp) => {
+                self.alert({
+                    show: true,
+                    msg: resp.responseText || '获取接口列表失败',
+                    type: 'error'
+                })
+            }).always(() => {
+                self.loading.api = !self.loading.api;
+            })
         }
     }
 })

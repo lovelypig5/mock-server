@@ -26,7 +26,7 @@ const ProjectList = Vue.extend({
         events.$on('modifyProject', this.modify);
         events.$on('addProject', this.add);
     },
-    beforeDestroy: function() {
+    beforeDestroy() {
         events.$off('removeProject', this.modify);
         events.$off('modifyProject', this.modify);
         events.$off('addProject', this.add);

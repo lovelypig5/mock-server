@@ -99,7 +99,7 @@ const MockView = Vue.extend({
                 })
             }).always(() => {
                 self.loading.mockapis = !self.loading.mockapis;
-            })
+            });
         },
         changeMenu(menu) {
             this.filterMenu = menu;

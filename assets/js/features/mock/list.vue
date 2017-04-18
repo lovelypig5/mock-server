@@ -12,7 +12,7 @@ const MockList = Vue.extend({
         mockApi: MockApi,
         mockTest: Test
     },
-    props: ['project', 'mockapis', 'menus'],
+    props: ['project', 'mockapis', 'menus', 'loading'],
     data() {
         return {
             currentApi: {

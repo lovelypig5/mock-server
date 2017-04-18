@@ -104,7 +104,7 @@ const MockEdit = Vue.extend({
             }
 
             self.loading.post = !self.loading.post;
-            var url = API.mockset;
+            var url = API.mockapi;
             var data = Object.assign({}, self.mockapi);
             if (self.editing) {
                 url = url + '/' + self.mockapi._id;

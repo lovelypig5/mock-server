@@ -5,15 +5,15 @@ import JSONEditor from "jsoneditor";
 const MockTest = Vue.extend({
     name: 'mock-test',
     template: template,
-    props: ['mockapi', 'project'],
+    props: ['data'],
     mounted() {
         var options = {
             mode: 'code',
             modes: ['code', 'form', 'text', 'tree', 'view'],
-            onError: function(err) {
+            onError(err) {
                 alert(err.toString());
             },
-            onModeChange: function(newMode, oldMode) {
+            onModeChange(newMode, oldMode) {
                 console.log('Mode switched from', oldMode, 'to', newMode);
             }
         };
@@ -26,6 +26,12 @@ const MockTest = Vue.extend({
         }, {});
     },
     computed: {
+        project() {
+            return this.data.project;
+        },
+        mockapi() {
+            return Object.assign({}, this.data.mockapi);
+        },
         isPost() {
             return this.mockapi.type != 'GET';
         }

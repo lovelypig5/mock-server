@@ -10,5 +10,11 @@
                 <project :project="project" :index="index"></project>
             </div>
         </div>
+        <div class="empty" v-if="!loading.fetch && projects.length == 0">
+            <div class="msg">还没有配置api，赶紧配置一个</div>
+        </div>
+        <div v-if="loading.fetch">
+            <div class="loading audio-wave"></div>
+        </div>
     </div>
 </div>

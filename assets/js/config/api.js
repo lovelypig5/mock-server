@@ -8,7 +8,7 @@ var api = {
     projectlist: base + '/project/list',
     project: base + '/project',
     mocklist: base + '/list',
-    mockset: base + '/mockset'
+    mockapi: base + '/mockapi'
 };
 
 export default api;
