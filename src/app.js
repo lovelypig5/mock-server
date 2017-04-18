@@ -1,4 +1,5 @@
 var express = require('express'),
+    fallback = require('express-history-api-fallback'),
     path = require('path'),
     filters = require('./filters'),
     routes = require('./route'),
