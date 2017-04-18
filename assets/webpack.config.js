@@ -51,7 +51,8 @@ module.exports = (modulePath) => {
             alias: {
                 templates: path.resolve("./templates"),
                 config: path.resolve("./js/config"),
-                vue: 'vue/dist/vue.common.js'
+                vue: 'vue/dist/vue.common.js',
+                'vue-router': 'vue-router/dist/vue-router.common.js'
             }
         },
         externals: [],

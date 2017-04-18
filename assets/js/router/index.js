@@ -1,20 +1,22 @@
 import Router from 'vue-router';
-import Login from '../features/login.vue';
-import ProjectList from '../features/project/list.vue';
-import MockSet from '../features/mock/index.vue';
-
 Vue.use(Router);
 
 var routes = [{
     path: '/login',
-    component: Login
+    component(resolve) {
+        return require(['../features/login.vue'], resolve);
+    }
 }, {
     path: '/',
-    component: ProjectList
+    component(resolve) {
+        return require(['../features/project/list.vue'], resolve);
+    }
 }, {
     path: '/:id',
     name: 'mockSet',
-    component: MockSet,
+    component(resolve) {
+        return require(['../features/mock/index.vue'], resolve);
+    },
     subRoutes: {
         "/:name": function (params) {
             this.vue.$broadcast("changeMenuBy", params.name);
