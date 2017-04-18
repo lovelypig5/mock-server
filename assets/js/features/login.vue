@@ -49,15 +49,15 @@ var Login = Vue.extend({
                 if (self.rememberMe) {
                     Cookies.set('rememberMe', self.rememberMe, {
                         expires: 365,
-                        domain: 'wms.out2man.com'
+                        domain: 'mock.out2man.com'
                     });
                     Cookies.set('name', self.userName, {
                         expires: 365,
-                        domain: 'wms.out2man.com'
+                        domain: 'mock.out2man.com'
                     });
                     Cookies.set('password', self.password, {
                         expires: 365,
-                        domain: 'wms.out2man.com'
+                        domain: 'mock.out2man.com'
                     });
                 } else {
                     Cookies.remove('rememberMe');
