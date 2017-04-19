@@ -16,7 +16,6 @@ const MockEdit = Vue.extend({
                 url: "",
                 desc: "",
                 menuId: "",
-                result: "{}",
                 respParam: "",
                 dataHandler: "over",
                 param: "{}",
@@ -25,7 +24,8 @@ const MockEdit = Vue.extend({
             },
             editing: false,
             loading: {
-                post: false
+                post: false,
+                api: false
             }
         }
     },
@@ -42,6 +42,12 @@ const MockEdit = Vue.extend({
             Object.assign(this.mockapi, this.data.mockapi);
             this.index = this.data.index;
             this.editing = true;
+
+            if (!this.mockapi.result) {
+                this.fetch();
+            }
+        } else {
+            this.mockapi.result = "{}";
         }
 
         var container = $(this.$el).find('#jsoneditor')[0];
@@ -57,13 +63,34 @@ const MockEdit = Vue.extend({
             }
         };
         this.editor = new JSONEditor(container, options, {});
-        this.paramEditor = new JSONEditor(paramContainer, options, {});
         this.editor.set(JSON.parse(this.mockapi.result));
+        this.paramEditor = new JSONEditor(paramContainer, options, {});
         this.paramEditor.set(JSON.parse(this.mockapi.param));
     },
     methods: {
         alert(obj) {
             this.$store.dispatch('alert', obj);
+        },
+        fetch() {
+            var self = this;
+            if (self.loading.api) {
+                return;
+            }
+            self.loading.api = !self.loading.api;
+            $.ajax({
+                url: API.mockapi + '/' + this.mockapi._id
+            }).done((result) => {
+                this.mockapi = result[0];
+                events.$emit('modifyApi', self.index, result[0]);
+            }).fail((resp) => {
+                self.alert({
+                    show: true,
+                    msg: resp.responseText || '获取接口列表失败',
+                    type: 'error'
+                })
+            }).always(() => {
+                self.loading.api = !self.loading.api;
+            })
         },
         save() {
             var self = this;
@@ -132,6 +159,11 @@ const MockEdit = Vue.extend({
             }).always(() => {
                 self.loading.post = !self.loading.post;
             })
+        }
+    },
+    watch: {
+        mockapi() {
+            this.editor.set(JSON.parse(this.mockapi.result));
         }
     }
 })
