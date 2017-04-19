@@ -100,6 +100,8 @@ const MockTest = Vue.extend({
                     var prefix = this.project.beginPath;
                     if (headers.mockauthor != prefix) {
                         headers.mockauthor = prefix;
+                        headers.mocktype = 'author';
+                        headers.mocktoken = this.token;
                         this.headerEditor.set(headers);
                     }
                 }
