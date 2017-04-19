@@ -17,9 +17,7 @@ const MockTest = Vue.extend({
                 console.log('Mode switched from', oldMode, 'to', newMode);
             }
         };
-        this.headerEditor = new JSONEditor($(this.$el).find("#headersJson")[0], options, {
-            "author": ""
-        });
+        this.headerEditor = new JSONEditor($(this.$el).find("#headersJson")[0], options);
         this.paramEditor = new JSONEditor($(this.$el).find("#paramJson")[0], options);
         this.editor = new JSONEditor($(this.$el).find('#testResult')[0], {
             mode: 'view'
@@ -34,6 +32,9 @@ const MockTest = Vue.extend({
         },
         isPost() {
             return this.mockapi.type != 'GET';
+        },
+        token() {
+            return this.$store.state.user.id;
         }
     },
     methods: {
@@ -79,7 +80,7 @@ const MockTest = Vue.extend({
                 } catch (e) {}
                 var result = {
                     "Status": e.status,
-                    "Result": responseText
+                    "Result": e.responseText
                 }
                 self.editor.set(result);
             });
@@ -96,14 +97,21 @@ const MockTest = Vue.extend({
                         alert("header格式错误");
                         return false;
                     }
-                    var author = this.project.beginPath;
-                    if (headers.author != author) {
-                        headers.author = author;
+                    var prefix = this.project.beginPath;
+                    if (headers.mockauthor != prefix) {
+                        headers.mockauthor = prefix;
                         this.headerEditor.set(headers);
                     }
                 }
             }
             this.paramEditor.setText(this.mockapi.param);
+        },
+        token() {
+            this.headerEditor.set({
+                mockauthor: "",
+                mocktype: 'prefix',
+                mocktoken: this.token
+            });
         }
     }
 })

@@ -18,63 +18,70 @@ router.use((req, res, next) => {
 /**
  * handle all api not match system apis
  * @method handleApi
- * @param  {[type]}   req  [description]
- * @param  {[type]}   res  [description]
+ * @param  {[Request]}   req  [description]
+ * @param  {[Response]}   res  [description]
  * @param  {Function} next [description]
  * @return {[type]}        [description]
  */
 router.use(async(req, res, next) => {
-    let userId = req.session.user.id;
-    if (!userId) {
+    let token = req.headers.mocktoken;
+    let type = req.headers.mocktype;
+    if (!type) { // not mock request
         next();
-    }
+    } else if (type && !token) { // mock request, but without access-token
+        return res.json({
+            result: '缺少token'
+        });
+    } else {
+        delete req.headers.token;
+        delete req.headers.type;
 
-    let url = decodeURI(req.url);
-    let path = decodeURI(req.path);
-    let beginPath = (url.match(/\/\w+/) || [""])[0];
-    let author = req.headers.author;
-    if (author) {
-        beginPath = author;
-        delete req.headers.author;
-    }
-    var project = await mock.getProjects(beginPath, userId);
-    if (project) {
-        var normalApis = await mock.getNormalApis(project._id, userId) || {};
-        var regApis = await mock.getRegApis(project._id, userId);
-        var api = normalApis[path];
-        if (api && api.type == req.method) { // match normal
-            if (api.dataHandler == "over") {
-                let data = JSON.parse(api.result);
-                return res.json(Mock.mock(data));
+        let url = decodeURI(req.url);
+        let path = decodeURI(req.path);
+        let prefix = (url.match(/\/\w+/) || [""])[0];
+        let author = req.headers.mockauthor;
+        if (author) {
+            prefix = author;
+            delete req.headers.author;
+        }
+        var project = await mock.getProjects(prefix, token);
+        if (project) {
+            var normalApis = await mock.getNormalApis(project._id, token) || {};
+            var regApis = await mock.getRegApis(project._id, token);
+            var api = normalApis[path];
+            if (api && api.type == req.method) { // match normal
+                if (api.dataHandler == "over") {
+                    let data = JSON.parse(api.result);
+                    return res.json(Mock.mock(data));
+                } else {
+                    req.proxy = project.proxy;
+                    req._extendData = api.result;
+                    next();
+                }
+            } else if (regApis) { // match reg
+                regApis.forEach((api) => {
+                    if (new RegExp(api.regexp).test(url) && api.type == req.method) {
+                        if (api.dataHandler == "over") {
+                            let data = JSON.parse(api.result);
+                            return res.json(Mock.mock(data));
+                        } else {
+                            req.proxy = project.proxy;
+                            req._extendData = api.result;
+                            next();
+                        }
+                    }
+                });
+                if (url.indexOf(':') != -1) {
+                    return res.status(200).json({
+                        result: "error happens! have you replace your parameter? "
+                    });
+                }
+                next();
             } else {
-                req.proxy = project.proxy;
-                req._extendData = api.result;
                 next();
             }
-        } else if (regApis) { // match reg
-            regApis.forEach((api) => {
-                if (new RegExp(api.regexp).test(url) && api.type == req.method) {
-                    if (api.dataHandler == "over") {
-                        let data = JSON.parse(api.result);
-                        return res.json(Mock.mock(data));
-                    } else {
-                        req.proxy = project.proxy;
-                        req._extendData = api.result;
-                        next();
-                    }
-                }
-            });
-            if (url.indexOf(':') != -1) {
-                return res.status(200).json({
-                    result: "error happens! have you replace your parameter? "
-                });
-            }
-            next();
-        } else {
-            next();
         }
     }
-    next();
 });
 
 // override data
