@@ -17,6 +17,8 @@ Mock Server is an api mock server for frontend developers or testors to work on 
 * [out2man](http:/www.out2man.com)
 
 # Todo
+* use redis to replace mock service
+* refactor Token
 * support mysql, mssql and more database.
 * change web pages for more friendly view
 
