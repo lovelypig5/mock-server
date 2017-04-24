@@ -7,25 +7,21 @@ Mock Server is an api mock server for frontend developers or testors to work on 
 
 # Usage
 ```
-  node --harmony-destructuring .\src\index.js
+  node .\src\app.js
 ```
 
 # Configuration
-    change config/db.js to support different databases, allowed values are listed in config/dict.js
+    change config/index.js to support different databases, allowed values are listed in config/dict.js
 
 # Author
 * [out2man](http:/www.out2man.com)
 
-# TODO
+# Todo
 * support mysql, mssql and more database.
-* Add login module and user management
 * change web pages for more friendly view
 
 # Thanks
 * [Alicia](https://github.com/vvpvvp)
-
-# See Also
-* [umock](https://github.com/vvpvvp/umock) Pages is copied from umock
 
 # Dependencies
 * [express](http://expressjs.com/)
