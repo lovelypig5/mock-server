@@ -21,7 +21,7 @@ class UserDao extends BaseDao {
             } else if (docs.length == 1) {
                 return this.model(200, _.pick(docs[0], ['id', 'name']));
             } else {
-                return this.model(500, '未知错误');
+                return this.model(500, '未知错误,请联系管理员');
             }
         } catch (err) {
             this.logger.error(err);

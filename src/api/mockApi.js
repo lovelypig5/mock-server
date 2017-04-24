@@ -6,6 +6,10 @@ var _ = require('lodash'),
     mock = require('../service/mock'),
     BaseApi = require('./baseApi');
 
+var checkApi = () => {
+
+}
+
 class MockApi extends BaseApi {
 
     async createMockApi(req, res) {
@@ -29,7 +33,6 @@ class MockApi extends BaseApi {
         }
         if (url.indexOf("/_system") != -1) {
             return res.status(500).send("url前缀不能以/_system开头，与系统接口冲突，同时下划线命名不规范");
-
         }
 
         var data = {
@@ -90,7 +93,6 @@ class MockApi extends BaseApi {
         }
         if (url.indexOf("/_system") != -1) {
             return res.status(500).send("url前缀不能以/_system开头，与系统接口冲突，同时下划线命名不规范");
-
         }
 
         var data = {

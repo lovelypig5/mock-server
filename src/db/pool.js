@@ -17,14 +17,19 @@ var {
 switch (dialect) {
 case DICT.DB.MONGO:
     var connectStr = `mongodb://${user ? (user + ':' + password + '@') : ''}${host}${port ? (':' + port) : ''}${schema ? '/' + schema : ''}?authSource=admin`;
-    pool = mongoose.connect(connectStr, (err) => {
+    pool = mongoose.connect(connectStr, {
+        server: {
+            poolSize: 10,
+            autoReconnect: true
+        }
+    }, (err) => {
         if (err) {
             logger.error(err);
         }
     });
     break;
 default:
-    logger.error('No dialect found in config/db.js!');
+    logger.error('No dialect found in config/index.js!');
     break;
 }
 //
