@@ -7,7 +7,7 @@ import events from '../../events';
 var MockApi = Vue.extend({
     name: 'mock-api',
     template: template,
-    props: ['data'],
+    props: ['project', 'mockapi', 'menus', 'index'],
     data() {
         return {
             loading: {
@@ -15,20 +15,6 @@ var MockApi = Vue.extend({
                 delete: false,
                 api: false
             }
-        }
-    },
-    computed: {
-        project() {
-            return this.data.project;
-        },
-        mockapi() {
-            return this.data.mockapi;
-        },
-        menus() {
-            return this.data.menus;
-        },
-        index() {
-            return this.data.index;
         }
     },
     methods: {

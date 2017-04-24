@@ -5,7 +5,7 @@ import JSONEditor from "jsoneditor";
 const MockTest = Vue.extend({
     name: 'mock-test',
     template: template,
-    props: ['data'],
+    props: ['project', 'mockapi'],
     mounted() {
         var options = {
             mode: 'code',
@@ -22,14 +22,13 @@ const MockTest = Vue.extend({
         this.editor = new JSONEditor($(this.$el).find('#testResult')[0], {
             mode: 'view'
         }, {});
+        this.headerEditor.set({
+            mockauthor: "",
+            mocktype: 'prefix',
+            mocktoken: this.token
+        });
     },
     computed: {
-        project() {
-            return this.data.project;
-        },
-        mockapi() {
-            return Object.assign({}, this.data.mockapi);
-        },
         isPost() {
             return this.mockapi.type != 'GET';
         },

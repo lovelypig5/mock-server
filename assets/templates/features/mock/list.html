@@ -6,7 +6,7 @@
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
                 </button>
             </div>
-            <mock-api v-for="(mockapi,index) in mockapis" :key="mockapi._id" :data="{mockapi: mockapi,project:project, menus:menus, index:index}"></mock-api>
+            <mock-api v-for="(mockapi,index) in mockapis" :key="mockapi._id" :mockapi="mockapi" :project="project" :menus="menus" :index="index"></mock-api>
             <div class="empty" v-if="!loading && mockapis.length == 0">
                 <div class="msg">还没有配置api，赶紧配置一个</div>
             </div>
@@ -15,5 +15,5 @@
             </div>
         </div>
     </div>
-    <mock-test :data="{mockapi:currentApi,project:project}"></mock-test>
+    <mock-test :mockapi="currentApi" :project="project"></mock-test>
 </div>
