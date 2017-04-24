@@ -63,7 +63,8 @@ var MockApi = Vue.extend({
             }
             $.ajax({
                 url: API.mockapi + '/' + self.mockapi._id,
-                type: "delete"
+                type: "delete",
+                data: JSON.stringify(self.mockapi)
             }).done((result) => {
                 events.$emit('removeApi', self.index);
             }).fail((resp) => {

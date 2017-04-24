@@ -34,12 +34,12 @@ const MockEdit = Vue.extend({
             Object.assign(this.mockapi, this.data.mockapi);
             this.index = this.data.index;
             this.editing = true;
-
-
-        }
-        if (!this.mockapi.result) {
+            if (!this.mockapi.result) {
+                this.mockapi.result = "{}";
+                this.fetch();
+            }
+        } else {
             this.mockapi.result = "{}";
-            this.fetch();
         }
 
         var container = $(this.$el).find('#jsoneditor')[0];
