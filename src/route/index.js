@@ -80,9 +80,9 @@ router.use(async(req, res, next) => {
             } else {
                 next();
             }
+        } else {
+            next();
         }
-
-        next();
     }
 });
 
