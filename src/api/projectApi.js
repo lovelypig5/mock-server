@@ -2,6 +2,7 @@
 
 var config = require('../config'),
     projectDao = require(`../dao/${config.DB.dialect}/projectDao`),
+    mock = require('../service/mock'),
     BaseApi = require('./baseApi'),
     utils = require('../utils');
 
@@ -41,7 +42,7 @@ class ProjectApi extends BaseApi {
 
         var result = await projectDao.createProject(data);
         if (result.status == 200) {
-            super.updateProject(req.session.user.id);
+            mock.updateProject(req.session.user.id, result.ret);
             return res.status(result.status).json(result.ret);
         } else {
             return res.status(result.status).send(result.ret);
@@ -84,19 +85,23 @@ class ProjectApi extends BaseApi {
             return res.status(500).send('反向代理地址有误');
         }
 
+        var data = {
+            name,
+            desc,
+            isPublic,
+            beginPath,
+            proxy
+        }
+
         var update = {
-            $set: {
-                name,
-                desc,
-                isPublic,
-                beginPath,
-                proxy
-            }
+            $set: data
         };
 
         var result = await projectDao.modifyProject(req.params.id, req.session.user.id, update);
         if (result.status == 200) {
-            super.updateProject(req.session.user.id);
+            mock.updateProject(req.session.user.id, Object.assign({
+                _id: req.params.id
+            }, data));
             return res.status(result.status).json(result.ret);
         } else {
             return res.status(result.status).send(result.ret);
@@ -110,7 +115,7 @@ class ProjectApi extends BaseApi {
 
         var result = await projectDao.deleteProject(req.params.id, req.session.user.id);
         if (result.status == 200) {
-            super.updateProject(req.session.user.id);
+            mock.deleteProject(req.session.user.id, req.params.id);
             return res.status(result.status).json(result.ret);
         } else {
             return res.status(result.status).send(result.ret);

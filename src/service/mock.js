@@ -11,6 +11,54 @@ class Mock {
         this.apilist = {};
     }
 
+    updateMockApi(userId, api) {
+        if (this.apilist[userId]) {
+            if (api.isreg) {
+                let _api = Object.assign({}, api.toJSON());
+                _api.regexp = "^" + api.url.replace(/:\w+/g, "\\w+") + "$";
+                _api.fromUrl = api.url.match(/^(\/\w+)+/)[0];
+                this.apilist[userId].reg[api.projectId].push(_api);
+            } else {
+                this.apilist[userId].normal[api.projectId][api._id] = api;
+                this.apilist[userId].normal[api.projectId][api.url] = api;
+            }
+        }
+    }
+
+    updateProject(userId, project) {
+        if (this.projects[userId]) {
+            // use id and beginPath as the unique key
+            this.projects[userId][project.beginPath] = project;
+            this.projects[userId][project._id] = project;
+        }
+    }
+
+    deleteProject(userId, projectId) {
+        if (this.projects[userId]) {
+            // use id and beginPath as the unique key
+            delete this.projects[userId][project.beginPath];
+            delete this.projects[userId][project._id];
+        }
+    }
+
+    deleteMockApi(userId, projectId, api) {
+        if (this.apilist[userId]) {
+            if (api.isreg) {
+                var index = -1;
+                this.apilist[userId].reg[api.projectId].forEach((_api, _index) => {
+                    if (_api._id === api.id) {
+                        index = _index;
+                        return;
+                    }
+                })
+                this.apilist[userId].reg[api.projectId].splice(index, 1);
+            } else {
+                delete this.apilist[userId].normal[api.projectId][api._id];
+                delete this.apilist[userId].normal[api.projectId][api.url];
+            }
+        }
+    }
+
     async fetchProjects(userId, force) {
         if (!this.projects[userId] || force) {
             this.projects[userId] = {};

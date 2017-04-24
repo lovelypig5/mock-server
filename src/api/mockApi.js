@@ -3,6 +3,7 @@
 var _ = require('lodash'),
     config = require('../config'),
     mockDao = require(`../dao/${config.DB.dialect}/mockDao`),
+    mock = require('../service/mock'),
     BaseApi = require('./baseApi');
 
 class MockApi extends BaseApi {
@@ -48,7 +49,7 @@ class MockApi extends BaseApi {
 
         var result = await mockDao.createMockApi(data);
         if (result.status == 200) {
-            super.updateMockApis(req.session.user.id);
+            mock.updateMockApi(req.session.user.id, result.ret);
             return res.status(result.status).json(result.ret);
         } else {
             return res.status(result.status).send(result.ret);
@@ -114,7 +115,9 @@ class MockApi extends BaseApi {
             $set: data
         });
         if (result.status == 200) {
-            super.updateMockApis(req.session.user.id);
+            mock.updateMockApi(req.session.user.id, Object.assign({
+                _id: req.params.apiId
+            }, data));
             return res.status(result.status).json(result.ret);
         } else {
             return res.status(result.status).send(result.ret);
@@ -131,9 +134,17 @@ class MockApi extends BaseApi {
     }
 
     async deleteMockApi(req, res) {
+        var {
+            projectId
+        } = req.body;
+        console.log(req.body);
+        if (!projectId) {
+            return res.status(500).send("缺少参数");
+        }
+
         var result = await mockDao.deleteMockApi(req.params.apiId, req.session.user.id);
         if (result.status == 200) {
-            super.updateMockApis(req.session.user.id);
+            mock.deleteMockApi(req.session.user.id, projectId, req.body);
             return res.status(result.status).json(result.ret);
         } else {
             return res.status(result.status).send(result.ret);
