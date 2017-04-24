@@ -41,7 +41,7 @@ class ProjectApi extends BaseApi {
 
         var result = await projectDao.createProject(data);
         if (result.status == 200) {
-            super.updateProject();
+            super.updateProject(req.session.user.id);
             return res.status(result.status).json(result.ret);
         } else {
             return res.status(result.status).send(result.ret);
@@ -86,7 +86,6 @@ class ProjectApi extends BaseApi {
 
         var update = {
             $set: {
-                _id,
                 name,
                 desc,
                 isPublic,
@@ -97,7 +96,7 @@ class ProjectApi extends BaseApi {
 
         var result = await projectDao.modifyProject(req.params.id, req.session.user.id, update);
         if (result.status == 200) {
-            super.updateProject();
+            super.updateProject(req.session.user.id);
             return res.status(result.status).json(result.ret);
         } else {
             return res.status(result.status).send(result.ret);
@@ -111,7 +110,7 @@ class ProjectApi extends BaseApi {
 
         var result = await projectDao.deleteProject(req.params.id, req.session.user.id);
         if (result.status == 200) {
-            super.updateProject();
+            super.updateProject(req.session.user.id);
             return res.status(result.status).json(result.ret);
         } else {
             return res.status(result.status).send(result.ret);
