@@ -29,25 +29,17 @@ const MockEdit = Vue.extend({
             }
         }
     },
-    computed: {
-        menus() {
-            return Object.assign([], this.data.menus);
-        },
-        project() {
-            return Object.assign({}, this.data.project);
-        }
-    },
     mounted() {
         if (this.data.mockapi) {
             Object.assign(this.mockapi, this.data.mockapi);
             this.index = this.data.index;
             this.editing = true;
 
-            if (!this.mockapi.result) {
-                this.fetch();
-            }
-        } else {
+
+        }
+        if (!this.mockapi.result) {
             this.mockapi.result = "{}";
+            this.fetch();
         }
 
         var container = $(this.$el).find('#jsoneditor')[0];
@@ -121,10 +113,10 @@ const MockEdit = Vue.extend({
                     type: 'error'
                 })
                 return false;
-            } else if (self.project.isPublic == "1" && self.mockapi.url.indexOf(self.project.beginPath) != 0) {
+            } else if (self.data.project.isPublic == "1" && self.mockapi.url.indexOf(self.data.project.beginPath) != 0) {
                 self.alert({
                     show: true,
-                    msg: "url必须以" + self.project.beginPath + "为开头！",
+                    msg: "url必须以" + self.data.project.beginPath + "为开头！",
                     type: 'error'
                 })
                 return false;
@@ -136,7 +128,7 @@ const MockEdit = Vue.extend({
             if (self.editing) {
                 url = url + '/' + self.mockapi._id;
             } else {
-                data.projectId = self.project._id;
+                data.projectId = self.data.project._id;
             }
 
             $.ajax({
