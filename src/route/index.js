@@ -89,11 +89,18 @@ router.use(async(req, res, next) => {
 // override data
 router.use(transformerProxy((data, req, res) => {
     if (req._extendData) {
-        var ret = JSON.parse(data);
-        var extend = JSON.parse(req._extendData);
-        ret = _.merge(ret, Mock.mock(extend));
+        try {
+            var ret = JSON.parse(data);
+            var extend = JSON.parse(req._extendData);
+            ret = _.merge(ret, Mock.mock(extend));
 
-        return JSON.stringify(ret);
+            return JSON.stringify(ret);
+        } catch (e) {
+            return JSON.stringify({
+                result: '解析出错，无法合并为json格式数据'
+            });
+        }
+
     }
 
     return data;
