@@ -12,7 +12,8 @@ module.exports = (modulePath) => {
     return {
         // if single entry is used, bundle name will be named as main.js
         entry: {
-            main: "./index",
+            admin: "./pages/admin",
+            main: './pages/index',
             common: [
                 'jquery',
                 'vue',
@@ -32,7 +33,12 @@ module.exports = (modulePath) => {
                 jQuery: "jquery"
             }),
             new HtmlWebpackPlugin({
-                template: './index.tpl',
+                template: './pages/admin.tpl',
+                filename: './admin.html',
+                chunks: ['manifest', 'admin', 'common']
+            }),
+            new HtmlWebpackPlugin({
+                template: './pages/index.tpl',
                 filename: './index.html',
                 chunks: ['manifest', 'main', 'common']
             }),
@@ -51,6 +57,9 @@ module.exports = (modulePath) => {
             alias: {
                 templates: path.resolve("./templates"),
                 config: path.resolve("./js/config"),
+                css: path.resolve("./css"),
+                less: path.resolve("./less"),
+                js: path.resolve("./js"),
                 vue: 'vue/dist/vue.common.js',
                 'vue-router': 'vue-router/dist/vue-router.common.js'
             }

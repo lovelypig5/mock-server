@@ -1,47 +1,49 @@
+@import 'common.less';
+@import 'header.less';
+@import 'login.less';
 /* Sticky footer styles
 -------------------------------------------------- */
-body {/* Margin bottom by footer height */
-  margin-bottom: 60px;
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  background-color: #f5f5f5;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #f5f5f5;
 }
 
-.pointer{
-  cursor: pointer;
+.pointer {
+    cursor: pointer;
 }
-
-
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
-
 body > .container {
-  padding: 60px 15px 0;
+    padding: 60px 15px 0;
 }
+
 .container .text-muted {
-  margin: 20px 0;
+    margin: 20px 0;
 }
 
 .footer > .container {
-  padding-right: 15px;
-  padding-left: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
-code {
-}
+code {}
 
 #jsoneditor {
-  height: 565px;
+    height: 565px;
 }
 
 #param-jsoneditor {
-  height: 191px;
+    height: 191px;
 }
 
 .operator {
@@ -58,11 +60,17 @@ code {
     overflow: hidden;
 }
 
-.mockDiv.active{
+.mockDiv.active {
     background-color: #F8E8EC !important;
     border: 1px solid #F4ADAD;
 }
-.mockDiv {margin: 10px 10px;background-color: #e7f0f7;     border: 1px solid #c3d9ec;border-radius: 5px;}
+
+.mockDiv {
+    margin: 10px;
+    background-color: #e7f0f7;
+    border: 1px solid #c3d9ec;
+    border-radius: 5px;
+}
 
 .mocksetContent {
     display: none;
@@ -97,14 +105,14 @@ span.mockType {
     color: green;
 }
 
-.mockDiv.POST,.mockDiv.POST .mocksetHeader {
+.mockDiv.POST,
+.mockDiv.POST .mocksetHeader {
     border: 1px solid #C5E0C5;
 }
 
 .mockDiv.POST {
     background-color: #F2FAF3;
 }
-
 
 .mockDiv.active .mocksetHeader {
     border: 1px solid #F4ADAD;
@@ -156,7 +164,7 @@ div#mockTest {
     position: absolute;
     top: 1px;
     padding: 20px;
-    right:0;
+    right: 0;
     width: 500px;
     bottom: 0;
     overflow-y: auto;
@@ -166,15 +174,17 @@ div#mockTest {
     transition: width 0.5s;
 }
 
-.list-group-item.active a, .list-group-item.active:hover a, .list-group-item.active:focus a{
-  color:#FFF;
+.list-group-item.active a,
+.list-group-item.active:focus a,
+.list-group-item.active:hover a {
+    color: #FFF;
 }
 
 div#mockTest form {
     padding: 20px;
 }
 
-div#mockTest.expand{
+div#mockTest.expand {
     width: 70%;
 }
 
@@ -190,11 +200,10 @@ div#postParamJson {
     height: 112px;
 }
 
-
 div#mockTest.expand .form {
     width: 40%;
     float: left;
-    padding: 0px 10px 0 0px;
+    padding: 0 10px 0 0;
 }
 
 div#mockTest.expand div#testResult {
@@ -233,4 +242,20 @@ div#testTopButton {
 pre {
     background-color: rgba(254, 254, 254, 0.55);
     border: 1px solid #F4F4F4;
+}
+
+.wrapper {
+    margin-top: 50px;
+
+    .projectlist {
+        .project {
+            .label {
+                margin-right: 10px;
+            }
+        }
+    }
+}
+
+.edit-modal {
+    width: 900px;
 }
