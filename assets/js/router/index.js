@@ -24,16 +24,8 @@ var routes = [{
     }
 }];
 
-var router;
-if (WEBPACK_DEBUG) {
-    router = new Router({
-        routes
-    });
-} else {
-    router = new Router({
-        mode: 'history',
-        routes: routes
-    });
-}
+var router = new Router({
+    routes
+});
 
 export default router;

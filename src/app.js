@@ -1,5 +1,4 @@
 var express = require('express'),
-    fallback = require('express-history-api-fallback'),
     path = require('path'),
     filters = require('./filters'),
     routes = require('./route'),
@@ -23,10 +22,6 @@ apis.forEach((api) => {
 routes.forEach((route) => {
     app.use(route.route, route.router);
 });
-
-app.use(fallback('index.html', {
-    root: `../assets/dist`
-}));
 
 app.listen(3003, function () {
     logger.info(`Backend service listening on port 3003!`);
