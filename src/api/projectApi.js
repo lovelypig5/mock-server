@@ -1,5 +1,3 @@
-'use strict';
-
 var config = require('../config'),
     projectDao = require(`../dao/${config.DB.dialect}/projectDao`),
     mock = require('../service/mock'),

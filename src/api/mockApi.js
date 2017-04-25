@@ -1,14 +1,8 @@
-'use strict';
-
 var _ = require('lodash'),
     config = require('../config'),
     mockDao = require(`../dao/${config.DB.dialect}/mockDao`),
     mock = require('../service/mock'),
     BaseApi = require('./baseApi');
-
-var checkApi = () => {
-
-}
 
 class MockApi extends BaseApi {
 

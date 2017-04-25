@@ -3,10 +3,14 @@ var express = require('express'),
     filters = require('./filters'),
     routes = require('./route'),
     apis = require('./api'),
-    logger = require('./logger');
+    logger = require('./logger'),
+    consolidate = require('consolidate');
 
 var app = express();
-app.use(express.static(path.resolve('../assets/dist')));
+app.engine('html', consolidate.ejs);
+app.set('views', '../assets/dist');
+app.set('view engine', 'html');
+app.set('x-powered-by', false);
 
 filters.forEach((filter) => {
     if (filter.route) {
@@ -22,6 +26,8 @@ apis.forEach((api) => {
 routes.forEach((route) => {
     app.use(route.route, route.router);
 });
+
+app.use(express.static(path.resolve('../assets/dist')));
 
 app.listen(3003, function () {
     logger.info(`Backend service listening on port 3003!`);
