@@ -6,7 +6,7 @@ class PageApi extends BaseApi {
         res.render('index');
     }
 
-    mock(req, res) {
+    admin(req, res) {
         res.render('admin');
     }
 }
@@ -19,6 +19,6 @@ module.exports = [{
     func: pageApi.index
 }, {
     method: 'get',
-    route: `/mock`,
-    func: pageApi.mock
+    route: `/admin`,
+    func: pageApi.admin
 }];
