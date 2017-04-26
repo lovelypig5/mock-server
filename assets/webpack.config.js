@@ -12,8 +12,8 @@ module.exports = (modulePath) => {
     return {
         // if single entry is used, bundle name will be named as main.js
         entry: {
-            admin: "./pages/admin",
-            main: './pages/index',
+            admin: "./views/admin",
+            index: './views/index',
             common: [
                 'jquery',
                 'vue',
@@ -33,14 +33,14 @@ module.exports = (modulePath) => {
                 jQuery: "jquery"
             }),
             new HtmlWebpackPlugin({
-                template: './pages/admin.tpl',
+                template: './views/admin.tpl',
                 filename: './admin.html',
                 chunks: ['manifest', 'admin', 'common']
             }),
             new HtmlWebpackPlugin({
-                template: './pages/index.tpl',
+                template: './views/index.tpl',
                 filename: './index.html',
-                chunks: ['manifest', 'main', 'common']
+                chunks: ['manifest', 'index', 'common']
             }),
             new webpack.optimize.CommonsChunkPlugin({
                 name: ["common", "manifest"]
