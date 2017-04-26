@@ -9,9 +9,8 @@
         <meta name="author" content="out2man"/>
         <meta name="application-name" content="mock-server"/>
         <meta name="description" content="">
-        <%=htmlWebpackPlugin.files.webpackManifest%>
-
         <link rel="shortcut icon" href="favicon.ico"/>
+        <%=htmlWebpackPlugin.files.webpackManifest%>
     </head>
     <body>
         <div class="preloader">
@@ -45,7 +44,7 @@
                             <a href="#contact">Contact</a>
                         </li>
                         <li>
-                            <button class="btn btn-warning start">Get Start</button>
+                            <button class="btn btn-warning start" onclick="location.href='/admin'">Get Start</button>
                         </li>
                     </ul>
                 </div>

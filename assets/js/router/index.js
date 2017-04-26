@@ -2,12 +2,12 @@ import Router from 'vue-router';
 Vue.use(Router);
 
 var routes = [{
-    path: '/login',
+    path: '/',
     component(resolve) {
         return require(['../features/login.vue'], resolve);
     }
 }, {
-    path: '/',
+    path: '/project',
     component(resolve) {
         return require(['../features/project/list.vue'], resolve);
     }

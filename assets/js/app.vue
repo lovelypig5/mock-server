@@ -11,7 +11,7 @@ $.ajaxSetup({
     statusCode: {
         401: () => {
             router.push({
-                path: '/login'
+                path: '/'
             })
         }
     }
