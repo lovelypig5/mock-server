@@ -66,7 +66,7 @@ var Login = Vue.extend({
                 }
                 self.getUser();
                 self.$router.push({
-                    path: '/'
+                    path: '/project'
                 });
             }).fail((resp) => {
                 self.alert({

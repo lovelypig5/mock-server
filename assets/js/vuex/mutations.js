@@ -21,9 +21,7 @@ const mutations = {
             type: 'post',
             success(resp) {
                 state.user = {};
-                router.go({
-                    path: '/home'
-                });
+                location.href = '/';
             },
             error(resp) {
                 mutations.ALERT({
