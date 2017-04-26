@@ -29,6 +29,6 @@ routes.forEach((route) => {
 
 app.use(express.static(path.resolve('../assets/dist')));
 
-app.listen(3003, function () {
+app.listen(3003, () => {
     logger.info(`Backend service listening on port 3003!`);
 });
