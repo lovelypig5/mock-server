@@ -1,8 +1,4 @@
 import 'bootstrap';
-import "bootstrap/dist/css/bootstrap.min.css";
-import 'bootstrap/dist/css/bootstrap-theme.min.css';
-import 'animate.css';
-import 'font-awesome/css/font-awesome.min.css';
 import 'less/index.less';
 
 $(window).load(() => {
