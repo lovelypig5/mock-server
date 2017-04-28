@@ -47,6 +47,15 @@ class ProjectDao extends BaseDao {
         }
     }
 
+    async listAllProjects() {
+        return await this.Entity.find(null, {
+            _id: true,
+            proxy: true,
+            beginPath: true,
+            userId: true
+        }).exec();
+    }
+
 }
 
 module.exports = new ProjectDao();

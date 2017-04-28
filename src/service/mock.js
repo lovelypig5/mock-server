@@ -1,6 +1,8 @@
 'use strict';
 
-var config = require('../config'),
+var _ = require('lodash'),
+    logger = require('../logger'),
+    config = require('../config'),
     mockDao = require(`../dao/${config.DB.dialect}/mockDao`),
     projectDao = require(`../dao/${config.DB.dialect}/projectDao`);
 
@@ -9,6 +11,56 @@ class Mock {
     constructor() {
         this.projects = {};
         this.apilist = {};
+    }
+
+    async init() {
+        var projects = await projectDao.listAllProjects();
+        projects.forEach((project) => {
+            let _project = project.toJSON();
+            let userId = _project.userId;
+            if (!userId) {
+                logger.error('error project with no userId');
+                logger.error(_project);
+                return;
+            }
+            if (!this.projects[userId]) {
+                this.projects[userId] = {};
+            }
+            this.projects[userId][_project.beginPath] = project;
+            this.projects[userId][_project._id] = project;
+        });
+        var apis = await mockDao.getAllMockApis();
+        apis.forEach((api) => {
+            let _api = api.toJSON();
+            var userId = _api.userId;
+            var projectId = _api.projectId;
+            if (!userId || !projectId) {
+                logger.error('error api with no userId or no projectId');
+                logger.error(_api);
+                return;
+            }
+            if (!this.apilist[userId]) {
+                this.apilist[userId] = {
+                    normal: {},
+                    reg: {}
+                };
+            }
+
+            if (!_api.active) {
+                return;
+            }
+            // use id and url as the unique key
+            this.apilist[userId].normal[projectId] = this.apilist[userId].normal[projectId] || {};
+            this.apilist[userId].reg[projectId] = this.apilist[userId].reg[projectId] || [];
+            if (_api.isreg) {
+                _api.regexp = "^" + _api.url.replace(/:\w+/g, "\\w+") + "$";
+                _api.fromUrl = _api.url.match(/^(\/\w+)+/)[0];
+                this.apilist[userId].reg[projectId].push(_api);
+            } else {
+                this.apilist[userId].normal[projectId][_api._id] = _api;
+                this.apilist[userId].normal[projectId][_api.url] = _api;
+            }
+        })
     }
 
     updateMockApi(userId, api) {
@@ -26,16 +78,18 @@ class Mock {
     }
 
     updateProject(userId, project) {
+        let _project = _.pick(project, ['_id', 'userId', 'beginPath', 'proxy']);
         if (this.projects[userId]) {
             // use id and beginPath as the unique key
-            this.projects[userId][project.beginPath] = project;
-            this.projects[userId][project._id] = project;
+            this.projects[userId][_project.beginPath] = _project;
+            this.projects[userId][_project._id] = _project;
         }
     }
 
     deleteProject(userId, projectId) {
         if (this.projects[userId]) {
             // use id and beginPath as the unique key
+            var project = this.projects[userId][projectId];
             delete this.projects[userId][project.beginPath];
             delete this.projects[userId][project._id];
         }
@@ -130,6 +184,7 @@ class Mock {
             ? this.apilist[userId].reg[prefix]
             : this.apilist[userId].reg;
     }
+
 }
 
 module.exports = new Mock();

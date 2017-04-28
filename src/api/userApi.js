@@ -17,7 +17,6 @@ class UserApi extends BaseApi {
         var result = await userDao.login(user);
         if (result.status == 200) {
             req.session.user = result.ret;
-            await super.initMock(req.session.user.id);
             res.status(result.status).json(result.ret);
         } else {
             res.status(result.status).send(result.ret);

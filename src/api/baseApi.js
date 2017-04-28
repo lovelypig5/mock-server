@@ -8,11 +8,6 @@ class BaseApi {
         return modelUtils.getModels(name);
     }
 
-    async initMock(userId) {
-        await mock.fetchProjects(userId);
-        await mock.fetchMockApis(userId);
-    }
-
 }
 
 module.exports = BaseApi;

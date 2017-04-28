@@ -97,7 +97,7 @@ class MockApi extends BaseApi {
         mockapi.userId = req.session.user.id;
 
         try {
-            var result = await mockDao.modifyMockApi(req.params.apiId, req.session.user.id, mockapi);
+            var result = await mockDao.modifyMockApi(req.params.apiId, mockapi);
             mock.updateMockApi(req.session.user.id, Object.assign({
                 _id: req.params.apiId
             }, mockapi));
@@ -119,6 +119,7 @@ class MockApi extends BaseApi {
     }
 
     async deleteMockApi(req, res) {
+        //TODO
         if (!req.params.apiId || !req.body.projectId) {
             return res.status(400).send("缺少参数");
         }

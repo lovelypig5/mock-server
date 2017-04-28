@@ -4,7 +4,8 @@ var express = require('express'),
     routes = require('./route'),
     apis = require('./api'),
     logger = require('./logger'),
-    consolidate = require('consolidate');
+    consolidate = require('consolidate'),
+    mock = require('./service/mock');
 
 var app = express();
 app.engine('html', consolidate.ejs);
@@ -29,6 +30,8 @@ routes.forEach((route) => {
 
 app.use(express.static(path.resolve('../assets/dist')));
 
-app.listen(3003, () => {
-    logger.info(`Backend service listening on port 3003!`);
+mock.init().then(() => {
+    app.listen(3003, () => {
+        logger.info(`Backend service listening on port 3003!`);
+    });
 });
