@@ -5,11 +5,10 @@ class UserDao extends BaseDao {
 
     constructor() {
         super();
-
         this.Entity = this.db.model('user', this.schema.user);
     }
 
-    async login(userName, password) {
+    async login({userName, password}) {
         var conditions = {
             name: userName,
             password: password

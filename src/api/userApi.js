@@ -6,14 +6,15 @@ var _ = require('lodash'),
 class UserApi extends BaseApi {
 
     async login(req, res) {
-        var body = req.body;
-        var userName = body.userName;
-        var password = body.password;
-        if (!userName || !password) {
-            return res.status(400).send('缺少参数');
+        var user = _.pick(req.body, ['userName', 'password']);
+        if (!user.userName) {
+            return res.status(400).send('用户名不能为空');
+        }
+        if (!user.password) {
+            return res.status(400).send('密码不能为空');
         }
 
-        var result = await userDao.login(userName, password);
+        var result = await userDao.login(user);
         if (result.status == 200) {
             req.session.user = result.ret;
             await super.initMock(req.session.user.id);
@@ -43,20 +44,22 @@ class UserApi extends BaseApi {
 
 var userApi = new UserApi();
 
-module.exports = [{
-    method: 'post',
-    route: '/_login',
-    func: userApi.login
-}, {
-    method: 'post',
-    route: '/_logout',
-    func: userApi.logout
-}, {
-    method: 'get',
-    route: '/_user',
-    func: userApi.user
-}, {
-    method: 'get',
-    route: '/_isLogin',
-    func: userApi.isLogin
-}]
+module.exports = [
+    {
+        method: 'post',
+        route: '/_login',
+        func: userApi.login
+    }, {
+        method: 'post',
+        route: '/_logout',
+        func: userApi.logout
+    }, {
+        method: 'get',
+        route: '/_user',
+        func: userApi.user
+    }, {
+        method: 'get',
+        route: '/_isLogin',
+        func: userApi.isLogin
+    }
+]

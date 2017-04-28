@@ -6,51 +6,35 @@ class MockDao extends BaseDao {
 
     constructor() {
         super();
-
         this.Entity = this.db.model('mockSet', this.schema.mockset);
     }
 
     async createMockApi(mock) {
         var entity = new this.Entity(mock);
-        try {
-            await entity.save();
-            return this.model(200, entity);
-        } catch (err) {
-            this.logger.error(err);
-            return this.model(500, "保存失败");
-        }
+        await entity.save();
+        return entity;
     }
 
     async listMockApis(projectId, userId) {
-        try {
-            var docs = await this.Entity.find({
-                projectId: projectId,
-                userId: userId,
-            }, {
-                userId: false,
-                result: false
-            }).exec();
-            return this.model(200, docs);
-        } catch (err) {
-            this.logger.error(err);
-            return this.model(500, "获取接口列表失败");
-        }
+        return await this.Entity.find({
+            projectId: projectId,
+            userId: userId
+        }, {
+            userId: false,
+            result: false
+        }).exec();
     }
 
-    async modifyMockApi(id, userId, update) {
-        try {
-            var docs = await this.Entity.update({
-                _id: id,
-                userId: userId
-            }, update);
-            if (docs.n == 1) {
-                return this.model(200, '修改接口成功');
-            } else {
-                return this.model(500, '修改接口失败');
-            }
-        } catch (err) {
-            this.logger.error(err);
-            return this.model(500, "修改接口失败");
+    async modifyMockApi(id, userId, mockapi) {
+        var docs = await this.Entity.update({
+            _id: id,
+            userId: userId
+        }, {$set: mockapi});
+        if (docs.n == 1) {
+            return this.model(200, '修改接口成功');
+        } else {
+            logger.error(`接口修改失败，未知原因，请联系管理员。接口ID: ${id}, 用户ID: ${userId}`);
+            return `接口修改失败，未知原因，请联系管理员。接口ID: ${id}, 用户ID: ${userId}`;
         }
     }
 
@@ -62,29 +46,16 @@ class MockDao extends BaseDao {
             conditions._id = id;
         }
 
-        try {
-            var docs = await this.Entity.find(conditions).exec();
-            return this.model(200, docs);
-        } catch (err) {
-            this.logger.error(err);
-            return this.model(500, "获取项目详情失败");
-        }
+        return await this.Entity.find(conditions).exec();
     }
 
     async deleteMockApi(id, userId) {
-        try {
-            var docs = await this.Entity.remove({
-                _id: id,
-                userId: userId
-            });
-            if (docs.result.n == 1) {
-                return this.model(200, "删除接口成功");
-            } else {
-                return this.model(500, "删除接口失败");
-            }
-        } catch (err) {
-            this.logger.error(err);
-            return this.model(500, "删除接口失败");
+        var docs = await this.Entity.remove({_id: id, userId: userId});
+        if (docs.result.n == 1) {
+            return "删除接口成功";
+        } else {
+            logger.error(`接口删除失败，未知原因，请联系管理员。接口ID: ${id}, 用户ID: ${userId}`);
+            return `接口删除失败，未知原因，请联系管理员。接口ID: ${id}, 用户ID: ${userId}`;
         }
     }
 
