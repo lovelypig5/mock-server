@@ -62,11 +62,7 @@ class Mock {
     async fetchProjects(userId, force) {
         if (!this.projects[userId] || force) {
             this.projects[userId] = {};
-            var {
-                status,
-                ret
-            } = await projectDao.listProject(null, userId);
-
+            var ret = await projectDao.listProject(null, userId);
             ret.forEach((item) => {
                 // use id and beginPath as the unique key
                 this.projects[userId][item.beginPath] = item;
@@ -84,10 +80,7 @@ class Mock {
                 reg: {}
             };
 
-            var {
-                status,
-                ret
-            } = await mockDao.getMockApis(null, userId);
+            var ret = await mockDao.getMockApis(null, userId);
             ret.forEach((item) => {
                 if (!item.active) {
                     return;
@@ -123,7 +116,9 @@ class Mock {
             await this.fetchMockApis(userId);
         }
 
-        return prefix ? this.apilist[userId].normal[prefix] : this.apilist[userId].normal;
+        return prefix
+            ? this.apilist[userId].normal[prefix]
+            : this.apilist[userId].normal;
     }
 
     async getRegApis(prefix, userId) {
@@ -131,7 +126,9 @@ class Mock {
             await this.fetchMockApis(userId);
         }
 
-        return prefix ? this.apilist[userId].reg[prefix] : this.apilist[userId].reg;
+        return prefix
+            ? this.apilist[userId].reg[prefix]
+            : this.apilist[userId].reg;
     }
 }
 
