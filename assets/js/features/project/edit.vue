@@ -37,6 +37,7 @@ const ProjectEdit = Vue.extend({
             this.$store.dispatch('alert', obj);
         },
         save() {
+            var self = this;
             if (this.project.name === "" || this.project.beginPath === "" || this.project.proxy === "") {
                 self.alert({
                     show: true,
@@ -59,8 +60,6 @@ const ProjectEdit = Vue.extend({
                 })
                 return false;
             }
-
-            var self = this;
             if (self.loading.post) {
                 return;
             }

@@ -19,7 +19,14 @@
                                     <input name="remember" type="checkbox" v-model="rememberMe">记住我
                                 </label>
                             </div>
-                            <a href="javascript:void(0)" class="btn btn-lg btn-success btn-block" @click="doLogin">登录</a>
+                            <a href="javascript:void(0)" class="btn btn-lg btn-success btn-block" @click="doLogin">
+                                <template v-if="loading.login">
+                                    登录中
+                                </template>
+                                <template v-if="!loading.login">
+                                    登录
+                                </template>
+                            </a>
                         </fieldset>
                         <!-- <validator name="v">
                             <fieldset>
