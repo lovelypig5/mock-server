@@ -19,31 +19,29 @@ module.exports = (modulePath) => {
                 'vue',
                 'vuex',
                 'vue-router',
-                'js-cookie'
-            ]
+                'js-cookie',
+                'bootstrap'
+            ],
+            commoncss: ['bootstrap/dist/css/bootstrap.min.css', 'bootstrap/dist/css/bootstrap-theme.min.css', 'animate.css', 'font-awesome/css/font-awesome.min.css']
         },
         output: {
             publicPath: '/'
         },
         // plugins example, default no more
         plugins: [
-            new webpack.ProvidePlugin({
-                Vue: 'vue',
-                $: "jquery",
-                jQuery: "jquery"
-            }),
+            new webpack.ProvidePlugin({Vue: 'vue', $: "jquery", jQuery: "jquery"}),
             new HtmlWebpackPlugin({
                 template: './views/admin.tpl',
                 filename: './admin.html',
-                chunks: ['manifest', 'admin', 'common']
+                chunks: ['manifest', 'admin', 'common', 'commoncss']
             }),
             new HtmlWebpackPlugin({
                 template: './views/index.tpl',
                 filename: './index.html',
-                chunks: ['manifest', 'index', 'common']
+                chunks: ['manifest', 'index', 'common', 'commoncss']
             }),
             new webpack.optimize.CommonsChunkPlugin({
-                name: ["common", "manifest"]
+                name: ["commoncss", "common", "manifest"]
             }),
             new webpack.HashedModuleIdsPlugin(),
             new WebpackChunkHash(),
