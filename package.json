@@ -30,7 +30,8 @@
     "log4js": "^0.6.33",
     "mockjs": "^1.0.0",
     "mongoose": "^4.6.3",
-    "transformer-proxy": "^0.3.3"
+    "transformer-proxy": "^0.3.3",
+    "validator": "^7.0.0"
   },
   "os": [
     "darwin",
