@@ -95,20 +95,22 @@ class Mock {
         }
     }
 
-    deleteMockApi(userId, projectId, api) {
+    deleteMockApi(mockapi) {
+        let userId = mockapi.userId;
+        let projectId = mockapi.projectId;
         if (this.apilist[userId]) {
-            if (api.isreg) {
+            if (mockapi.isreg) {
                 var index = -1;
-                this.apilist[userId].reg[api.projectId].forEach((_api, _index) => {
-                    if (_api._id === api.id) {
+                this.apilist[userId].reg[projectId].forEach((api, _index) => {
+                    if (api._id === mockapi.id) {
                         index = _index;
                         return;
                     }
                 })
-                this.apilist[userId].reg[api.projectId].splice(index, 1);
+                this.apilist[userId].reg[projectId].splice(index, 1);
             } else {
-                delete this.apilist[userId].normal[api.projectId][api._id];
-                delete this.apilist[userId].normal[api.projectId][api.url];
+                delete this.apilist[userId].normal[projectId][mockapi._id];
+                delete this.apilist[userId].normal[projectId][mockapi.url];
             }
         }
     }

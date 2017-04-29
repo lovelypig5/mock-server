@@ -52,9 +52,8 @@ class Utils {
         return !(_.isFunction(value) || _.isArray(value) || _.isObject(value));
     }
 
-    isUrl(url) {
-        var match = /^(https?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/;
-        return match.test(url);
+    ajaxModel(status, ret) {
+        return {status: status, ret: ret};
     }
 }
 

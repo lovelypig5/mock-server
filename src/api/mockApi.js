@@ -119,14 +119,14 @@ class MockApi extends BaseApi {
     }
 
     async deleteMockApi(req, res) {
-        //TODO
-        if (!req.params.apiId || !req.body.projectId) {
+        if (!req.params.apiId) {
             return res.status(400).send("缺少参数");
         }
 
         try {
+            var mockapi = await mockDao.getMockApis(req.params.id, req.session.user.id);
             var result = await mockDao.deleteMockApi(req.params.apiId, req.session.user.id);
-            mock.deleteMockApi(req.session.user.id, projectId, req.body);
+            mock.deleteMockApi(req.session.user.id, mockapi);
             return res.status(200).json(result);
         } catch (err) {
             logger.error(err);

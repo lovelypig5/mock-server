@@ -40,8 +40,8 @@ class ProjectApi extends BaseApi {
             mock.updateProject(req.session.user.id, result);
             return res.status(200).json(result);
         } catch (err) {
-            logger.error(err);
-            return res.status(500).send("保存失败");
+            var result = super.handleErr(err);
+            return res.status(result.status).send(result.ret);
         }
     }
 
@@ -51,8 +51,8 @@ class ProjectApi extends BaseApi {
             var result = await projectDao.listProject(id, req.session.user.id);
             return res.status(200).json(result);
         } catch (err) {
-            logger.error(err);
-            return res.status(500).send("获取项目失败");
+            var result = super.handleErr(err);
+            return res.status(result.status).send(result.ret);
         }
     }
 
@@ -91,8 +91,8 @@ class ProjectApi extends BaseApi {
             }, project));
             return res.status(200).json(result);
         } catch (err) {
-            logger.error(err);
-            return res.status(500).send("修改项目详情失败");
+            var result = super.handleErr(err);
+            return res.status(result.status).send(result.ret);
         }
     }
 
@@ -106,8 +106,8 @@ class ProjectApi extends BaseApi {
             mock.deleteProject(req.session.user.id, req.params.id);
             return res.status(200).json(result);
         } catch (err) {
-            logger.error(err);
-            return res.status(500).send("删除项目失败");
+            var result = super.handleErr(err);
+            return res.status(result.status).send(result.ret);
         }
     }
 

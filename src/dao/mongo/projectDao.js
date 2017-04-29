@@ -1,4 +1,5 @@
-var BaseDao = require('./baseDao');
+var BaseDao = require('./baseDao'),
+    Errors = require('../../error');
 
 class ProjectDao extends BaseDao {
 
@@ -33,7 +34,7 @@ class ProjectDao extends BaseDao {
             return '修改项目详情成功';
         } else {
             logger.error(`项目修改失败，未知原因，请联系管理员。项目ID: ${id}, 用户ID: ${userId}`);
-            return `项目修改失败，未知原因，请联系管理员。项目ID: ${id}, 用户ID: ${userId}`;
+            return new Errors.UnknownError(`项目修改失败，未知原因，请联系管理员。项目ID: ${id}, 用户ID: ${userId}`);
         }
     }
 
@@ -43,7 +44,7 @@ class ProjectDao extends BaseDao {
             return "删除项目成功";
         } else {
             logger.error(`项目删除失败，未知原因，请联系管理员。项目ID: ${id}, 用户ID: ${userId}`);
-            return `项目删除失败，未知原因，请联系管理员。项目ID: ${id}, 用户ID: ${userId}`;
+            return new Errors.UnknownError(`项目删除失败，未知原因，请联系管理员。项目ID: ${id}, 用户ID: ${userId}`);
         }
     }
 
