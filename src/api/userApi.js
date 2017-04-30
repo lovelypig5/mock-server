@@ -14,12 +14,12 @@ class UserApi extends BaseApi {
             return res.status(400).send('密码不能为空');
         }
 
-        var result = await userDao.login(user);
-        if (result.status == 200) {
-            req.session.user = result.ret;
-            res.status(result.status).json(result.ret);
-        } else {
-            res.status(result.status).send(result.ret);
+        try {
+            var result = await userDao.login(user);
+            res.status(200).json(result);
+        } catch (err) {
+            var result = super.handleErr(err);
+            return res.status(result.status).send(result.ret);
         }
     }
 
@@ -43,22 +43,20 @@ class UserApi extends BaseApi {
 
 var userApi = new UserApi();
 
-module.exports = [
-    {
-        method: 'post',
-        route: '/_login',
-        func: userApi.login
-    }, {
-        method: 'post',
-        route: '/_logout',
-        func: userApi.logout
-    }, {
-        method: 'get',
-        route: '/_user',
-        func: userApi.user
-    }, {
-        method: 'get',
-        route: '/_isLogin',
-        func: userApi.isLogin
-    }
-]
+module.exports = [{
+    method: 'post',
+    route: '/_login',
+    func: userApi.login
+}, {
+    method: 'post',
+    route: '/_logout',
+    func: userApi.logout
+}, {
+    method: 'get',
+    route: '/_user',
+    func: userApi.user
+}, {
+    method: 'get',
+    route: '/_isLogin',
+    func: userApi.isLogin
+}]

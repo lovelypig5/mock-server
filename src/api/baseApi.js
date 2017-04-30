@@ -27,6 +27,9 @@ class BaseApi {
         if (err instanceof Errors.UnknownError) {
             return utils.ajaxModel(500, err.message);
         }
+        if (err instanceof Errors.AuthenticateFail) {
+            return utils.ajaxModel(401, err.message);
+        }
 
         logger.error(err);
         return utils.ajaxModel(500, MESSAGES.SERVER_ERROR);
