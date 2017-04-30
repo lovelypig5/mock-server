@@ -1,6 +1,8 @@
 var _ = require('lodash'),
     BaseDao = require('./baseDao'),
-    Errors = require('../../error');
+    Errors = require('../../error'),
+    crypto = require('crypto'),
+    hash = crypto.createHash('md5');
 
 class UserDao extends BaseDao {
 
@@ -22,6 +24,16 @@ class UserDao extends BaseDao {
         } else {
             throw new Errors.UnknownError('未知错误,请联系管理员');
         }
+    }
+
+    async register({ userName, password }) {
+        var user = new this.Entity({
+            userName,
+            password: hash.update(password),
+            salt: Math.floor(Math.random() * 1000000)
+        })
+
+        //TODO do register
     }
 }
 
