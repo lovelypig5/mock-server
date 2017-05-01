@@ -5,7 +5,7 @@ class Utils {
 
     getModels(modelName) {
         var _models = {};
-        models.forEach(({name, model}) => {
+        models.forEach(({ name, model }) => {
             if (modelName && modelName != name) {
                 return;
             }
@@ -14,7 +14,11 @@ class Utils {
                 if (typeof T === 'function') {
                     _model[key] = T();
                 } else {
-                    _model[key] = T.type(T.default);
+                    if (T.default) {
+                        _model[key] = T.type(T.default);
+                    } else {
+                        _model[key] = T.type();
+                    }
                 }
             });
             _models[name] = _model;

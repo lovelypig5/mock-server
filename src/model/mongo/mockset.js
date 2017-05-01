@@ -1,40 +1,63 @@
 const MockSet = {
-    url: String,
+    url: {
+        type: String,
+        required: true
+    },
     desc: String,
-    result: String,
+    result: {
+        type: String,
+        required: true
+    },
     dataHandler: { //over覆盖,overlying叠加
         type: String,
-        default: "over"
+        default: "over",
+        required: true
     },
     type: {
         type: String,
-        default: "GET"
+        default: "GET",
+        required: true
     },
     isreg: {
         type: Boolean,
-        default: false
+        default: false,
+        required: true
     },
-    param: String,
-    menuId: String,
-    projectId: String,
-    userId: String,
+    param: {
+        type: String,
+        required: true
+    },
+    menuId: {
+        type: String,
+        default: "",
+        required: true
+    },
+    projectId: {
+        type: String,
+        required: true
+    },
+    userId: {
+        type: String,
+        required: true
+    },
     active: {
         type: Boolean,
-        default: true
+        default: true,
+        required: true
     },
     createTime: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        required: true
     },
     modifyTime: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        required: true
     }
 }
 
-module.exports = [
-    {
-        name: 'mockset',
-        model: MockSet
-    }
-];
+module.exports = [{
+    name: 'mockset',
+    model: MockSet
+}];
