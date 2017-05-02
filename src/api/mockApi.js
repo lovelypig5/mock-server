@@ -98,7 +98,7 @@ class MockApi extends BaseApi {
         mockapi.userId = req.session.user._id;
 
         try {
-            var result = await mockDao.modifyMockApi(req.params.apiId, mockapi);
+            var result = await mockDao.modifyMockApi(mockapi);
             mock.updateMockApi(req.session.user._id, Object.assign({
                 _id: req.params.apiId
             }, mockapi));

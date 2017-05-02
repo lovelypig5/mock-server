@@ -37,10 +37,11 @@ class MockDao extends BaseDao {
         }).exec();
     }
 
-    async modifyMockApi(id, mockapi) {
+    async modifyMockApi(mockapi) {
+        var id = mockapi.projectId;
         var projects;
         try {
-            projects = projectDao.listProject(mockapi.projectId, mockapi.userId);
+            projects = await projectDao.listProject(id, mockapi.userId);
         } catch (err) {
             this.logger.error(err);
             throw new Errors.UnknownError('未知错误，请联系管理员！');
