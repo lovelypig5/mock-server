@@ -12,7 +12,7 @@ class MockDao extends BaseDao {
     async createMockApi(mockapi) {
         var projects;
         try {
-            projects = projectDao.listProject(mockapi.projectId, mockapi.userId);
+            projects = await projectDao.listProject(mockapi.projectId, mockapi.userId);
         } catch (err) {
             this.logger.error(err);
             throw new Errors.UnknownError('未知错误，请联系管理员！');
@@ -50,7 +50,7 @@ class MockDao extends BaseDao {
             var docs = await this.Entity.update({
                 _id: id,
                 userId: mockapi.userId
-            }, {$set: mockapi});
+            }, { $set: mockapi });
             if (docs.n == 1) {
                 return '修改接口成功';
             } else {
@@ -78,7 +78,7 @@ class MockDao extends BaseDao {
     }
 
     async deleteMockApi(id, userId) {
-        var docs = await this.Entity.remove({_id: id, userId: userId});
+        var docs = await this.Entity.remove({ _id: id, userId: userId });
         if (docs.result.n == 1) {
             return "删除接口成功";
         } else {
