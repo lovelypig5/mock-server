@@ -16,6 +16,7 @@ class UserApi extends BaseApi {
 
         try {
             var result = await userDao.login({ name: user.userName, password: user.password });
+            req.session.user = result;
             res.status(200).json(result);
         } catch (err) {
             var result = super.handleErr(err);
