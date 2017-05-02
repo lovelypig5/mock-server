@@ -35,12 +35,12 @@ class UserDao extends BaseDao {
         return await user.save();
     }
 
-    async remove({ _id }) {
-        var docs = await this.Entity.remove({ _id: _id });
+    async remove({ name }) {
+        var docs = await this.Entity.remove({ name: name });
         if (docs.result.n == 1) {
             return "删除用户成功";
         } else {
-            throw new Errors.UnknownError(`用户删除失败，未知原因，请联系管理员。用户ID: ${_id}`);
+            throw new Errors.UnknownError(`用户删除失败，未知原因，请联系管理员。用户账号: ${name}`);
         }
     }
 }
