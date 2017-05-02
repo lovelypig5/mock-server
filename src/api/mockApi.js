@@ -62,7 +62,7 @@ class MockApi extends BaseApi {
     }
 
     async modifyMockApi(req, res) {
-        if (req.params.apiId) {
+        if (!req.params.apiId) {
             return res.status(400).send("缺少参数");
         }
         var model = super.getModel('mockset');
@@ -77,6 +77,7 @@ class MockApi extends BaseApi {
             'projectId',
             'url'
         ]);
+
         if (!mockapi.url) {
             return res.status(400).send("url不能为空");
         }
@@ -136,26 +137,24 @@ class MockApi extends BaseApi {
 }
 
 var mockApi = new MockApi();
-module.exports = [
-    {
-        method: 'post',
-        route: `/${config.APIPATH}/mockapi`,
-        func: mockApi.createMockApi
-    }, {
-        method: 'get',
-        route: `/${config.APIPATH}/list/:projectId`,
-        func: mockApi.listMockApis
-    }, {
-        method: 'get',
-        route: `/${config.APIPATH}/mockapi/:apiId`,
-        func: mockApi.getMockApi
-    }, {
-        method: 'post',
-        route: `/${config.APIPATH}/mockapi/:apiId`,
-        func: mockApi.modifyMockApi
-    }, {
-        method: 'delete',
-        route: `/${config.APIPATH}/mockapi/:apiId`,
-        func: mockApi.deleteMockApi
-    }
-];
+module.exports = [{
+    method: 'post',
+    route: `/${config.APIPATH}/mockapi`,
+    func: mockApi.createMockApi
+}, {
+    method: 'get',
+    route: `/${config.APIPATH}/list/:projectId`,
+    func: mockApi.listMockApis
+}, {
+    method: 'get',
+    route: `/${config.APIPATH}/mockapi/:apiId`,
+    func: mockApi.getMockApi
+}, {
+    method: 'post',
+    route: `/${config.APIPATH}/mockapi/:apiId`,
+    func: mockApi.modifyMockApi
+}, {
+    method: 'delete',
+    route: `/${config.APIPATH}/mockapi/:apiId`,
+    func: mockApi.deleteMockApi
+}];
