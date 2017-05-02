@@ -1,7 +1,8 @@
 const User = {
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -11,6 +12,11 @@ const User = {
         type: Boolean,
         required: true,
         default: false
+    },
+    salt: {
+        type: Number,
+        required: true,
+        default: Math.floor(Math.random() * 1000000)
     }
 }
 

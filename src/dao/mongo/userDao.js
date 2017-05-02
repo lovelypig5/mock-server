@@ -1,8 +1,6 @@
-var _ = require('lodash'),
-    BaseDao = require('./baseDao'),
+var BaseDao = require('./baseDao'),
     Errors = require('../../error'),
-    crypto = require('crypto'),
-    hash = crypto.createHash('md5');
+    crypto = require('crypto');
 
 class UserDao extends BaseDao {
 
@@ -11,29 +9,39 @@ class UserDao extends BaseDao {
         this.Entity = this.db.model('user', this.schema.user);
     }
 
-    async login({ userName, password }) {
+    async login({ name, password }) {
+        var hash = crypto.createHash('md5');
         var conditions = {
-            name: userName,
-            password: password
+            name: name,
+            password: hash.update(password).digest('hex')
         };
-        var docs = await this.Entity.find(conditions).exec();
+        var docs = await this.Entity.find(conditions, { id: true, name: true, salt: true }).exec();
         if (docs.length == 0) {
             throw new Errors.AuthenticateFail('用户名或者密码错误');
         } else if (docs.length == 1) {
-            return _.pick(docs[0], ['id', 'name']);
+            return docs[0];
         } else {
             throw new Errors.UnknownError('未知错误,请联系管理员');
         }
     }
 
-    async register({ userName, password }) {
+    async register({ name, password }) {
+        var hash = crypto.createHash('md5');
         var user = new this.Entity({
-            userName,
-            password: hash.update(password),
-            salt: Math.floor(Math.random() * 1000000)
+            name,
+            password: hash.update(password).digest('hex')
         })
 
-        //TODO do register
+        return await user.save();
+    }
+
+    async remove({ _id }) {
+        var docs = await this.Entity.remove({ _id: _id });
+        if (docs.result.n == 1) {
+            return "删除用户成功";
+        } else {
+            throw new Errors.UnknownError(`用户删除失败，未知原因，请联系管理员。用户ID: ${_id}`);
+        }
     }
 }
 
