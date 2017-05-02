@@ -29,8 +29,7 @@ const MockSet = {
     },
     menuId: {
         type: String,
-        default: "",
-        required: true
+        default: ""
     },
     projectId: {
         type: String,
