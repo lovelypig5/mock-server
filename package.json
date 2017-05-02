@@ -5,7 +5,7 @@
   "keywords": "data mocker, frontend mock server, test",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/mocha/bin/mocha ./test"
   },
   "author": "out2man",
   "email": "lovelypig5@163.com",
@@ -14,7 +14,10 @@
     "type": "git",
     "url": "https://github.com/lovelypig5/mock-server.git"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.3.0"
+  },
   "directories": {
     "test": "test"
   },
