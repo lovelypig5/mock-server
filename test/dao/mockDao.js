@@ -66,13 +66,90 @@ describe( 'MockDao Test', () => {
                 done();
             } ).catch( done );
         } )
-        // it( 'create mock api with no url', ( done ) => {
-        //     mockDao.createMockApi( _.omit( mockapi, [ 'url' ] ) ).then( null, ( err ) => {
-        //         expect( errors[ 'url' ].message ).to.equal(
-        //             'Path `url` is required.' )
-        //         done();
-        //     } ).catch( done );
-        // } )
+    } )
+
+    describe( '#getMockApis', () => {
+        it( 'get mock api with no project id', ( done ) => {
+            mockDao.getMockApis( null, mockapi.userId ).then( ( mockapis ) => {
+                expect( mockapis ).to.have.length( 1 );
+                done();
+            } ).catch( done );
+        } )
+        it( 'get mock api with no user id', ( done ) => {
+            mockDao.getMockApis( mockapi._id, null ).then( ( mockapis ) => {
+                expect( mockapis ).to.have.length( 0 );
+                done();
+            } ).catch( done );
+        } )
+        it( 'get mock api ', ( done ) => {
+            mockDao.getMockApis( mockapi._id, mockapi.userId ).then( ( mockapis ) => {
+                expect( mockapis ).to.have.length( 1 );
+                done();
+            } ).catch( done );
+        } )
+    } )
+
+    describe( '#listMockApis', () => {
+        it( 'list api with no project id', ( done ) => {
+            mockDao.listMockApis( null, mockapi.userId ).then( ( mockapis ) => {
+                expect( mockapis ).to.have.length( 0 );
+                done();
+            } ).catch( done );
+        } )
+        it( 'list api with no user id', ( done ) => {
+            mockDao.listMockApis( mockapi.projectId, null ).then( ( mockapis ) => {
+                expect( mockapis ).to.have.length( 0 );
+                done();
+            } ).catch( done );
+        } )
+        it( 'list api ', ( done ) => {
+            mockDao.listMockApis( mockapi.projectId, mockapi.userId ).then( ( projects ) => {
+                expect( projects ).to.have.length( 1 );
+                done();
+            } ).catch( done );
+        } )
+    } )
+
+    describe( '#modifyMockApi', () => {
+        it( 'modify api with no id', ( done ) => {
+            mockDao.modifyMockApi( null, _.omit( mockapi, [ '_id' ] ) ).then( null, ( err ) => {
+                expect( err ).to.be.instanceof( Errors.UnknownError );
+                done();
+            } ).catch( done );
+        } )
+        it( 'modify api with no userId', ( done ) => {
+            mockDao.modifyMockApi( mockapi._id, _.omit( mockapi, [ 'userId' ] ) ).then( null,
+                ( err ) => {
+                    expect( err ).to.be.instanceof( Errors.NotFound );
+                    done();
+                } ).catch( done );
+        } )
+        it( 'modify api', ( done ) => {
+            mockapi = Object.assign( mockapi, {
+                url: '/ci/test_ci',
+                result: "{a:1}",
+                dataHandler: "overlying",
+                type: "POST",
+                isreg: false,
+                param: "{a:1}",
+                active: false,
+                modifyTime: Date.now()
+            } )
+            mockDao.modifyMockApi( mockapi._id, _.omit( mockapi, [ '_id' ] ) ).then( () => {
+                return mockDao.getMockApis( mockapi._id, mockapi.userId ).then( (
+                    results ) => {
+                    expect( results ).to.have.length( 1 );
+                    expect( results[ 0 ].url ).to.equals( mockapi.url );
+                    expect( results[ 0 ].result ).to.equals( mockapi.result );
+                    expect( results[ 0 ].dataHandler ).to.equals( mockapi.dataHandler );
+                    expect( results[ 0 ].type ).to.equals( mockapi.type );
+                    expect( results[ 0 ].isreg ).to.be.false;
+                    expect( results[ 0 ].param ).to.equals( mockapi.param );
+                    expect( results[ 0 ].active ).to.be.false;
+                    done();
+                } );
+            } ).catch( done );
+        } )
     } )
 
     describe( '#deleteMockApi', () => {
