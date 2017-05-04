@@ -1,90 +1,86 @@
-var BaseDao = require('./baseDao'),
-    projectDao = require('./projectDao'),
-    Errors = require('../../error');
+var BaseDao = require( './baseDao' ),
+    projectDao = require( './projectDao' ),
+    Errors = require( '../../error' );
 
 class MockDao extends BaseDao {
 
     constructor() {
         super();
-        this.Entity = this.db.model('mockSet', this.schema.mockset);
+        this.Entity = this.db.model( 'mockSet', this.schema.mockset );
     }
 
-    async createMockApi(mockapi) {
+    async createMockApi( mockapi ) {
         var projects;
         try {
-            projects = await projectDao.listProject(mockapi.projectId, mockapi.userId);
-        } catch (err) {
-            this.logger.error(err);
-            throw new Errors.UnknownError('未知错误，请联系管理员！');
+            projects = await projectDao.listProject( mockapi.projectId, mockapi.userId );
+        } catch ( err ) {
+            this.logger.error( err );
+            throw new Errors.UnknownError( '未知错误，请联系管理员！' );
         }
 
-        if (projects.length == 1) {
-            var entity = new this.Entity(mockapi);
+        if ( projects.length == 1 ) {
+            var entity = new this.Entity( mockapi );
             await entity.save();
             return entity;
         } else {
-            throw new Errors.NotFound('不存在的项目');
+            throw new Errors.NotFound( '不存在的项目' );
         }
     }
 
-    async listMockApis(projectId, userId) {
-        return await this.Entity.find({
+    async listMockApis( projectId, userId ) {
+        return await this.Entity.find( {
             projectId: projectId,
             userId: userId
         }, {
             userId: false,
             result: false
-        }).exec();
+        } ).exec();
     }
 
-    async modifyMockApi(mockapi) {
-        var id = mockapi.projectId;
+    async modifyMockApi( mockapi ) {
         var projects;
         try {
-            projects = await projectDao.listProject(id, mockapi.userId);
-        } catch (err) {
-            this.logger.error(err);
-            throw new Errors.UnknownError('未知错误，请联系管理员！');
+            projects = await projectDao.listProject( mockapi.projectId, mockapi.userId );
+        } catch ( err ) {
+            throw new Errors.UnknownError( '未知错误，请联系管理员！' );
         }
 
-        if (projects.length == 1) {
-            var docs = await this.Entity.update({
-                _id: id,
+        if ( projects.length == 1 ) {
+            var docs = await this.Entity.update( {
+                _id: mockapi._id,
                 userId: mockapi.userId
-            }, { $set: mockapi });
-            if (docs.n == 1) {
+            }, { $set: mockapi } );
+            if ( docs.n == 1 ) {
                 return '修改接口成功';
             } else {
-                this.logger.error(`接口修改失败，未知原因，请联系管理员。接口ID: ${id}, 用户ID: ${userId}`);
-                return new Errors.UnknownError(`接口修改失败，未知原因，请联系管理员。接口ID: ${id}, 用户ID: ${userId}`);
+                throw new Errors.UnknownError( `接口修改失败，未知原因，请联系管理员。接口ID: ${id}, 用户ID: ${userId}` );
             }
         } else {
-            throw new Errors.NotFound('不存在的项目');
+            throw new Errors.NotFound( '不存在的项目' );
         }
     }
 
-    async getMockApis(id, userId) {
+    async getMockApis( id, userId ) {
         var conditions = {
             userId: userId
         };
-        if (id) {
+        if ( id ) {
             conditions._id = id;
         }
 
-        return await this.Entity.find(conditions).exec();
+        return await this.Entity.find( conditions ).exec();
     }
 
     async getAllMockApis() {
         return this.Entity.find().exec();
     }
 
-    async deleteMockApi(id, userId) {
-        var docs = await this.Entity.remove({ _id: id, userId: userId });
-        if (docs.result.n == 1) {
+    async deleteMockApi( id, userId ) {
+        var docs = await this.Entity.remove( { _id: id, userId: userId } );
+        if ( docs.result.n == 1 ) {
             return "删除接口成功";
         } else {
-            this.logger.error(`接口删除失败，未知原因，请联系管理员。接口ID: ${id}, 用户ID: ${userId}`);
-            return new Errors.UnknownError(`接口删除失败，未知原因，请联系管理员。接口ID: ${id}, 用户ID: ${userId}`);
+            throw new Errors.UnknownError( `接口删除失败，未知原因，请联系管理员。接口ID: ${id}, 用户ID: ${userId}` );
         }
     }
 
