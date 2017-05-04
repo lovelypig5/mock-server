@@ -1,44 +1,44 @@
 {
-  "name": "mock-server",
-  "version": "2.0.0",
-  "description": "Mock Server is an api mock server for frontend developers or testers to work on real apis. It can override or intercept apis and return given data result.",
-  "keywords": "data mocker, frontend mock server, test",
-  "main": "index.js",
-  "scripts": {
-    "test": "./node_modules/mocha/bin/mocha ./test"
-  },
-  "author": "out2man",
-  "email": "lovelypig5@163.com",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/lovelypig5/mock-server.git"
-  },
-  "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^3.3.0"
-  },
-  "directories": {
-    "test": "test"
-  },
-  "dependencies": {
-    "body-parser": "^1.15.0",
-    "consolidate": "^0.14.5",
-    "cookie-parser": "^1.4.1",
-    "cookie-session": "^1.2.0",
-    "ejs": "^2.5.6",
-    "express": "^4.13.3",
-    "http-proxy": "^1.15.1",
-    "lodash": "^4.16.4",
-    "log4js": "^0.6.33",
-    "mockjs": "^1.0.0",
-    "mongoose": "^4.6.3",
-    "transformer-proxy": "^0.3.3",
-    "validator": "^7.0.0"
-  },
-  "os": [
-    "darwin",
-    "linux",
-    "win32"
-  ]
+    "name": "mock-server",
+    "version": "2.0.0",
+    "description": "Mock Server is an api mock server for frontend developers or testers to work on real apis. It can override or intercept apis and return given data result.",
+    "keywords": "data mocker, frontend mock server, test",
+    "main": "index.js",
+    "scripts": {
+        "test": "node ./node_modules/mocha/bin/mocha ./test"
+    },
+    "author": "out2man",
+    "email": "lovelypig5@163.com",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/lovelypig5/mock-server.git"
+    },
+    "devDependencies": {
+        "chai": "^3.5.0",
+        "mocha": "^3.3.0"
+    },
+    "directories": {
+        "test": "test"
+    },
+    "dependencies": {
+        "body-parser": "^1.15.0",
+        "consolidate": "^0.14.5",
+        "cookie-parser": "^1.4.1",
+        "cookie-session": "^1.2.0",
+        "ejs": "^2.5.6",
+        "express": "^4.13.3",
+        "http-proxy": "^1.15.1",
+        "lodash": "^4.16.4",
+        "log4js": "^0.6.33",
+        "mockjs": "^1.0.0",
+        "mongoose": "^4.6.3",
+        "transformer-proxy": "^0.3.3",
+        "validator": "^7.0.0"
+    },
+    "os": [
+        "darwin",
+        "linux",
+        "win32"
+    ]
 }
