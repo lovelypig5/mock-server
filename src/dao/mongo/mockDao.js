@@ -37,7 +37,7 @@ class MockDao extends BaseDao {
         } ).exec();
     }
 
-    async modifyMockApi( mockapi ) {
+    async modifyMockApi( id, mockapi ) {
         var projects;
         try {
             projects = await projectDao.listProject( mockapi.projectId, mockapi.userId );
@@ -47,13 +47,13 @@ class MockDao extends BaseDao {
 
         if ( projects.length == 1 ) {
             var docs = await this.Entity.update( {
-                _id: mockapi._id,
+                _id: id,
                 userId: mockapi.userId
             }, { $set: mockapi } );
             if ( docs.n == 1 ) {
                 return '修改接口成功';
             } else {
-                throw new Errors.UnknownError( `接口修改失败，未知原因，请联系管理员。接口ID: ${id}, 用户ID: ${userId}` );
+                throw new Errors.UnknownError( `接口修改失败，未知原因，请联系管理员。接口ID: ${id}, 用户ID: ${mockapi.userId}` );
             }
         } else {
             throw new Errors.NotFound( '不存在的项目' );
