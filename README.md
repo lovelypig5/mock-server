@@ -5,13 +5,18 @@ Mock Server is an api mock server for frontend developers or testors to work on 
 *  install nodejs. see more [nodejs](https://nodejs.org)
 *  git clone [mock server](https://github.com/lovelypig5/mock-server.git) to your local workspace
 
+# Configuration
+change config/index.js to support different databases, allowed values are listed in config/dict.js
+
 # Usage
 ```
-  node .\src\app.js
+  npm start
 ```
 
-# Configuration
-    change config/index.js to support different databases, allowed values are listed in config/dict.js
+# Test
+```
+  npm test
+```
 
 # Author
 * [out2man](http:/www.out2man.com)
@@ -20,14 +25,6 @@ Mock Server is an api mock server for frontend developers or testors to work on 
 * use redis to replace mock service
 * refactor Token
 * support mysql, mssql and more database.
-* change web pages for more friendly view
 
 # Thanks
 * [Alicia](https://github.com/vvpvvp)
-
-# Dependencies
-* [express](http://expressjs.com/)
-* [http-proxy](https://github.com/nodejitsu/node-http-proxy)
-* [lodash](https://lodash.com/)
-* [transformer-proxy](https://github.com/philippotto/transformer-proxy.git)
-* [mongoose](http://mongoosejs.com)
