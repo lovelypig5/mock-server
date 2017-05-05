@@ -5,6 +5,7 @@
     "keywords": "data mocker, frontend mock server, test",
     "main": "index.js",
     "scripts": {
+        "start": "node ./src/app.js",
         "test": "node ./node_modules/mocha/bin/mocha ./test"
     },
     "author": "out2man",
