@@ -1,8 +1,8 @@
 // var mysql = require('mysql');
-var mongoose = require('mongoose'),
-    config = require('../config'),
-    DICT = require('../config/dict'),
-    logger = require('../logger');
+var mongoose = require( 'mongoose' ),
+    config = require( '../config' ),
+    DICT = require( '../config/dict' ),
+    logger = require( '../logger' );
 
 mongoose.Promise = global.Promise;
 
@@ -16,23 +16,24 @@ var {
         schema
 } = config.DB;
 
-switch (dialect) {
+switch ( dialect ) {
 case DICT.DB.MONGO:
     var connectStr =
         `mongodb://${user ? (user + ':' + password + '@') : ''}${host}${port ? (':' + port): ''}${schema ? '/' + schema : ''}?authSource=admin`;
-    pool = mongoose.connect(connectStr, {
+    pool = mongoose.connect( connectStr, {
         server: {
             poolSize: 10,
             autoReconnect: true
         }
-    }, (err) => {
-        if (err) {
-            logger.error(err);
+    }, ( err ) => {
+        if ( err ) {
+            logger.error( err );
+            throw err;
         }
-    });
+    } );
     break;
 default:
-    logger.error('No dialect found in config/index.js!');
+    logger.error( 'No dialect found in config/index.js!' );
     break;
 }
 //
@@ -43,9 +44,5 @@ default:
 //     password: 'root',
 //     database: 'wms'
 // });
-
-process.on('exit', (code) => {
-    logger.info(`system exit with code ${code}`);
-})
 
 module.exports = pool;
