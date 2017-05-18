@@ -3,7 +3,7 @@ var api = {
     user: base + '/_user',
     isLogin: '/_isLogin',
     login: '/_login',
-    logout: '/_logout',
+    logout: base + '/_logout',
 
     projectlist: base + '/project/list',
     project: base + '/project',

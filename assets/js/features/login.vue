@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 
 var domain = 'mock.out2man.com';
 if (process.env.NODE_ENV == "development") {
-    domain = 'localhost:9000';
+    domain = 'localhost';
 }
 
 var Login = Vue.extend({
