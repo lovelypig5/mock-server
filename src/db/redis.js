@@ -5,16 +5,16 @@ var redis = require( 'redis' ),
 
 var client = redis.createClient( config.REDIS );
 
-client.on( "error", function ( err ) {
+client.on( "error", ( err ) => {
     logger.error( err );
 } );
-client.on( "connect", function ( msg ) {
-    logger.info( "connect" );
+client.on( "connect", ( msg ) => {
+    logger.info( "connected" );
 } );
-client.on( "reconnecting", function ( msg ) {
+client.on( "reconnecting", ( msg ) => {
     logger.info( "reconnecting" );
 } );
-client.on( "end", function ( msg ) {
+client.on( "end", ( msg ) => {
     logger.info( "end" );
 } );
 

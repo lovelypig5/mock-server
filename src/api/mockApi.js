@@ -37,10 +37,10 @@ class MockApi extends BaseApi {
         }
 
         mockapi.isreg = mockapi.url.includes( ":" );
-        mockapi.userId = req.session.user._id;
+        mockapi.userId = req.user._id;
         try {
             var result = await mockDao.createMockApi( mockapi );
-            mock.updateMockApi( req.session.user._id, result );
+            mock.updateMockApi( req.user._id, result );
             return res.status( 200 ).json( result );
         } catch ( err ) {
             logger.error( err );
@@ -53,7 +53,7 @@ class MockApi extends BaseApi {
             return res.status( 400 ).send( "缺少参数" );
         }
         try {
-            var result = await mockDao.listMockApis( req.params.projectId, req.session.user._id );
+            var result = await mockDao.listMockApis( req.params.projectId, req.user._id );
             return res.status( 200 ).json( result );
         } catch ( err ) {
             logger.error( err );
@@ -95,11 +95,11 @@ class MockApi extends BaseApi {
         }
         mockapi.isreg = mockapi.url.includes( ":" );
         mockapi.modifyTime = new Date();
-        mockapi.userId = req.session.user._id;
+        mockapi.userId = req.user._id;
 
         try {
             var result = await mockDao.modifyMockApi( req.params.apiId, mockapi );
-            mock.updateMockApi( req.session.user._id, Object.assign( {
+            mock.updateMockApi( req.user._id, Object.assign( {
                 _id: req.params.apiId
             }, mockapi ) );
             return res.status( 200 ).json( result );
@@ -111,7 +111,7 @@ class MockApi extends BaseApi {
 
     async getMockApi( req, res ) {
         try {
-            var result = await mockDao.getMockApis( req.params.apiId, req.session.user._id );
+            var result = await mockDao.getMockApis( req.params.apiId, req.user._id );
             return res.status( 200 ).json( result );
         } catch ( err ) {
             logger.error( err );
@@ -125,9 +125,9 @@ class MockApi extends BaseApi {
         }
 
         try {
-            var mockapi = await mockDao.getMockApis( req.params.id, req.session.user._id );
-            var result = await mockDao.deleteMockApi( req.params.apiId, req.session.user._id );
-            mock.deleteMockApi( req.session.user._id, mockapi );
+            var mockapi = await mockDao.getMockApis( req.params.id, req.user._id );
+            var result = await mockDao.deleteMockApi( req.params.apiId, req.user._id );
+            mock.deleteMockApi( req.user._id, mockapi );
             return res.status( 200 ).json( result );
         } catch ( err ) {
             logger.error( err );
