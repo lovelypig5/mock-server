@@ -28,6 +28,7 @@ class UserApi extends BaseApi {
     }
 
     async logout( req, res ) {
+        var token = req.user.token;
         await tokenStore.deleteToken( token );
         res.status( 200 ).send( {} );
     }
@@ -53,7 +54,7 @@ module.exports = [ {
     func: userApi.login
 }, {
     method: 'post',
-    route: '/_logout',
+    route: `/${config.APIPATH}/_logout`,
     func: userApi.logout
 }, {
     method: 'get',

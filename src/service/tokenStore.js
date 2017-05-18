@@ -19,7 +19,7 @@ class TokenStore {
     }
 
     async deleteToken() {
-        return await client.deleteAsync( ...arguments );
+        return await client.delAsync( ...arguments );
     }
 
 }
