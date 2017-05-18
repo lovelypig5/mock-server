@@ -33,11 +33,11 @@ class ProjectApi extends BaseApi {
         }
 
         project.modifyTime = new Date();
-        project.userId = req.session.user._id;
+        project.userId = req.user._id;
 
         try {
             var result = await projectDao.createProject( project );
-            mock.updateProject( req.session.user._id, result );
+            mock.updateProject( req.user._id, result );
             return res.status( 200 ).json( result );
         } catch ( err ) {
             var result = super.handleErr( err );
@@ -48,7 +48,7 @@ class ProjectApi extends BaseApi {
     async listProject( req, res ) {
         var id = req.params.id || null;
         try {
-            var result = await projectDao.listProject( id, req.session.user._id );
+            var result = await projectDao.listProject( id, req.user._id );
             return res.status( 200 ).json( result );
         } catch ( err ) {
             var result = super.handleErr( err );
@@ -82,11 +82,11 @@ class ProjectApi extends BaseApi {
             return res.status( 400 ).send( '反向代理地址有误' );
         }
         project.modifyTime = new Date();
-        project.userId = req.session.user._id;
+        project.userId = req.user._id;
 
         try {
             var result = await projectDao.modifyProject( req.params.id, project );
-            mock.updateProject( req.session.user._id, Object.assign( {
+            mock.updateProject( req.user._id, Object.assign( {
                 _id: req.params.id
             }, project ) );
             return res.status( 200 ).json( result );
@@ -102,8 +102,8 @@ class ProjectApi extends BaseApi {
         }
 
         try {
-            var result = await projectDao.deleteProject( req.params.id, req.session.user._id );
-            mock.deleteProject( req.session.user._id, req.params.id );
+            var result = await projectDao.deleteProject( req.params.id, req.user._id );
+            mock.deleteProject( req.user._id, req.params.id );
             return res.status( 200 ).json( result );
         } catch ( err ) {
             var result = super.handleErr( err );
