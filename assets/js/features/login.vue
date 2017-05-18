@@ -4,6 +4,11 @@ import API from 'config/api';
 import store from '../vuex/store';
 import Cookies from 'js-cookie';
 
+var domain = 'mock.out2man.com';
+if (process.env.NODE_ENV == "development") {
+    domain = 'localhost:9000';
+}
+
 var Login = Vue.extend({
     store,
     template: template,
@@ -47,23 +52,27 @@ var Login = Vue.extend({
                 })
             }).done((resp) => {
                 if (self.rememberMe) {
-                    Cookies.set('rememberMe', self.rememberMe, {
+                    var opt = {
                         expires: 365,
-                        domain: 'mock.out2man.com'
-                    });
-                    Cookies.set('name', self.userName, {
-                        expires: 365,
-                        domain: 'mock.out2man.com'
-                    });
-                    Cookies.set('password', self.password, {
-                        expires: 365,
-                        domain: 'mock.out2man.com'
-                    });
+                        domain: domain
+                    };
+                    Cookies.set('rememberMe', self.rememberMe, opt);
+                    Cookies.set('name', self.userName, opt);
+                    Cookies.set('password', self.password, opt);
                 } else {
                     Cookies.remove('rememberMe');
                     Cookies.remove('name');
                     Cookies.remove('password');
                 }
+                Cookies.set('access-token', resp.token, {
+                    expires: 1,
+                    domain: domain
+                });
+                $.ajaxSetup({
+                    headers: {
+                        'Access-Token': resp.token
+                    }
+                })
                 self.getUser();
                 self.$router.push({
                     path: '/project'

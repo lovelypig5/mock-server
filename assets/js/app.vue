@@ -4,10 +4,14 @@ import store from './vuex/store';
 import Common from './common/index.vue';
 import router from './router';
 import filters from './filters';
+import Cookies from 'js-cookie';
 
 $.ajaxSetup({
     dataType: 'json',
     contentType: 'application/json; charset=utf-8',
+    headers: {
+        'Access-Token': Cookies.get('access-token')
+    },
     statusCode: {
         401: () => {
             router.push({

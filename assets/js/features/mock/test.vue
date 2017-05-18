@@ -33,7 +33,7 @@ const MockTest = Vue.extend({
             return this.mockapi.type != 'GET';
         },
         token() {
-            return this.$store.state.user._id;
+            return this.$store.state.user.token;
         }
     },
     methods: {

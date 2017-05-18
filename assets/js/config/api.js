@@ -1,6 +1,6 @@
 var base = '/_system';
 var api = {
-    user: '/_user',
+    user: base + '/_user',
     isLogin: '/_isLogin',
     login: '/_login',
     logout: '/_logout',
