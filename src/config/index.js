@@ -1,4 +1,4 @@
-var DICT = require('./dict');
+var DICT = require( './dict' );
 
 module.exports = {
     DB: {
@@ -9,5 +9,15 @@ module.exports = {
         password: '',
         schema: 'test'
     },
-    APIPATH: '_system'
+    REDIS: {
+        host: "127.0.0.1",
+        port: 7999,
+        auth_pass: "test"
+    },
+    MAIL: {
+        user: 'test',
+        password: 'test'
+    },
+    APIPATH: '_system',
+    maxAge: 28800000
 };
