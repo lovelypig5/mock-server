@@ -1,6 +1,7 @@
 module.exports = {
     DB: {
-        MONGO: 'mongo',
-        MYSQL: 'mysql'
-    }
+        MONGO: "mongo",
+        MYSQL: "mysql"
+    },
+    OAuth2: "https://mock-server.agoralab.co/callback"
 };

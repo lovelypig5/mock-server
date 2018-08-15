@@ -1,31 +1,31 @@
-var config = require( '../config' ),
-    tokenStore = require( '../service/tokenStore' );
-var request = require("request-promise");
+var config = require( "../config" ),
+    tokenStore = require( "../service/tokenStore" ),
+    oauth2Svc = require( "../service/oauth2" ),
+    logger = require( "../logger" );
 
 module.exports = [ {
     route: `/${config.APIPATH}/*`,
-    filter: async( req, res, next ) => {
-        var accessToken = req.headers[ 'access-token' ];
+    filter: async ( req, res, next ) => {
+        var accessToken = req.headers[ "access-token" ];
         if ( accessToken ) {
-            accessToken = await tokenStore.getToken( accessToken );
-            var user = await request({
-                url: "https://oauth.agoralab.co/api/userInfo",
-                headers: {
-                    'Authorization': "Bearer " + accessToken
-                }
-            })
-            if ( user ) {
-                user = JSON.parse( user );
-                req.user = user;
-                req.user._id = user.id;
-                req.user.token = accessToken;
+            try {
+                accessToken = await tokenStore.getToken( accessToken );
+                var user = await oauth2Svc.getUserInfo( accessToken );
+                if ( user ) {
+                    req.user = user;
+                    req.user._id = user.id;
+                    req.user.token = accessToken;
 
-                next();
-            } else {
-                res.status( 401 ).send( '请先登录!' );
+                    next();
+                } else {
+                    res.status( 401 ).send( "请先登录!" );
+                }
+            } catch ( err ) {
+                logger.error( err );
+                res.status( 401 ).send( "请先登录!" );
             }
         } else {
-            res.status( 401 ).send( '请先登录!' );
+            res.status( 401 ).send( "请先登录!" );
         }
     }
 } ]

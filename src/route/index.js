@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
-var express = require( 'express' ),
+var express = require( "express" ),
     router = express.Router(),
-    _ = require( 'lodash' ),
-    logger = require( '../logger' ),
-    transformerProxy = require( 'transformer-proxy' ),
-    mock = require( '../service/mock' ),
-    proxy = require( '../proxy' ),
-    Mock = require( 'mockjs' ),
-    tokenStore = require( '../service/tokenStore' );
-var request = require("request-promise");
+    _ = require( "lodash" ),
+    logger = require( "../logger" ),
+    transformerProxy = require( "transformer-proxy" ),
+    mock = require( "../service/mock" ),
+    proxy = require( "../proxy" ),
+    Mock = require( "mockjs" ),
+    tokenStore = require( "../service/tokenStore" ),
+    oauth2Svc = require( "../service/oauth2" );
 
 /**
  * handle all api not match system apis
@@ -19,81 +19,80 @@ var request = require("request-promise");
  * @param  {Function} next [description]
  * @return {[type]}        [description]
  */
-router.use( async( req, res, next ) => {
-    let token = req.headers.mocktoken;
-    if ( token ) {
-        let accessToken = await tokenStore.getToken( token );
-        let user = await request({
-            url: "https://oauth.agoralab.co/api/userInfo",
-            headers: {
-                'Authorization': "Bearer " + accessToken
-            },
-            json: true
-        })
-        if ( user ) {
-            token = user.id;
+router.use( async ( req, res, next ) => {
+    try {
+        let token = req.headers.mocktoken;
+        if ( token ) {
+            let accessToken = await tokenStore.getToken( token );
+            let user = await oauth2Svc.getUserInfo( accessToken );
+            if ( user ) {
+                token = user.id;
+            } else {
+                token = null;
+            }
+        }
+        let type = req.headers.mocktype;
+        if ( !type ) { // not mock request
+            next();
+        } else if ( type && !token ) { // mock request, but without access-token
+            return res.json( {
+                result: "缺少token或者token已经过期"
+            } );
         } else {
-            token = null;
-        }
-    }
-    let type = req.headers.mocktype;
-    if ( !type ) { // not mock request
-        next();
-    } else if ( type && !token ) { // mock request, but without access-token
-        return res.json( {
-            result: '缺少token或者token已经过期'
-        } );
-    } else {
-        delete req.headers.mocktoken;
-        delete req.headers.mocktype;
+            delete req.headers.mocktoken;
+            delete req.headers.mocktype;
 
-        let url = decodeURI( req.url );
-        let path = decodeURI( req.path );
-        let prefix = ( url.match( /\/\w+/ ) || [ "" ] )[ 0 ];
-        let author = req.headers.mockauthor;
-        if ( author ) {
-            prefix = author;
-            delete req.headers.mockauthor;
-        }
-        var project = await mock.getProjects( prefix, token );
-        if ( project ) {
-            var normalApis = await mock.getNormalApis( project._id, token ) || {};
-            var regApis = await mock.getRegApis( project._id, token );
-            var api = normalApis[ path ];
-            if ( api && api.type == req.method ) { // match normal
-                if ( api.dataHandler == "over" ) {
-                    let data = JSON.parse( api.result );
-                    return res.json( Mock.mock( data ) );
+            let url = decodeURI( req.url );
+            let path = decodeURI( req.path );
+            let prefix = ( url.match( /\/\w+/ ) || [ "" ] )[ 0 ];
+            let author = req.headers.mockauthor;
+            if ( author ) {
+                prefix = author;
+                delete req.headers.mockauthor;
+            }
+            var project = await mock.getProjects( prefix, token );
+            if ( project ) {
+                var normalApis = await mock.getNormalApis( project._id, token ) || {};
+                var regApis = await mock.getRegApis( project._id, token );
+                var api = normalApis[ path ];
+                if ( api && api.type == req.method ) { // match normal
+                    if ( api.dataHandler == "over" ) {
+                        let data = JSON.parse( api.result );
+                        return res.json( Mock.mock( data ) );
+                    } else {
+                        req.proxy = project.proxy;
+                        req._extendData = api.result;
+                        next();
+                    }
+                } else if ( regApis ) { // match reg
+                    regApis.forEach( ( api ) => {
+                        if ( new RegExp( api.regexp ).test( url ) && api.type == req.method ) {
+                            if ( api.dataHandler == "over" ) {
+                                let data = JSON.parse( api.result );
+                                return res.json( Mock.mock( data ) );
+                            } else {
+                                req.proxy = project.proxy;
+                                req._extendData = api.result;
+                                next();
+                            }
+                        }
+                    } );
+                    if ( url.indexOf( ":" ) != -1 ) {
+                        return res.status( 200 ).json( {
+                            result: "error happens! have you replace your parameter? "
+                        } );
+                    }
+                    next();
                 } else {
-                    req.proxy = project.proxy;
-                    req._extendData = api.result;
                     next();
                 }
-            } else if ( regApis ) { // match reg
-                regApis.forEach( ( api ) => {
-                    if ( new RegExp( api.regexp ).test( url ) && api.type == req.method ) {
-                        if ( api.dataHandler == "over" ) {
-                            let data = JSON.parse( api.result );
-                            return res.json( Mock.mock( data ) );
-                        } else {
-                            req.proxy = project.proxy;
-                            req._extendData = api.result;
-                            next();
-                        }
-                    }
-                } );
-                if ( url.indexOf( ':' ) != -1 ) {
-                    return res.status( 200 ).json( {
-                        result: "error happens! have you replace your parameter? "
-                    } );
-                }
-                next();
             } else {
                 next();
             }
-        } else {
-            next();
         }
+    } catch ( err ) {
+        logger.error( err );
+        return res.status( 401 ).send( "请先登录!" );
     }
 } );
 
@@ -108,7 +107,7 @@ router.use( transformerProxy( ( data, req, res ) => {
             return JSON.stringify( ret );
         } catch ( e ) {
             return JSON.stringify( {
-                result: '解析出错，无法合并为json格式数据'
+                result: "解析出错，无法合并为json格式数据"
             } );
         }
     }
@@ -131,7 +130,7 @@ router.use( ( req, res, next ) => {
 var deps = [];
 var ret = [ {
     router: router,
-    route: '/'
+    route: "/"
 } ];
 deps.forEach( ( dep ) => {
     ret.push( require( dep ) );
