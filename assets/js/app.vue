@@ -14,9 +14,7 @@ $.ajaxSetup({
     },
     statusCode: {
         401: () => {
-            router.push({
-                path: '/'
-            })
+            location.href = '/oauth2?url='+location.href;
         }
     }
 })

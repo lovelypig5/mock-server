@@ -4,10 +4,6 @@ module.exports = (modulePath) => {
     const webpack = require(`${modulePath}/webpack`);
     const HtmlWebpackPlugin = require(`${modulePath}/html-webpack-plugin`);
     const WebpackChunkHash = require(`${modulePath}/webpack-chunk-hash`);
-    // extract the manifest to a separate JSON file
-    const ChunkManifestPlugin = require(`${modulePath}/chunk-manifest-webpack-plugin`);
-    // inject manifest.json to index.html
-    const InlineChunkManifestHtmlWebpackPlugin = require(`${modulePath}/inline-chunk-manifest-html-webpack-plugin`);
 
     return {
         // if single entry is used, bundle name will be named as main.js
@@ -33,20 +29,18 @@ module.exports = (modulePath) => {
             new HtmlWebpackPlugin({
                 template: './views/admin.tpl',
                 filename: './admin.html',
-                chunks: ['manifest', 'admin', 'common', 'commoncss']
+                chunks: ['admin', 'common', 'commoncss']
             }),
             new HtmlWebpackPlugin({
                 template: './views/index.tpl',
                 filename: './index.html',
-                chunks: ['manifest', 'index', 'common', 'commoncss']
+                chunks: ['index', 'common', 'commoncss']
             }),
             new webpack.optimize.CommonsChunkPlugin({
-                name: ["commoncss", "common", "manifest"]
+                name: ["commoncss", "runtime", "common"]
             }),
             new webpack.HashedModuleIdsPlugin(),
-            new WebpackChunkHash(),
-            new ChunkManifestPlugin(),
-            new InlineChunkManifestHtmlWebpackPlugin()
+            new WebpackChunkHash()
         ],
         module: {
             rules: []

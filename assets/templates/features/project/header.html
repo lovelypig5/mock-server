@@ -15,7 +15,7 @@
                     <a href="javascript:void(0)" @click="login" v-if="!user._id">登录</a>
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" v-if="user._id">
                         <i class="fa fa-user fa-fw"></i>
-                        {{user.name}}
+                        {{user.displayName}}
                         <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user" v-if="user._id">
