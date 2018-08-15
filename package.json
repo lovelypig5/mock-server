@@ -39,6 +39,7 @@
     "request-promise": "^4.2.2",
     "simple-oauth2": "^2.2.1",
     "transformer-proxy": "^0.3.3",
+    "uuid": "^3.3.2",
     "validator": "^7.0.0"
   },
   "os": [

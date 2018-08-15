@@ -1,24 +1,24 @@
-var _ = require( 'lodash' ),
-    config = require( '../config' ),
-    logger = require( '../logger' ),
+var _ = require( "lodash" ),
+    config = require( "../config" ),
+    logger = require( "../logger" ),
     mockDao = require( `../dao/${config.DB.dialect}/mockDao` ),
-    mock = require( '../service/mock' ),
-    BaseApi = require( './baseApi' );
+    mock = require( "../service/mock" ),
+    BaseApi = require( "./baseApi" );
 
 class MockApi extends BaseApi {
 
     async createMockApi( req, res ) {
-        var model = super.getModel( 'mockset' );
+        var model = super.getModel( "mockset" );
         var mockapi = Object.assign( model, _.pick( req.body, [
-            'result',
-            'desc',
-            'active',
-            'type',
-            'param',
-            'dataHandler',
-            'menuId',
-            'projectId',
-            'url'
+            "result",
+            "desc",
+            "active",
+            "type",
+            "param",
+            "dataHandler",
+            "menuId",
+            "projectId",
+            "url"
         ] ) );
         if ( !mockapi.url ) {
             return res.status( 400 ).send( "url不能为空" );
@@ -65,17 +65,17 @@ class MockApi extends BaseApi {
         if ( !req.params.apiId ) {
             return res.status( 400 ).send( "缺少参数" );
         }
-        var model = super.getModel( 'mockset' );
+        var model = super.getModel( "mockset" );
         var mockapi = _.pick( Object.assign( model, req.body ), [
-            'result',
-            'desc',
-            'active',
-            'type',
-            'param',
-            'dataHandler',
-            'menuId',
-            'projectId',
-            'url'
+            "result",
+            "desc",
+            "active",
+            "type",
+            "param",
+            "dataHandler",
+            "menuId",
+            "projectId",
+            "url"
         ] );
 
         if ( !mockapi.url ) {
@@ -105,7 +105,7 @@ class MockApi extends BaseApi {
             return res.status( 200 ).json( result );
         } catch ( err ) {
             logger.error( err );
-            return res.status( 500 ).send( '修改接口失败' );
+            return res.status( 500 ).send( "修改接口失败" );
         }
     }
 
@@ -138,23 +138,23 @@ class MockApi extends BaseApi {
 
 var mockApi = new MockApi();
 module.exports = [ {
-    method: 'post',
+    method: "post",
     route: `/${config.APIPATH}/mockapi`,
     func: mockApi.createMockApi
 }, {
-    method: 'get',
+    method: "get",
     route: `/${config.APIPATH}/list/:projectId`,
     func: mockApi.listMockApis
 }, {
-    method: 'get',
+    method: "get",
     route: `/${config.APIPATH}/mockapi/:apiId`,
     func: mockApi.getMockApi
 }, {
-    method: 'post',
+    method: "post",
     route: `/${config.APIPATH}/mockapi/:apiId`,
     func: mockApi.modifyMockApi
 }, {
-    method: 'delete',
+    method: "delete",
     route: `/${config.APIPATH}/mockapi/:apiId`,
     func: mockApi.deleteMockApi
 } ];

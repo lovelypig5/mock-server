@@ -55,7 +55,7 @@ router.use( async ( req, res, next ) => {
                 var normalApis = await mock.getNormalApis( project._id, token ) || {};
                 var regApis = await mock.getRegApis( project._id, token );
                 var api = normalApis[ path ];
-                if ( api && api.type == req.method ) { // match normal
+                if ( api && api.active && api.type == req.method ) { // match normal
                     if ( api.dataHandler == "over" ) {
                         let data = JSON.parse( api.result );
                         return res.json( Mock.mock( data ) );
@@ -66,7 +66,7 @@ router.use( async ( req, res, next ) => {
                     }
                 } else if ( regApis ) { // match reg
                     regApis.forEach( ( api ) => {
-                        if ( new RegExp( api.regexp ).test( url ) && api.type == req.method ) {
+                        if ( api.active && new RegExp( api.regexp ).test( url ) && api.type == req.method ) {
                             if ( api.dataHandler == "over" ) {
                                 let data = JSON.parse( api.result );
                                 return res.json( Mock.mock( data ) );

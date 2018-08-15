@@ -1,12 +1,12 @@
-var BaseDao = require( './baseDao' ),
-    projectDao = require( './projectDao' ),
-    Errors = require( '../../error' );
+var BaseDao = require( "./baseDao" ),
+    projectDao = require( "./projectDao" ),
+    Errors = require( "../../error" );
 
 class MockDao extends BaseDao {
 
     constructor() {
         super();
-        this.Entity = this.db.model( 'mockSet', this.schema.mockset );
+        this.Entity = this.db.model( "mockSet", this.schema.mockset );
     }
 
     async createMockApi( mockapi ) {
@@ -15,7 +15,7 @@ class MockDao extends BaseDao {
             projects = await projectDao.listProject( mockapi.projectId, mockapi.userId );
         } catch ( err ) {
             this.logger.error( err );
-            throw new Errors.UnknownError( '未知错误，请联系管理员！' );
+            throw new Errors.UnknownError( "未知错误，请联系管理员！" );
         }
 
         if ( projects.length == 1 ) {
@@ -23,7 +23,7 @@ class MockDao extends BaseDao {
             await entity.save();
             return entity;
         } else {
-            throw new Errors.NotFound( '不存在的项目' );
+            throw new Errors.NotFound( "不存在的项目" );
         }
     }
 
@@ -42,7 +42,7 @@ class MockDao extends BaseDao {
         try {
             projects = await projectDao.listProject( mockapi.projectId, mockapi.userId );
         } catch ( err ) {
-            throw new Errors.UnknownError( '未知错误，请联系管理员！' );
+            throw new Errors.UnknownError( "未知错误，请联系管理员！" );
         }
 
         if ( projects.length == 1 ) {
@@ -51,12 +51,12 @@ class MockDao extends BaseDao {
                 userId: mockapi.userId
             }, { $set: mockapi } );
             if ( docs.n == 1 ) {
-                return '修改接口成功';
+                return "修改接口成功";
             } else {
                 throw new Errors.UnknownError( `接口修改失败，未知原因，请联系管理员。接口ID: ${id}, 用户ID: ${mockapi.userId}` );
             }
         } else {
-            throw new Errors.NotFound( '不存在的项目' );
+            throw new Errors.NotFound( "不存在的项目" );
         }
     }
 
@@ -72,7 +72,7 @@ class MockDao extends BaseDao {
     }
 
     async getAllMockApis() {
-        return this.Entity.find().exec();
+        return await this.Entity.find().exec();
     }
 
     async deleteMockApi( id, userId ) {
