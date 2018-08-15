@@ -35,6 +35,9 @@
     "mockjs": "^1.0.0",
     "mongoose": "^4.6.3",
     "redis": "^2.7.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
+    "simple-oauth2": "^2.2.1",
     "transformer-proxy": "^0.3.3",
     "validator": "^7.0.0"
   },
