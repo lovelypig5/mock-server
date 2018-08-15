@@ -4,6 +4,18 @@ var _ = require( 'lodash' ),
     BaseApi = require( './baseApi' ),
     tokenStore = require( '../service/tokenStore' );
 
+var simpleOauth2 = require('simple-oauth2');
+const credentials = {
+    client: {
+        id: '6gHUa2RC34Ouh5x4trRFKz066My3p8kf',
+        secret: 'DJjb6wcw0Uhasrr1fZGygcXgkiJ9o8YLQmmDg5CA4MQeP60q4YvZAF1LyZHHUBQw'
+    },
+    auth: {
+        tokenHost: 'https://oauth.agoralab.co'
+    }
+};
+const oauth2 = simpleOauth2.create(credentials);
+
 class UserApi extends BaseApi {
 
     async login( req, res ) {
@@ -44,6 +56,53 @@ class UserApi extends BaseApi {
             res.status( 401 ).send( '没有登录' );
         }
     }
+
+    async oauth2(req, res) {
+        var {
+            url
+        } = req.query;
+        if(!url){
+            return res.status(400).send("缺少参数");
+        }
+        const authorizationUri = await oauth2.authorizationCode.authorizeURL({
+            redirect_uri: 'https://mock-server.agoralab.co/callback',
+            scope: '<scope>', 
+            state: url
+        });
+        res.redirect(authorizationUri);
+    }
+
+    /**
+     * OAuth2 callback
+     * @param {*} req 
+     * @param {*} res 
+     */
+    async callback(req, res){
+        var {
+            code,
+            state
+        } = req.query;
+
+        if(!code || !state){
+            return res.status(400).send("缺少参数");
+        }
+
+        const tokenConfig = {
+            code: code,
+            redirect_uri: 'https://mock-server.agoralab.co/callback',
+            scope: '<scope>', 
+        };
+
+        try {
+            const result = await oauth2.authorizationCode.getToken(tokenConfig);
+            res.cookie('access-token', result.access_token);
+            await tokenStore.setToken(result.access_token, result.access_token, 'EX', result.expires_in);
+            res.redirect(state);
+        } catch (err) {
+            var result = super.handleErr(err);
+            return res.status(result.status).send(result.ret);
+        }
+    }
 }
 
 var userApi = new UserApi();
@@ -53,6 +112,14 @@ module.exports = [ {
     route: '/_login',
     func: userApi.login
 }, {
+    method: 'get',
+    route: '/oauth2',
+    func: userApi.oauth2
+}, {
+    method: 'get',
+    route: '/callback',
+    func: userApi.callback
+},{
     method: 'post',
     route: `/${config.APIPATH}/_logout`,
     func: userApi.logout

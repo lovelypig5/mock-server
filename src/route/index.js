@@ -9,6 +9,7 @@ var express = require( 'express' ),
     proxy = require( '../proxy' ),
     Mock = require( 'mockjs' ),
     tokenStore = require( '../service/tokenStore' );
+var request = require("request-promise");
 
 /**
  * handle all api not match system apis
@@ -21,10 +22,16 @@ var express = require( 'express' ),
 router.use( async( req, res, next ) => {
     let token = req.headers.mocktoken;
     if ( token ) {
-        let user = await tokenStore.getToken( token );
+        let accessToken = await tokenStore.getToken( token );
+        let user = await request({
+            url: "https://oauth.agoralab.co/api/userInfo",
+            headers: {
+                'Authorization': "Bearer " + accessToken
+            },
+            json: true
+        })
         if ( user ) {
-            user = JSON.parse( user );
-            token = user._id;
+            token = user.id;
         } else {
             token = null;
         }
