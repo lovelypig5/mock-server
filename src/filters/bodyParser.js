@@ -1,12 +1,12 @@
-var bodyParser = require('body-parser');
+var bodyParser = require( "body-parser" );
 
-module.exports = [{
-    filter: bodyParser.urlencoded({
-        limit: '50mb',
+module.exports = [ {
+    filter: bodyParser.urlencoded( {
+        limit: "50mb",
         extended: false
-    })
+    } )
 }, {
-    filter: bodyParser.json({
-        limit: '50mb'
-    })
-}];
+    filter: bodyParser.json( {
+        limit: "50mb"
+    } )
+} ];

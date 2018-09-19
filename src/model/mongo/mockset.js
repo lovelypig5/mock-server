@@ -56,7 +56,7 @@ const MockSet = {
     }
 }
 
-module.exports = [{
-    name: 'mockset',
+module.exports = [ {
+    name: "mockset",
     model: MockSet
-}];
+} ];

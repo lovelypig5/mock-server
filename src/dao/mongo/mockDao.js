@@ -32,8 +32,7 @@ class MockDao extends BaseDao {
             projectId: projectId,
             userId: userId
         }, {
-            userId: false,
-            result: false
+            userId: false
         } ).exec();
     }
 

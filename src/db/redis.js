@@ -1,7 +1,7 @@
-var redis = require( 'redis' ),
-    bluebird = require( 'bluebird' ),
-    config = require( '../config' ),
-    logger = require( '../logger' );
+var redis = require( "redis" ),
+    bluebird = require( "bluebird" ),
+    config = require( "../config" ),
+    logger = require( "../logger" );
 
 var client = redis.createClient( config.REDIS );
 

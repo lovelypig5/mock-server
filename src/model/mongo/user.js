@@ -16,11 +16,11 @@ const User = {
     salt: {
         type: Number,
         required: true,
-        default: Math.floor(Math.random() * 1000000)
+        default: Math.floor( Math.random() * 1000000 )
     }
 }
 
-module.exports = [{
-    name: 'user',
+module.exports = [ {
+    name: "user",
     model: User
-}];
+} ];

@@ -29,7 +29,7 @@ class MockApi extends BaseApi {
         if ( !mockapi.result ) {
             return res.status( 400 ).send( "接口返回结果不能为空" );
         }
-        if ( mockapi.url.indexOf( "\/" ) !== 0 ) {
+        if ( mockapi.url.indexOf( "/" ) !== 0 ) {
             return res.status( 400 ).send( "url前缀必须以/开头" );
         }
         if ( mockapi.url.indexOf( "/_system" ) != -1 ) {

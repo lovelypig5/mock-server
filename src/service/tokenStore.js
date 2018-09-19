@@ -1,5 +1,5 @@
-var client = require( '../db/redis' ),
-    logger = require( '../logger' );
+var client = require( "../db/redis" ),
+    logger = require( "../logger" );
 
 class TokenStore {
 
@@ -8,18 +8,18 @@ class TokenStore {
     }
 
     async setToken() {
-        logger.info( '----------- SET TOKEN -----------' );
-        logger.info( arguments );
-        logger.info( '                                 ' );
-        await client.setAsync( ...arguments );
+        logger.debug( "----------- SET TOKEN -----------" );
+        logger.debug( arguments );
+        logger.debug( "                                 " );
+        await client.setAsync( ... arguments );
     }
 
     async getToken() {
-        return await client.getAsync( ...arguments );
+        return await client.getAsync( ... arguments );
     }
 
     async deleteToken() {
-        return await client.delAsync( ...arguments );
+        return await client.delAsync( ... arguments );
     }
 
 }

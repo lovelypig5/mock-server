@@ -35,7 +35,7 @@ const Project = {
     }
 };
 
-module.exports = [{
-    name: 'project',
+module.exports = [ {
+    name: "project",
     model: Project
-}];
+} ];

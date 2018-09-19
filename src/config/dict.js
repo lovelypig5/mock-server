@@ -3,5 +3,5 @@ module.exports = {
         MONGO: "mongo",
         MYSQL: "mysql"
     },
-    OAuth2: "https://mock-server.agoralab.co/callback"
+    OAuth2: "http://localhost:3003/callback"
 };

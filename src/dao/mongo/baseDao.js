@@ -1,8 +1,6 @@
-'use strict';
-
-var pool = require('../../db/pool'),
-    logger = require('../../logger'),
-    schema = require('../../schema/mongo');
+var pool = require( "../../db/pool" ),
+    logger = require( "../../logger" ),
+    schema = require( "../../schema/mongo" );
 
 class BaseDao {
 
@@ -23,7 +21,7 @@ class BaseDao {
      * @param  {Object} ret    : response entity
      * @return {Object}
      */
-    model(status, ret) {
+    model( status, ret ) {
         return {
             status: status,
             ret: ret

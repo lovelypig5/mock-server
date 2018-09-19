@@ -1,5 +1,5 @@
-var _ = require( 'lodash' ),
-    models = require( '.' );
+var _ = require( "lodash" ),
+    models = require( "." );
 
 class Utils {
 
@@ -11,7 +11,7 @@ class Utils {
             }
             var _model = {};
             _.forEach( model, ( T, key ) => {
-                if ( typeof T === 'function' ) {
+                if ( typeof T === "function" ) {
                     _model[ key ] = T();
                 } else {
                     if ( T.default ) {
