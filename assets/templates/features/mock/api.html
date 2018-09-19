@@ -13,7 +13,7 @@
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
             </button>
             <button type="button" class="btn btn-primary btn-xs" v-if="mockapi.active" aria-label="Left Align" @click.stop="changeStatus">
-                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>{{mockapi.dataHandler=="over"?"覆盖":"拦截"}}中
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>{{mockapi.dataHandler=="over"?"拦截":"代理"}}中
             </button>
             <button type="button" class="btn btn-link btn-xs" v-else aria-label="Left Align" @click.stop="changeStatus">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>已关闭

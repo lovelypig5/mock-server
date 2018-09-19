@@ -1,13 +1,13 @@
 <script>
-import template from 'templates/features/mock/api.html';
-import API from 'config/api';
-import Edit from './edit.vue';
-import events from '../../events';
+import template from "templates/features/mock/api.html";
+import API from "config/api";
+import Edit from "./edit.vue";
+import events from "../../events";
 
-var MockApi = Vue.extend({
-    name: 'mock-api',
+var MockApi = Vue.extend( {
+    name: "mock-api",
     template: template,
-    props: ['project', 'mockapi', 'menus', 'index'],
+    props: [ "project", "mockapi", "menus", "index" ],
     data() {
         return {
             loading: {
@@ -18,71 +18,71 @@ var MockApi = Vue.extend({
         }
     },
     methods: {
-        alert(obj) {
-            this.$store.dispatch('alert', obj);
+        alert( obj ) {
+            this.$store.dispatch( "alert", obj );
         },
         test() {
-            events.$emit('testApi', this.mockapi);
+            events.$emit( "testApi", this.mockapi );
         },
-        modal(obj) {
-            this.$store.dispatch('modal', obj);
+        modal( obj ) {
+            this.$store.dispatch( "modal", obj );
         },
         changeStatus() {
             var self = this;
-            if (self.loading.active) {
+            if ( self.loading.active ) {
                 return;
             }
             self.loading.active = !self.loading.active;
-            $.ajax({
-                url: API.mockapi + '/' + self.mockapi._id,
-                type: 'post',
-                data: JSON.stringify(Object.assign({}, self.mockapi, {
+            $.ajax( {
+                url: API.mockapi + "/" + self.mockapi._id,
+                type: "post",
+                data: JSON.stringify( Object.assign( {}, self.mockapi, {
                     active: !self.mockapi.active
-                }))
-            }).done(() => {
+                } ) )
+            } ).done( () => {
                 self.mockapi.active = !self.mockapi.active;
-            }).fail((resp) => {
-                self.alert({
+            } ).fail( ( resp ) => {
+                self.alert( {
                     show: true,
-                    msg: resp.responseText || '修改接口状态失败',
-                    type: 'error'
-                })
-            }).always(() => {
+                    msg: resp.responseText || "修改接口状态失败",
+                    type: "error"
+                } )
+            } ).always( () => {
                 self.loading.active = !self.loading.active;
-            })
+            } )
         },
         remove() {
             var self = this;
-            if (self.loading.delete) {
+            if ( self.loading.delete ) {
                 return;
             }
             self.loading.delete = !self.loading.delete;
 
-            if (!confirm("确定删除")) {
+            if ( !confirm( "确定删除" ) ) {
                 return;
             }
-            $.ajax({
-                url: API.mockapi + '/' + self.mockapi._id,
+            $.ajax( {
+                url: API.mockapi + "/" + self.mockapi._id,
                 type: "delete",
-                data: JSON.stringify(self.mockapi)
-            }).done((result) => {
-                events.$emit('removeApi', self.index);
-            }).fail((resp) => {
-                self.alert({
+                data: JSON.stringify( self.mockapi )
+            } ).done( ( result ) => {
+                events.$emit( "removeApi", self.index );
+            } ).fail( ( resp ) => {
+                self.alert( {
                     show: true,
-                    msg: resp.responseText || '删除接口失败',
-                    type: 'error'
-                })
-            }).always(() => {
+                    msg: resp.responseText || "删除接口失败",
+                    type: "error"
+                } )
+            } ).always( () => {
                 self.loading.delete = !self.loading.delete;
-            });
+            } );
         },
         edit() {
-            this.modal({
+            this.modal( {
                 show: true,
-                type: 'default',
+                type: "default",
                 options: {
-                    class: 'edit-modal'
+                    class: "edit-modal"
                 },
                 data: {
                     mockapi: this.mockapi,
@@ -91,36 +91,36 @@ var MockApi = Vue.extend({
                     index: this.index
                 },
                 component: Edit
-            })
+            } )
         },
         togglePane() {
-            $(this.$el).find('.mocksetContent').slideToggle();
-            if (!this.mockapi.result) {
+            $( this.$el ).find( ".mocksetContent" ).slideToggle();
+            if ( !this.mockapi.result ) {
                 this.fetch();
             }
         },
         fetch() {
             var self = this;
-            if (self.loading.api) {
+            if ( self.loading.api ) {
                 return;
             }
             self.loading.api = !self.loading.api;
-            $.ajax({
-                url: API.mockapi + '/' + this.mockapi._id
-            }).done(function(result) {
-                events.$emit('modifyApi', self.index, result[0]);
-            }).fail((resp) => {
-                self.alert({
+            $.ajax( {
+                url: API.mockapi + "/" + this.mockapi._id
+            } ).done( function( result ) {
+                events.$emit( "modifyApi", self.index, result[ 0 ] );
+            } ).fail( ( resp ) => {
+                self.alert( {
                     show: true,
-                    msg: resp.responseText || '获取接口列表失败',
-                    type: 'error'
-                })
-            }).always(() => {
+                    msg: resp.responseText || "获取接口列表失败",
+                    type: "error"
+                } )
+            } ).always( () => {
                 self.loading.api = !self.loading.api;
-            })
+            } )
         }
     }
-})
+} )
 
 export default MockApi;
 </script>

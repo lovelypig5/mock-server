@@ -1,18 +1,18 @@
 <script>
-import template from 'templates/features/mock/list.html';
-import MockApi from './api.vue';
-import Edit from './edit.vue';
-import Test from './test.vue';
-import events from '../../events';
+import template from "templates/features/mock/list.html";
+import MockApi from "./api.vue";
+import Edit from "./edit.vue";
+import Test from "./test.vue";
+import events from "../../events";
 
-const MockList = Vue.extend({
-    name: 'mock-list',
+const MockList = Vue.extend( {
+    name: "mock-list",
     template: template,
     components: {
         mockApi: MockApi,
         mockTest: Test
     },
-    props: ['project', 'mockapis', 'menus', 'loading'],
+    props: [ "project", "mockapis", "menus", "loading" ],
     data() {
         return {
             currentApi: {
@@ -32,34 +32,34 @@ const MockList = Vue.extend({
         };
     },
     created() {
-        events.$on('testApi', this.test);
+        events.$on( "testApi", this.test );
     },
     beforeDestroy: function() {
-        events.$off('testApi', this.test);
+        events.$off( "testApi", this.test );
     },
     methods: {
-        modal(obj) {
-            this.$store.dispatch('modal', obj);
+        modal( obj ) {
+            this.$store.dispatch( "modal", obj );
         },
         addApi() {
-            this.modal({
+            this.modal( {
                 show: true,
-                type: 'default',
+                type: "default",
                 options: {
-                    class: 'edit-modal'
+                    class: "edit-modal"
                 },
                 data: {
                     project: this.project,
                     menus: this.menus
                 },
                 component: Edit
-            });
+            } );
         },
-        test(mockapi) {
+        test( mockapi ) {
             this.currentApi = mockapi;
         }
     }
-})
+} )
 
 export default MockList;
 </script>
