@@ -30,7 +30,7 @@ routes.forEach( ( route ) => {
     app.use( route.route, route.router );
 } );
 
-app.use( express.static( path.resolve( "../assets/dist" ) ) );
+app.use( express.static( path.resolve( __dirname, "../assets/dist" ) ) );
 
 mock.init().then( () => {
     app.listen( 3003, () => {
