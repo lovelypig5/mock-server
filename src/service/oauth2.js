@@ -1,9 +1,5 @@
 var simpleOauth2 = require( "simple-oauth2" );
-var env = process.env.NODE_ENV;
-if ( !env ) {
-    env = "production";
-}
-var DICT = require( `./${env}/dict` );
+var DICT = require( "../config" ).DICT;
 var request = require( "request-promise" );
 
 const credentials = {

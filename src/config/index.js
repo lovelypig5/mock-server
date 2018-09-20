@@ -6,5 +6,6 @@ var DICT = require( `./${env}/dict` );
 
 module.exports = {
     DB: DICT.MONGO,
+    DICT: DICT,
     APIPATH: "_system"
 };
