@@ -9,7 +9,7 @@ var express = require( "express" ),
 
 var app = express();
 app.engine( "html", consolidate.ejs );
-app.set( "views", "../assets/dist" );
+app.set( "views", path.resolve( __dirname, "../assets/dist" ) );
 app.set( "view engine", "html" );
 app.set( "x-powered-by", false );
 
