@@ -1,0 +1,15 @@
+[
+    {
+        "name": "mock-server",
+        "script": "./app.js",
+        "error_file": "/data/logs/mock-server/err.log",
+        "out_file": "/data/logs/mock-server/out.log",
+        "exec_mode": "cluster",
+        "instances": 1,
+        "listen_timeout": 10000,
+        "log_date_format": "YYYY-MM-DD HH:mm:ss.SSS",
+        "env": {
+            "NODE_ENV": "production"
+        }
+    }
+]
