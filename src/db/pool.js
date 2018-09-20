@@ -1,7 +1,11 @@
 // var mysql = require('mysql');
+var env = process.env.NODE_ENV;
+if ( !env ) {
+    env = "production";
+}
 var mongoose = require( "mongoose" ),
     config = require( "../config" ),
-    DICT = require( "../config/dict" ),
+    DICT = require( `./${env}/dict` ),
     logger = require( "../logger" );
 
 mongoose.Promise = global.Promise;

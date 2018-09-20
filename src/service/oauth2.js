@@ -1,5 +1,9 @@
-var simpleOauth2 = require( "simple-oauth2" ),
-    dict = require( "../config/dict" );
+var simpleOauth2 = require( "simple-oauth2" );
+var env = process.env.NODE_ENV;
+if ( !env ) {
+    env = "production";
+}
+var DICT = require( `./${env}/dict` );
 var request = require( "request-promise" );
 
 const credentials = {
@@ -17,7 +21,7 @@ class OAuth2 {
 
     async doOauth2( res, url ) {
         const authorizationUri = await oauth2.authorizationCode.authorizeURL( {
-            redirect_uri: dict.OAuth2,
+            redirect_uri: DICT.OAuth2,
             scope: "<scope>",
             state: url
         } );
@@ -27,7 +31,7 @@ class OAuth2 {
     async getToken( code ) {
         const tokenConfig = {
             code: code,
-            redirect_uri: dict.OAuth2,
+            redirect_uri: DICT.OAuth2,
             scope: "<scope>",
         };
 

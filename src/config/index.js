@@ -1,13 +1,10 @@
-var DICT = require( "./dict" );
+var env = process.env.NODE_ENV;
+if ( !env ) {
+    env = "production";
+}
+var DICT = require( `./${env}/dict` );
 
 module.exports = {
-    DB: {
-        dialect: DICT.DB.MONGO,
-        host: "127.0.0.1",
-        port: 27017,
-        user: "",
-        password: "",
-        schema: "test"
-    },
+    DB: DICT.MONGO,
     APIPATH: "_system"
 };
