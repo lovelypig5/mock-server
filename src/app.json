@@ -1,7 +1,7 @@
 [
     {
         "name": "mock-server",
-        "script": "./app.js",
+        "script": "./src/app.js",
         "error_file": "/data/logs/mock-server/err.log",
         "out_file": "/data/logs/mock-server/out.log",
         "exec_mode": "cluster",
