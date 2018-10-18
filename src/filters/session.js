@@ -12,6 +12,10 @@ module.exports = [ {
                 accessToken = await tokenStore.getToken( accessToken );
                 var user = await oauth2Svc.getUserInfo( accessToken );
                 if ( user ) {
+                    // 俊源可以看鑫磊的接口
+                    if ( user.id == 279 ) {
+                        user.id = 332;
+                    }
                     req.user = user;
                     req.user._id = user.id;
                     req.user.token = accessToken;

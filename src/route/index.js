@@ -23,10 +23,6 @@ router.use( async ( req, res, next ) => {
         if ( token ) {
             let accessToken = await tokenStore.getToken( token );
             let user = await oauth2Svc.getUserInfo( accessToken );
-            // 俊源可以看鑫磊的接口
-            if( user.id == 99 ) {
-                user.id = 332;
-            }
             if ( user ) {
                 token = user.id;
             } else {
