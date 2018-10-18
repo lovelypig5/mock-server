@@ -45,9 +45,7 @@ router.use( async ( req, res, next ) => {
             res.header( "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization" );
             if ( req.method === "OPTIONS" ) {
                 return res.sendStatus( 200 );
-            } else {
-                next();
-            }
+            } 
 
             let url = decodeURI( req.url );
             let path = decodeURI( req.path );
