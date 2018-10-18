@@ -1,4 +1,4 @@
-var deps = [ "./bodyParser", "./session" ];
+var deps = [ "./logInject", "./bodyParser", "./session" ];
 var ret = [];
 deps.forEach( ( dep ) => {
     Array.prototype.push.apply( ret, require( dep ) );
