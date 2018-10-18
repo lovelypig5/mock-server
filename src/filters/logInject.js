@@ -9,7 +9,7 @@ const logInject = async ( req, res, next ) => {
     const start = +new Date();
     logger.info( `[Start] ${req.method} ${req.url}` );
     await next();
-    logger.info( `[Completed] ${res.status} ${new Date() - start}ms | ${req.method} ${req.url}` );
+    logger.info( `[Completed] ${res.statusCode} ${new Date() - start}ms | ${req.method} ${req.url}` );
 }
 
 module.exports = [
