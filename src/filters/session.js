@@ -13,7 +13,7 @@ module.exports = [ {
                 var user = await oauth2Svc.getUserInfo( accessToken );
                 if ( user ) {
                     // 俊源可以看鑫磊的接口
-                    if ( user.id == 279 ) {
+                    if ( user.id == 279 || user.id == 99 ) {
                         user.id = 332;
                     }
                     req.user = user;
