@@ -1,5 +1,7 @@
-var filters = {
+var deps = [ "./logInject" ];
+var ret = [];
+deps.forEach( ( dep ) => {
+    Array.prototype.push.apply( ret, require( dep ) );
+} );
 
-}
-
-export default filters;
+module.exports = ret;
