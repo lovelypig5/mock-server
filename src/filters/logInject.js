@@ -1,15 +1,15 @@
 
 const logger = require( "../logger" )
 
-const logInject = async ( ctx, next ) => {
+const logInject = async ( req, res, next ) => {
     // 挂载log
-    ctx.log = logger;
-    const reqid = ctx.request.header[ "x-request-id" ];
+    req.log = logger;
+    const reqid = req.header[ "x-request-id" ];
     logger.addContext( "reqid", reqid );
     const start = +new Date();
-    logger.info( `[Start] ${ctx.request.method} ${ctx.request.url}` );
+    logger.info( `[Start] ${req.method} ${req.url}` );
     await next();
-    logger.info( `[Completed] ${ctx.status} ${new Date() - start}ms | ${ctx.request.method} ${ctx.request.url}` );
+    logger.info( `[Completed] ${res.status} ${new Date() - start}ms | ${req.method} ${req.url}` );
 }
 
 module.exports = [
